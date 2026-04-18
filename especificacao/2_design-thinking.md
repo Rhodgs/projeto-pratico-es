@@ -71,3 +71,42 @@ Abaixo, detalhamos os pontos identificados na matriz SWOT para o projeto Jornada
   * **Baixa Retenção nas Férias**: O engajamento e o uso da plataforma podem cair drasticamente durante os períodos de férias e recessos escolares, o que pode afetar a retenção dos usuários e a continuidade das missões ambientais.
 
   * **Risco de Falsificação de imagem e Moderação constante**: Risco de usuários postarem fotos inadequadas ou falsas apenas para ganhar pontos, o que exigiria uma moderação constante e eficiente por parte da equipe ou dos professores.
+ 
+
+
+<div align="center">
+  <h1> Identificação Visual de Soluções Existentes  </h1>
+  <img width="250" height="245" alt="8546175-solucao-icons-symbol-vector-elements-for-infographic-web-vetor-removebg-preview" src="https://github.com/user-attachments/assets/773cca3f-447c-428f-8e6b-03ed111dfe1f" />
+
+</div>
+Antes da construção do quadro comparativo, pesquisamos três soluções (apps, plataformas ou sites) que abordam o mesmo problema ambiental ou se aproximam da proposta do Jornada Verde
+
+#### 1. App: JouleBug
+<div align="center">
+  <img width="288" height="442" alt="Solução Ambiental 1" src="https://github.com/user-attachments/assets/3340ec6c-9cf7-431d-bf30-1f67f22bfe9d" />
+</div>
+
+* **Descrição:**  Transformar hábitos sustentáveis em sistema de gamificação, envolvendo medalhas e troféus
+* **Público-alvo:** Jovens que querem criar hábitos sustentáveis por meio de games
+* **Funcionalidade Principal:** Registro e monitoramento de atividades ecológicas diárias (como compostagem ou uso de transporte público), convertendo ações do mundo real em pontos e conquistas em um ranking social
+
+---
+
+#### 2. Site: Edukatu
+<div align="center">
+  <img width="256" height="483" alt="Solução Ambiental 2" src="https://github.com/user-attachments/assets/3dff42a9-ce08-4ede-ac52-937c2a31cc5d" />
+</div>
+
+* **Descrição:** Sites sobre meio ambiente. Notícias, artigos e Dicas de sustentabilidade e conscientização sobre o meio ambiente.
+* **Público-alvo:** Jovens e adultos que desejam conhecer notícias e assuntos sobre meio ambiente e conscientização ambiental
+* **Funcionalidade Principal:** Repositório centralizado de conteúdos pedagógicos e informativos, servindo como uma rede de aprendizagem que conecta professores e alunos a materiais técnicos sobre consumo consciente.
+---
+
+#### 3. App: Desafio Ambiental
+<div align="center">
+  <img width="272" height="507" alt="Solução Ambiental 3" src="https://github.com/user-attachments/assets/95324068-f777-424f-afa5-2efaadfef518" />
+</div>
+
+* **Descrição:** Um aplicativo que envolve desafios e dinâmicas sobre meio ambiente, despertando o desejo do usuário de criar hábitos que estimulem a conscientização ambiental. 
+* **Público-alvo:** Jovens e adultos que desejam participar de movimentos de conscientização do meio ambiente. 
+* **Funcionalidade Principal:** Proposição de desafios práticos diários/semanais para redução da pegada de carbono individual, permitindo o acompanhamento estatístico do impacto ambiental evitado pelo usuário
