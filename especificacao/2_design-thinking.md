@@ -76,7 +76,7 @@ Abaixo, detalhamos os pontos identificados na matriz SWOT para o projeto Jornada
 
 <div align="center">
   <h1> Identificação Visual de Soluções Existentes  </h1>
-  <img width="250" height="245" alt="8546175-solucao-icons-symbol-vector-elements-for-infographic-web-vetor-removebg-preview" src="https://github.com/user-attachments/assets/773cca3f-447c-428f-8e6b-03ed111dfe1f" />
+  <img width="200" height="205" alt="8546175-solucao-icons-symbol-vector-elements-for-infographic-web-vetor-removebg-preview" src="https://github.com/user-attachments/assets/773cca3f-447c-428f-8e6b-03ed111dfe1f" />
 
 </div>
 Antes da construção do quadro comparativo, pesquisamos três soluções (apps, plataformas ou sites) que abordam o mesmo problema ambiental ou se aproximam da proposta do Jornada Verde
@@ -110,6 +110,7 @@ Antes da construção do quadro comparativo, pesquisamos três soluções (apps,
 * **Descrição:** Um aplicativo que envolve desafios e dinâmicas sobre meio ambiente, despertando o desejo do usuário de criar hábitos que estimulem a conscientização ambiental. 
 * **Público-alvo:** Jovens e adultos que desejam participar de movimentos de conscientização do meio ambiente. 
 * **Funcionalidade Principal:** Proposição de desafios práticos diários/semanais para redução da pegada de carbono individual, permitindo o acompanhamento estatístico do impacto ambiental evitado pelo usuário
+
 ---
 
 <div align="center">
@@ -126,4 +127,40 @@ Segue abaixo um quadro comparativo que avalia três plataformas distintas (Joule
 | Pontos fortes              | Gamificação e conquistas de troféus         | Conteúdo didático robusto e apoio pedagógico | Cálculo detalhado de impacto ambiental individual    | Dashboard de gestão escolar e integração com currículo |
 | Pontos fracos / limitações | Uso solitário ou em redes sociais genéricas | Interface menos interativa para os alunos    | Dependência total de registro manual do usuário      | Sensibilidade ao calendário letivo (férias escolares)  |
 
+---
+
+<div align="center">
+  <h1> Conhecendo o usuário – Persona  </h1>
+  <img width="140" height="141" alt="2634888-icone-de-contorno-de-usuario-de-pessoa-simples-vetor-removebg-preview" src="https://github.com/user-attachments/assets/d89e962b-ce08-4fee-8fc8-8e256cbb31f8" />
+</div>
+
+<img width="1080" height="1361" alt="est ana" src="https://github.com/user-attachments/assets/b6b6492e-4575-4773-bf6c-f44106ff71e8" />
+<details>
+<summary>Clique para ler os detalhes resumido da Persona: Ana (Estudante)</summary>
+
+- **Quem:** Estudante de 16 anos comunicativa que busca protagonismo e reconhecimento social
+- **Contexto:** Rotina focada em redes sociais e desinteresse por métodos de ensino puramente teóricos
+- **Problemas/Necessidades:** Deseja tornar a ecologia uma prática gamificada, competitiva e compartilhável
+
+</details>
+</br>
+<img width="1080" height="1355" alt="prof joao" src="https://github.com/user-attachments/assets/c354e5dc-2798-44e7-8f3c-f45249398522" />
+<details>
+<summary>Clique para ler os detalhes resumido da Persona: João (Professor)</summary>
+
+- **Quem:** Professor de Biologia interessado em usar tecnologias para engajar alunos em causas reais
+- **Contexto:** Usa ferramentas digitais, mas sente falta de recursos ágeis para gerenciar projetos ambientais
+- **Problemas/Necessidades:** Precisa criar turmas e lançar desafios práticos com relatórios de impacto real
+
+</details>
+</br>
+<img width="1080" height="1374" alt="prof lucas" src="https://github.com/user-attachments/assets/5ff6cd4a-6c1f-4b1a-b30b-c7fc9b8bd048" />
+<details>
+<summary>Clique para ler os detalhes resumido da Persona: Lucas (Estudante)</summary>
+
+- **Quem:** Estudante de 23 anos que busca autonomia e ferramentas que respeitem o design inclusivo
+- **Contexto:** Usuário de leitores de tela e alto contraste que evita interfaces com excessos visuais
+- **Problemas/Necessidades:** Necessita de compatibilidade técnica total com recursos assistivos para atuar na causa ambiental
+
+</details>
 
