@@ -9,7 +9,7 @@
 | :--- | :--- |
 | **Nome do Projeto:** | Jornada Verde |
 | **Codinome:** | JV-ICET |
-| **Versão:** | 1.1 |
+| **Versão:** | 1.2 |
 | **Status:** | Em desenvolvimento |
 | **Número de Controle:** | 2026-TP1-UFAM |
 | **Executor Principal:** | Equipe Jornada Verde |
@@ -22,6 +22,7 @@
 | :--- | :--- | :--- | :--- |
 | 1.0 | Elaboração inicial do Plano de Trabalho | Rhuan Lucas | 20/04/2026 |
 | 1.1 | Ajuste de escopo (Mobile), equipe e canais de comunicação | Rhuan Lucas | 21/04/2026 |
+| 1.2 | Ajuste de detalhamento de informações de documentação | Rhuan Lucas | 25/04/2026 |
 
 ---
 
@@ -38,6 +39,9 @@
 3. [METODOLOGIA DE PROJETO](#3-metodologia-de-projeto) </br>
    3.1 [Estrutura do Projeto](#31-estrutura-do-projeto) </br>
    3.2 [Equipe de Projeto](#32-equipe-de-projeto) </br>
+   3.3 [Backlog do Sprint](#33-backlog-do-sprint) </br>
+   3.4 [Controle de Mudanças](#34-controle-de-mudanças) </br>
+   3.5 [Equipe de Projeto](#35-gerenciamento-de-comunicação) </br>
 4. [DESPESAS](#4-despesas) </br>
 
 ---
@@ -117,6 +121,18 @@ O desenvolvimento seguirá as fases:
 | Dev | Letícia Samara | Criação de Personas e desenvolvimento |
 | Designer | Thamires Mendes | Design Thinking e prototipação |
 | Dev | Raul Berger | Documentação técnica e auxílio dev |
+
+### 3.3 Backlog do Sprint
+O Backlog do Sprint representa o nível operacional do projeto, contendo as tarefas detalhadas que a equipa se compromete a realizar em cada ciclo de desenvolvimento. A gestão deste backlog é realizada através do recurso **GitHub Projects**, utilizando colunas de status (A Fazer, Em Andamento e Concluído) para garantir a visibilidade do progresso individual e assegurar que as atividades reflitam as **Daily Scrums** registadas no Notion.
+
+### 3.4 Controle de Mudanças
+Qualquer alteração significativa no escopo ou nos requisitos do sistema Jornada Verde deve ser discutida em reunião de equipa para avaliação de impacto. Após a aprovação do grupo, a mudança deve ser documentada no **Histórico de Versões** deste Plano de Trabalho e refletida nos artefatos correspondentes (Backlog do Produto ou Protótipos), garantindo a integridade e a rastreabilidade da documentação técnica.
+
+### 3.5 Gerenciamento de Comunicação
+A comunicação da equipa é estruturada para garantir agilidade e transparência durante as sprints:
+* **Comunicação Instantânea:** Utilização do WhatsApp para avisos urgentes e alinhamentos rápidos entre os membros.
+* **Documentação e Registo:** Centralização de actas de reunião, Daily Scrums e processos de ideação no Notion.
+* **Controle de Versão e Gestão Técnica:** Utilização do GitHub para armazenamento de código-fonte, documentação em Markdown e gestão de tarefas via GitHub Projects.
 
 ---
 
