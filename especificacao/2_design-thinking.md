@@ -110,3 +110,20 @@ Antes da construção do quadro comparativo, pesquisamos três soluções (apps,
 * **Descrição:** Um aplicativo que envolve desafios e dinâmicas sobre meio ambiente, despertando o desejo do usuário de criar hábitos que estimulem a conscientização ambiental. 
 * **Público-alvo:** Jovens e adultos que desejam participar de movimentos de conscientização do meio ambiente. 
 * **Funcionalidade Principal:** Proposição de desafios práticos diários/semanais para redução da pegada de carbono individual, permitindo o acompanhamento estatístico do impacto ambiental evitado pelo usuário
+---
+
+<div align="center">
+  <h1> Quadro Comparativo de Soluções Existentes  </h1>
+</div>
+
+Segue abaixo um quadro comparativo que avalia três plataformas distintas (JouleBug, Edukatu e Desafio Ambiental) sob critérios de tecnologia, modelo de negócio e público-alvo. Esta comparação evidencia que, enquanto o mercado foca em engajamento individual ou conteúdo informativo estático, a Jornada Verde se diferencia pela integração direta com o corpo docente e pela análise de impacto coletivo dentro do ambiente educacional.
+
+| Critérios                  | JouleBug                                    | Edukatu                                      | Desafio Ambiental                                    | Jornada Verde                                          |
+|----------------------------|---------------------------------------------|----------------------------------------------|------------------------------------------------------|--------------------------------------------------------|
+| Modelo de negócio          | Freemium / Social                           | Institucional / Gratuito                     | Baseado em anúncios (Ad-supported)                   | B2B Educacional (Focado em Instituições de Ensino)     |
+| Tecnologia utilizada       | Aplicativo Mobile (iOS/Android)             | Web / Portal Pedagógico                      | Aplicativo Mobile                                    | Aplicativo mobile com gameficação                      |
+| Público-alvo               | Jovens interessados em sustentabilidade     | Alunos e Professores do ensino básico        | Público geral focado em redução de pegada de carbono | Comunidade Escolar (Alunos, Professores e Gestores)    |
+| Pontos fortes              | Gamificação e conquistas de troféus         | Conteúdo didático robusto e apoio pedagógico | Cálculo detalhado de impacto ambiental individual    | Dashboard de gestão escolar e integração com currículo |
+| Pontos fracos / limitações | Uso solitário ou em redes sociais genéricas | Interface menos interativa para os alunos    | Dependência total de registro manual do usuário      | Sensibilidade ao calendário letivo (férias escolares)  |
+
+
