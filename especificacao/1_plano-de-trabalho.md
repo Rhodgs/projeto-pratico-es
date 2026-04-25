@@ -9,7 +9,7 @@
 | :--- | :--- |
 | **Nome do Projeto:** | Jornada Verde |
 | **Codinome:** | JV-ICET |
-| **Versão:** | 1.2 |
+| **Versão:** | 1.3 |
 | **Status:** | Em desenvolvimento |
 | **Número de Controle:** | 2026-TP1-UFAM |
 | **Executor Principal:** | Equipe Jornada Verde |
@@ -23,6 +23,7 @@
 | 1.0 | Elaboração inicial do Plano de Trabalho | Rhuan Lucas | 20/04/2026 |
 | 1.1 | Ajuste de escopo (Mobile), equipe e canais de comunicação | Rhuan Lucas | 21/04/2026 |
 | 1.2 | Ajuste de detalhamento de informações de documentação | Rhuan Lucas | 25/04/2026 |
+| 1.3 | Ajuste detalhado sobre a seção DESPESAS | Rhuan Lucas | 25/04/2026 |
 
 ---
 
@@ -139,22 +140,37 @@ A comunicação da equipa é estruturada para garantir agilidade e transparênci
 ## 4. DESPESAS
 
 ### 4.1 Dispêndios
-#### 4.1.1 Equipamentos e Materiais
-| Item | Descrição | Quantidade | Valor Total (R$) |
-| :--- | :--- | :--- | :--- |
-| 1 | Notebooks (Uso Próprio) | 5 | 0,00 |
-| 2 | Acesso à Internet | 5 | 0,00 |
 
-#### 4.1.3 Treinamento
-Treinamentos não serão necessários, pois a equipe utilizará conhecimentos prévios e documentação gratuita das ferramentas.
+#### 4.1.1 Recursos Humanos (Estimativa de Mercado)
+Para fins de cálculo, considera-se a atuação de **4 integrantes ativos**, com uma dedicação de **5 horas semanais** cada, durante 4 semanas (1 mes). Utilizou-se o valor médio de R$ 30,00/hora (nível Estagiário/Júnior)
 
-#### 4.1.4 Serviço Técnico de Terceiros
-Não estão previstos serviços de terceiros para o desenvolvimento do MVP.
+| Item | Descrição | Total de Horas | Valor Hora | Valor Total (R$) |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | Desenvolvimento e Gestão (4 integrantes) | 80h | R$ 30,00 | R$ 2.400,00 |
 
-### 4.2 Resumo Financeiro do Projeto
+#### 4.1.2 Equipamentos e Software
+Apesar do uso de equipamentos próprios, são listados os custos de infraestrutura necessários para a publicação e manutenção do app
+
+| Item | Descrição | Quant. | Valor Unit. | Valor Total (R$) |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | Taxa de Publicação (Google Play Store) | 1 | R$ 130,00 | R$ 130,00 |
+| 2 | Infraestrutura de Banco de Dados (Firebase) | 1 | R$ 450,00 | R$ 450,00 |
+| 3 | Notebooks e Conectividade (Uso Próprio) | 4 | R$ 0,00 | R$ 0,00 |
+
+#### 4.1.3 Treinamento e Serviços de Terceiros
+A equipe optou por não utilizar serviços externos, absorvendo toda a carga técnica de design e desenvolvimento
+
+| Item | Especificação | Custo (R$) |
+| :--- | :--- | :--- |
+| 1 | Treinamento Técnico (Documentação Gratuita) | R$ 0,00 |
+| 2 | Design e Marketing (Execução Interna) | R$ 0,00 |
+
+### 4.2 Resumo Financeiro e Valor Total
+Abaixo, o resumo financeiro dos investimentos estimados para a viabilização do MVP (Produto Mínimo Viável)
+
 | ITEM | VALOR TOTAL | % |
 | :--- | :--- | :--- |
-| Recursos Humanos Diretos | 0,00 | 0% |
-| Materiais de Consumo | 0,00 | 0% |
-| Serviço Técnico de Terceiros | 0,00 | 0% |
-| **TOTAL** | **R$ 0,00** | **100%** |
+| Recursos Humanos Diretos | R$ 9.600,00 | 94,3% |
+| Licenças e Infraestrutura | R$ 580,00 | 5,7% |
+| Serviços de Terceiros / Treinamentos | R$ 0,00 | 0% |
+| **TOTAL ESTIMADO DO PROJETO** | **R$ 10.180,00** | **100%** |
