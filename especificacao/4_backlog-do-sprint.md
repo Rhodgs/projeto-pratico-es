@@ -26,6 +26,6 @@ Abaixo, apresentamos uma visão geral das tarefas já processadas pela equipe co
 | Quadro Comparativo de Soluções | Pâmela Asmin | Concluído | Design Thinking  |
 | Elaboração da Análise SWOT | Rhuan Lucas | Concluído | Design Thinking  |
 | Sessão de Ideação (Brainstorming) | Equipe | Em Progresso | Design Thinking ,  |
-| Especificação do Backlog do Produto | Equipe | A Fazer | Requisitos  |
+| Especificação do Backlog do Produto | Equipe | concluido | Requisitos  |
 
 
