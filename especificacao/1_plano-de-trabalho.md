@@ -121,7 +121,6 @@ O desenvolvimento seguirá as fases:
 | Requisitos | Pâmela Asmin | Documentação das referências e requisitos |
 | Dev | Letícia Samara | Criação de Personas e desenvolvimento |
 | Designer | Thamires Mendes | Design Thinking e prototipação |
-| Dev | Raul Berger | Documentação técnica e auxílio dev |
 
 ### 3.3 Backlog do Sprint
 O Backlog do Sprint representa o nível operacional do projeto, contendo as tarefas detalhadas que a equipa se compromete a realizar em cada ciclo de desenvolvimento. A gestão deste backlog é realizada através do recurso **GitHub Projects**, utilizando colunas de status (A Fazer, Em Andamento e Concluído) para garantir a visibilidade do progresso individual e assegurar que as atividades reflitam as **Daily Scrums** registadas no Notion.
