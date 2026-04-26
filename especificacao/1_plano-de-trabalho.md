@@ -90,7 +90,6 @@ O projeto visa desenvolver uma solução mobile que transforme a educação ambi
 | Metodologia | Scrum com sprints |
 | Gerenciamento de Backlog | GitHub Projects |
 | Repositório de Código | GitHub |
-| Modelagem de Software | Draw.io / Figma |
 | Modelagem de Personas | HubSpot Make My Persona |
 
 ### 2.3 Características Inovadoras do Projeto
@@ -133,6 +132,18 @@ A comunicação da equipa é estruturada para garantir agilidade e transparênci
 * **Comunicação Instantânea:** Utilização do WhatsApp para avisos urgentes e alinhamentos rápidos entre os membros.
 * **Documentação e Registo:** Centralização de actas de reunião, Daily Scrums e processos de ideação no Notion.
 * **Controle de Versão e Gestão Técnica:** Utilização do GitHub para armazenamento de código-fonte, documentação em Markdown e gestão de tarefas via GitHub Projects.
+
+### 3.6 Brainstorming (Ideação)
+
+* Esta etapa representa a transição entre a fase de inspiração e a criação de soluções concretas. Através de uma sessão de brainstorming no Notion, cada integrante da equipe registrou e discutiu ideias iniciais para o projeto Jornada Verde, permitindo que o grupo filtrasse e evoluísse as propostas para definir a base do MVP .
+
+* [Link para a Página de Ideação no Notion](https://www.notion.so/fe8f30e12a868315ab6a0183fab176e2?v=1faf30e12a8682e58384082dc8c99227&source=copy_link)
+
+### 3.7 Daily Scrum (Relatórios Semanais)
+
+* Para garantir a coordenação e a agilidade da equipe, adotamos o Daily Scrum como método de acompanhamento contínuo. Os registros semanais no Notion documentam o progresso individual através das três perguntas clássicas do Scrum (o que foi feito, o que será feito e impedimentos), servindo como fonte principal para a organização e atualização das tarefas no Backlog do Sprint no GitHub .
+
+* [Link para a Página de Dailym Srum no Notion](https://www.notion.so/332f30e12a8680c6a4e5e4f4db65e875?v=332f30e12a8680cea7ce000c6699fa83&source=copy_link)
 
 ---
 
