@@ -6,7 +6,12 @@ Este documento apresenta o Backlog do Sprint, que é utilizado para o acompanham
 ## 2. Link para o Quadro de Tarefas
 O gerenciamento das atividades é realizado através do recurso **GitHub Projects**. O quadro atualizado com o status de cada tarefa (To Do, In Progress, Done) pode ser acessado no link abaixo:
 
-> **https://github.com/users/Rhodgs/projects/5** 
+> **https://github.com/users/Rhodgs/projects/5**
+
+### Daily Scrum (fonte detalhada)
+
+* [Link para a Página de Dailym Srum no Notion](https://www.notion.so/332f30e12a8680c6a4e5e4f4db65e875?v=332f30e12a8680cea7ce000c6699fa83&source=copy_link)
+
 
 ## 3. Metodologia de Gestão
 Seguindo as diretrizes do projeto, a organização do sprint ocorre da seguinte forma:
