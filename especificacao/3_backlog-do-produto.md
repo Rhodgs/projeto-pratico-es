@@ -8,6 +8,12 @@ A gestão dinâmica das histórias de usuário (colunas de Especificação. Revi
 
 > **https://github.com/users/Rhodgs/projects/3**
 
+### Brainstorming (Ideação)
+
+* [Link para a Página de Ideação no Notion](https://www.notion.so/fe8f30e12a868315ab6a0183fab176e2?v=1faf30e12a8682e58384082dc8c99227&source=copy_link)
+
+
+
 ### 3. Lista de Histórias de Usuário
 
 Todas as histórias seguem o padrão: "Enquanto [persona]. desejo [funcionalidade] para [benefício]" . </br>
