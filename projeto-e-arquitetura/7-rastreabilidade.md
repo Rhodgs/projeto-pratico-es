@@ -89,3 +89,33 @@
 5. **Persistência:** O `TurmaRepository` executa a operação de escrita estruturada no `Banco de Dados` (PostgreSQL) para salvar a nova turma.
 
 <hr>
+
+## 🎯 US04: Lançar Desafios Práticos
+
+<blockquote>
+  <i>"Como professor, desejo lançar desafios práticos para tirar as aulas da teoria e focar em causas reais, permitindo que os alunos interajam com a atividade."</i>
+</blockquote>
+
+### 🔍 Evidência no Modelo C4
+* **Diagrama de Containers:** Comunicação entre o `Aplicativo Móvel`, a `API de Backend`, o `Banco de Dados` (PostgreSQL) e o sistema externo `FCM` (Mensageria).
+* **Diagrama de Componentes:** Fluxo interno focado no módulo de Turmas e integração com o módulo de Notificações.
+
+<br>
+
+<div align="center">
+  <img width="6404" height="3356" alt="US4Componen drawio" src="https://github.com/user-attachments/assets/b347ee03-cadb-43e4-8e0d-bb78c0cde7ff" />
+  <br><br>
+  <em><b>Figura 4:</b> Rastreabilidade do fluxo de execução da US04.</em>
+</div>
+
+<br>
+
+### ⚙️ Passos de Execução (Nível 3)
+
+1. **Requisição:** O `Aplicativo Móvel` envia os dados do novo desafio (título, prazo e pontuação) para o `AuthMiddleware`
+2. **Autorização:** O `AuthMiddleware` repassa a requisição (após a validação do token do professor) para o `TurmaController`
+3. **Acionamento:** O `TurmaController` encaminha os dados da requisição para o `TurmaService`
+4. **Comando de Persistência:** O `TurmaService` envia a entidade do desafio formatada para o `TurmaRepository`
+5. **Gravação:** O `TurmaRepository` envia o comando SQL de escrita para o `Banco de Dados` (PostgreSQL)
+6. **Acionamento de Alerta (Assíncrono):** Paralelamente à gravação, o `TurmaService` envia os dados do novo desafio para o `NotificationService`
+7. **Disparo Externo:** O `NotificationService` despacha a carga útil (payload) do alerta de "Novo Desafio" para o sistema externo `Firebase Cloud Messaging (FCM)`
