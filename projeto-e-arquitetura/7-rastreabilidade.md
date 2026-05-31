@@ -59,3 +59,33 @@
 3. **Recepção:** O `RankingController` recebe a requisição de listagem
 4. **Regra de Negócio:** O `RankingService` processa as regras de formatação (limite de 50 estudantes) e aplica o critério de desempate por ordem cronológica
 5. **Recuperação de Dados:** O `RankingRepository` realiza a operação de leitura em alta velocidade dos dados no `Cache/Ranking` (Redis) e devolve as pontuações para atualizar a interface
+
+## 🎯 US03: Criar Turmas
+
+<blockquote>
+  <i>"Enquanto professor, desejo criar 'turmas' dentro do aplicativo para gerenciar meus alunos de forma organizada."</i>
+</blockquote>
+
+### 🔍 Evidência no Modelo C4
+* **Diagrama de Containers:** Comunicação entre o `Aplicativo Móvel`, a `API de Backend` e o `Banco de Dados` (PostgreSQL).
+* **Diagrama de Componentes:** Fluxo interno passando pela autenticação e pelo módulo de gerenciamento de Turmas.
+
+<br>
+
+<div align="center">
+  <img width="6364" height="3356" alt="US3Componen drawio" src="https://github.com/user-attachments/assets/008fec33-6aca-4752-9a84-d966a66bd63e" />
+  <br><br>
+  <em><b>Figura 3:</b> Rastreabilidade do fluxo de execução da US03.</em>
+</div>
+
+<br>
+
+### ⚙️ Passos de Execução (Nível 3)
+
+1. **Requisição:** O Aplicativo Móvel envia o comando para a criação de uma nova turma.
+2. **Autenticação:** O `AuthMiddleware` intercepta a requisição, valida o token do usuário e garante que ele possui o perfil de "Professor".
+3. **Recepção:** O `TurmaController` recebe a requisição HTTPS validada.
+4. **Regra de Negócio:** O `TurmaService` valida o limite de turmas ativas do professor e gera automaticamente o código alfanumérico único de 6 caracteres (ex: AM42XP).
+5. **Persistência:** O `TurmaRepository` executa a operação de escrita estruturada no `Banco de Dados` (PostgreSQL) para salvar a nova turma.
+
+<hr>
