@@ -58,6 +58,39 @@
   * Dispara alertas assíncronos de "prazo crítico" e lembretes diários para manter o engajamento e a ofensiva
 
 ---
+### 7. Design e Prototipagem: Figma
+
+* **O que é:** Uma ferramenta de design de interface de usuário (UI) e prototipagem colaborativa baseada em nuvem.
+* **Aplicação no Jornada Verde:** * Utilizado para desenhar a identidade visual do aplicativo, projetar a experiência do usuário (UX) e validar o fluxo de telas de gamificação antes do desenvolvimento.
+* Serve como guia visual exato para a programação dos componentes reativos no Flutter.
+
+---
+### 8. Ambiente de Desenvolvimento: VS Code (Visual Studio Code)
+
+* **O que é:** Um editor de código-fonte leve, altamente extensível e desenvolvido pela Microsoft, amplamente utilizado no desenvolvimento de software moderno.
+* **Aplicação no Jornada Verde:** * O ambiente central de desenvolvimento (IDE) onde todo o código do projeto é escrito e editado.
+* Utiliza extensões específicas para agilizar a codificação e depuração tanto do frontend em Flutter (Dart) quanto do backend em Node.js com TypeScript.
+
+---
+### 9. Controle de Versão e Colaboração: GitHub (Online)
+
+* **O que é:** Uma plataforma de hospedagem de código-fonte e arquivos em nuvem que utiliza o sistema de controle de versão Git.
+* **Aplicação no Jornada Verde:** * Funciona como o repositório central e oficial de todo o código do sistema.
+*  Permite o trabalho colaborativo da equipe, o gerenciamento de versões, a revisão de código (Pull Requests) e o acompanhamento de *melhorias ou correções de bugs.
+
+---
+### 10. Gerenciamento Local de Repositórios: GitHub Desktop
+
+* **O que é:** Uma interface gráfica de usuário (GUI) oficial do GitHub que simplifica a interação com repositórios locais e remotos sem a *necessidade de usar a linha de comando.
+* **Aplicação no Jornada Verde:** * Utilizado localmente na máquina dos desenvolvedores para facilitar o envio de alterações de código
+(commits e pushes) e a sincronização com o repositório online de forma visual e intuitiva
+
+---
+### 11. Gestão de Conhecimento e Documentação: Notion
+
+* **O que é:** Um espaço de trabalho completo (workspace) em nuvem que combina notas, documentos, quadros Kanban e gerenciamento de bancos de dados textuais.
+* **Aplicação no Jornada Verde:** * Centraliza toda a documentação de engenharia de software do projeto, incluindo o levantamento de requisitos, a especificação das regras de gamificação, o dicionário de dados e as atas de reuniões do grupo.
+
 
 ## Catálogo de Padrões Arquiteturais
 
