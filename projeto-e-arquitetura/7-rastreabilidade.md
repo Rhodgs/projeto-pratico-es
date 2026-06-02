@@ -22,6 +22,7 @@
 </div>
 
 <br>
+
 ### ⚙️ Passos de Execução (Nível 3)
 
 1. **Requisição:** O Aplicativo Móvel envia o sinal de conclusão da atividade (ex: Quiz finalizado)
@@ -52,6 +53,7 @@
 </div>
 
 <br>
+
 ### ⚙️ Passos de Execução (Nível 3)
 
 1. **Requisição:** O Aplicativo Móvel solicita a listagem do Top 50 e a posição atual do usuário logado
@@ -119,3 +121,33 @@
 5. **Gravação:** O `TurmaRepository` envia o comando SQL de escrita para o `Banco de Dados` (PostgreSQL)
 6. **Acionamento de Alerta (Assíncrono):** Paralelamente à gravação, o `TurmaService` envia os dados do novo desafio para o `NotificationService`
 7. **Disparo Externo:** O `NotificationService` despacha a carga útil (payload) do alerta de "Novo Desafio" para o sistema externo `Firebase Cloud Messaging (FCM)`
+
+---
+
+## 🎯 US05: Acessar Relatórios de Desempenho
+
+<blockquote>
+  <i>"Como professor, desejo acessar relatórios analíticos de desempenho da turma para monitorar o impacto real das atividades práticas, o engajamento dos estudantes e a evolução pedagógica deles, aplicando filtros por período e por escopo (individual ou geral)."</i>
+</blockquote>
+
+### 🔍 Evidência no Modelo C4
+* **Diagrama de Containers:** Comunicação entre o `Aplicativo Móvel`, a `API de Backend` e o `Banco de Dados` (PostgreSQL).
+* **Diagrama de Componentes:** Fluxo interno passando pela autenticação e pela consulta de dados analíticos no módulo de Turmas.
+
+<br>
+
+<div align="center">
+  <img width="100%" style="max-width: 900px; border-radius: 8px;" alt="US5 Fluxo d<img width="6404" height="3356" alt="US5Component drawio" src="https://github.com/user-attachments/assets/71057e81-2df2-4081-929d-1be64ceea43e" />
+  <br><br>
+  <em><b>Figura 5:</b> Rastreabilidade do fluxo de execução da US05.</em>
+</div>
+
+<br>
+
+### ⚙️ Passos de Execução (Nível 3)
+
+1. **Requisição:** O `Aplicativo Móvel` envia os parâmetros de filtro (período e escopo do relatório) para o `AuthMiddleware`.
+2. **Autorização:** O `AuthMiddleware` repassa a requisição (após validar o token de permissão do professor) para o `TurmaController`.
+3. **Acionamento:** O `TurmaController` encaminha os parâmetros de busca para o `TurmaService` processar a lógica do relatório.
+4. **Comando de Busca:** O `TurmaService` envia os critérios de filtragem (consolidação de métricas e evolução) para o `TurmaRepository`.
+5. **Consulta SQL:** O `TurmaRepository` envia a instrução de leitura estruturada para o `Banco de Dados` (PostgreSQL) para extrair o histórico de atividades.
