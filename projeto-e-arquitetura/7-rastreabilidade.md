@@ -206,3 +206,87 @@
 
 
 ---
+
+## 🎯 US08: Interface Minimalista e Foco Visual
+
+<blockquote>
+  <i>"Como usuário do aplicativo, desejo uma interface minimalista e focada em ações ambientais, para que eu possa navegar de forma rápida, intuitiva e sem distrações ou sobrecarga visual."</i>
+</blockquote>
+
+### 🔍 Evidência no Modelo C4
+* **Diagrama de Containers:** Implementação estrutural focada inteiramente no contêiner do `Aplicativo Móvel` (Frontend), aplicando regras estritas de Design System e UX.
+* **Diagrama de Componentes:** Não se aplica (N/A). A construção do layout, restrições de navegação (Bottom Navigation Bar) e controle de animações não geram requisições ou tráfego de rede para os componentes da API de Backend.
+
+<br>
+
+<div align="center">
+  <img width="6404" height="3356" alt="US8Componen drawio" src="https://github.com/user-attachments/assets/b8c0b6a6-93e0-47fd-a8c2-a5600385b2be" />
+  <br><br>
+  <em><b>Figura 8:</b> Rastreabilidade do fluxo de execução da US08 (Renderização Local).</em>
+</div>
+
+<br>
+
+### ⚙️ Passos de Execução (Nível 3)
+
+1. **Renderização de Interface (Local):** O `Aplicativo Móvel` processa as diretrizes do Design System (como espaçamento, paleta flat e estado do menu) e renderiza as telas nativamente no dispositivo do usuário, sem a necessidade de acionamento do servidor para a construção do layout.
+
+---
+
+## 🎯 US09: Feedback Imediato e Recompensas
+
+<blockquote>
+  <i>"Como estudante, desejo receber feedback visual imediato e recompensas estruturadas ao concluir uma ação ou submeter uma missão, para acompanhar meu progresso em tempo real e me manter engajado na plataforma."</i>
+</blockquote>
+
+### 🔍 Evidência no Modelo C4
+* **Diagrama de Containers:** Interação entre o `Aplicativo Móvel` (implementando lógica Offline-First), a `API de Backend` e o banco de `Cache/Ranking` (Redis).
+* **Diagrama de Componentes:** Fluxo de submissão de atividade passando pela autenticação e pelo cálculo de recompensas no módulo de Ranking.
+
+<br>
+
+<div align="center">
+  <img width="6404" height="3492" alt="US9Componen drawio" src="https://github.com/user-attachments/assets/2e815f97-0bef-42ce-b4ad-d3f44d4d5e1e" />
+  <br><br>
+  <em><b>Figura 9:</b> Rastreabilidade do fluxo de execução da US09, incluindo contingência offline local.</em>
+</div>
+
+<br>
+
+### ⚙️ Passos de Execução (Nível 3)
+
+1. **Submissão ou Retenção Local:** O `Aplicativo Móvel` tenta enviar os dados de conclusão da missão para o `AuthMiddleware`. *(Nota de Arquitetura: Em caso de falha de rede, conforme RN2, o App interrompe o fluxo aqui, salva o payload no banco de dados local do dispositivo e aguarda a sincronização em background).*
+2. **Autorização:** Com a rede ativa, o `AuthMiddleware` valida o token do aluno e repassa a requisição para o `RankingController`.
+3. **Acionamento:** O `RankingController` encaminha os dados da missão concluída para o `RankingService`.
+4. **Cálculo de Recompensas:** O `RankingService` processa as regras de gamificação, validando a missão e computando os Pontos de Experiência (XP) e Medalhas adquiridas.
+5. **Persistência Volátil:** O `RankingRepository` executa a operação de escrita ultrarrápida no `Cache/Ranking` (Redis) para atualizar a pontuação, permitindo que a API retorne o HTTP 200 quase instantaneamente para disparar a animação no aplicativo.
+
+---
+
+## 🎯 US10: Feed de Vídeos Educativos
+
+<blockquote>
+  <i>"Como estudante, desejo consumir conteúdos educativos em vídeo sobre ecologia através de um feed dinâmico e acessível, para aprender sobre temas ambientais de forma rápida e interativa."</i>
+</blockquote>
+
+### 🔍 Evidência no Modelo C4
+* **Diagrama de Containers:** Interação entre o `Aplicativo Móvel`, a `API de Backend` e o `Banco de Dados` (PostgreSQL) para a recuperação dos metadados do feed (URLs dos vídeos e categorias).
+* **Diagrama de Componentes:** Fluxo de leitura assíncrona passando pela autenticação e pelo módulo principal de Turmas/Acadêmico.
+
+<br>
+
+<div align="center">
+  <img width="6404" height="3356" alt="US10Componen drawio" src="https://github.com/user-attachments/assets/adefaa15-81c5-46a7-b5b5-56478254d013" />
+  <br><br>
+  <em><b>Figura 10:</b> Rastreabilidade do fluxo de execução da US10 para recuperação do feed educativo.</em>
+</div>
+
+<br>
+
+### ⚙️ Passos de Execução (Nível 3)
+
+1. **Requisição de Feed:** O `Aplicativo Móvel` envia os parâmetros de busca (ex: filtros por categorias de ecologia) para o `AuthMiddleware`.
+2. **Autorização:** O `AuthMiddleware` valida o token de acesso do usuário e repassa a requisição aprovada para o `TurmaController`.
+3. **Acionamento:** O `TurmaController` (atuando como módulo acadêmico) encaminha os parâmetros de filtragem do conteúdo para o `TurmaService`.
+4. **Comando de Leitura:** O `TurmaService` valida a requisição e envia os critérios estruturados para o `TurmaRepository`.
+5. **Consulta de Metadados:** O `TurmaRepository` envia a instrução SQL de leitura para o `Banco de Dados` (PostgreSQL), extraindo as URLs dos vídeos e categorias para exibir na interface.
