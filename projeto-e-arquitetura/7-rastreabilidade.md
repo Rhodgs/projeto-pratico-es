@@ -180,4 +180,29 @@
 
 ---
 
+## 🎯 US07: Acessibilidade para Leitores de Tela
 
+<blockquote>
+  <i>"Como estudante com deficiência visual que utiliza leitores de tela, desejo que todos os componentes interativos da interface possuam rótulos descritivos e anunciem suas mudanças de estado de forma clara."</i>
+</blockquote>
+
+### 🔍 Evidência no Modelo C4
+* **Diagrama de Containers:** Lógica e processamento confinados exclusivamente ao `Aplicativo Móvel` (Frontend), interagindo com os recursos nativos de acessibilidade do sistema operacional do dispositivo.
+* **Diagrama de Componentes:** Não se aplica (N/A). A funcionalidade não gera tráfego de rede nem requer acionamento dos componentes internos da API de Backend ou persistência de dados.
+
+<br>
+
+<div align="center">
+  <img width="6404" height="3356" alt="US7Componen drawio" src="https://github.com/user-attachments/assets/65d82fac-fe4e-48b0-8015-a7a3c6fbc6d2" />
+  <br><br>
+  <em><b>Figura 7:</b> Rastreabilidade do fluxo de execução da US07 (Processamento Local).</em>
+</div>
+
+<br>
+
+### ⚙️ Passos de Execução (Nível 3)
+
+1. **Processamento Local:** O `Aplicativo Móvel` atualiza dinamicamente a sua árvore semântica (rótulos, estados de foco e carregamento) e transmite essas informações em tempo real diretamente para o serviço de Leitor de Tela nativo do dispositivo do usuário (sem comunicação com o servidor).
+
+
+---
