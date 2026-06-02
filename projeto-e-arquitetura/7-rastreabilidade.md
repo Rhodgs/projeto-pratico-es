@@ -151,3 +151,33 @@
 3. **Acionamento:** O `TurmaController` encaminha os parâmetros de busca para o `TurmaService` processar a lógica do relatório.
 4. **Comando de Busca:** O `TurmaService` envia os critérios de filtragem (consolidação de métricas e evolução) para o `TurmaRepository`.
 5. **Consulta SQL:** O `TurmaRepository` envia a instrução de leitura estruturada para o `Banco de Dados` (PostgreSQL) para extrair o histórico de atividades.
+
+---
+
+## 🎯 US06: Configurar Acessibilidade Visual
+
+<blockquote>
+  <i>"Enquanto usuário com baixa visão, desejo configurar recursos de acessibilidade visual para facilitar a navegação e o consumo de conteúdo na plataforma."</i>
+</blockquote>
+
+### 🔍 Evidência no Modelo C4
+* **Diagrama de Containers:** Comunicação entre o `Aplicativo Móvel`, a `API de Backend` e o `Banco de Dados` (PostgreSQL).
+* **Diagrama de Componentes:** Fluxo interno passando pela autenticação e pela atualização de dados no módulo de gerenciamento de Usuário/Perfil.
+
+<br>
+
+<div align="center">
+  <img width="6404" height="3356" alt="US6Componen drawio" src="https://github.com/user-attachments/assets/f16f9cae-ac09-45e6-ae79-8a5f17c85c57" />
+  <br><br>
+  <em><b>Figura 6:</b> Rastreabilidade do fluxo de execução da US06.</em>
+</div>
+
+<br>
+
+### ⚙️ Passos de Execução (Nível 3)
+
+1. **Atualização de Perfil:** O `Aplicativo Móvel` envia as configurações de acessibilidade (paleta de cores e escala de fonte) através do SDK nativo diretamente para o `Firebase Auth` armazenar como metadados vinculados à conta
+
+---
+
+
