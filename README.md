@@ -52,6 +52,18 @@ O projeto segue a organização de diretórios exigida pelas especificações :
 
 ---
 
+## 🤖 Declaração de Uso de Inteligência Artificial
+
+Em conformidade com as boas práticas de transparência e integridade acadêmica, os autores declaram que ferramentas de Inteligência Artificial Generativa (como o Google Gemini) foram utilizadas como assistentes durante o desenvolvimento do projeto **Jornada Verde**.
+
+**Aplicações da IA no escopo deste projeto:**
+* **Apoio na Documentação:** Auxílio na estruturação textual, refinamento da rastreabilidade arquitetural baseada no Modelo C4 e Histórias de Usuário
+* **Apoio de Engenharia:** Discussões arquiteturais focadas em padrões de mercado  e validação de lógica de componentes
+
+Ressaltamos que a idealização do sistema, a definição das regras de negócio, a aprovação do design arquitetural e a validação técnica de todos os artefatos gerados foram realizadas exclusivamente e de forma autoral pela equipe de desenvolvimento. A IA atuou estritamente como uma ferramenta de apoio à produtividade, não sendo autora primária de nenhuma funcionalidade crítica, decisão de negócio ou código-fonte não revisado.
+
+---
+
 ## 📝 Licença
 Este projeto foi desenvolvido para fins estritamente acadêmicos na **Universidade Federal do Amazonas (UFAM - ICET)**.
 
