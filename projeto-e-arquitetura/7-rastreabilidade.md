@@ -290,3 +290,142 @@
 3. **Acionamento:** O `TurmaController` (atuando como módulo acadêmico) encaminha os parâmetros de filtragem do conteúdo para o `TurmaService`.
 4. **Comando de Leitura:** O `TurmaService` valida a requisição e envia os critérios estruturados para o `TurmaRepository`.
 5. **Consulta de Metadados:** O `TurmaRepository` envia a instrução SQL de leitura para o `Banco de Dados` (PostgreSQL), extraindo as URLs dos vídeos e categorias para exibir na interface.
+
+---
+
+## 🎯 US11: Validar Evidências de Missões
+
+<blockquote>
+  <i>"Enquanto professor, desejo validar as evidências enviadas pelos alunos para garantir que as missões práticas foram cumpridas corretamente."</i>
+</blockquote>
+
+### 🔍 Evidência no Modelo C4
+* **Diagrama de Containers:** Comunicação entre o `Aplicativo Móvel`, a `API de Backend` e o `Banco de Dados` (PostgreSQL) para a alteração de status e efetivação de pontuações.
+* **Diagrama de Componentes:** Fluxo de atualização (UPDATE) de dados passando pela autenticação e pelo módulo de Turmas.
+
+<br>
+
+<div align="center">
+  <img width="6404" height="3356" alt="US11Componen drawio" src="https://github.com/user-attachments/assets/12875794-c777-4873-970f-ea2f0fc54ce6" />
+  <br><br>
+  <em><b>Figura 11:</b> Rastreabilidade do fluxo de execução da US11 para a avaliação de atividades.</em>
+</div>
+
+<br>
+
+### ⚙️ Passos de Execução (Nível 3)
+
+1. **Requisição de Avaliação:** O `Aplicativo Móvel` envia a avaliação da evidência (Aprovar ou Recusar com justificativa) para o `AuthMiddleware`
+2. **Autorização:** O `AuthMiddleware` valida o token (garantindo que o usuário possui privilégios de Professor) e repassa a requisição para o `TurmaController`
+3. **Acionamento:** O `TurmaController` encaminha os dados da avaliação e o ID da evidência para o `TurmaService`
+4. **Comando de Atualização:** O `TurmaService` processa as regras de negócio (efetivação dos pontos pendentes ou registro da justificativa de recusa) e envia a entidade atualizada para o `TurmaRepository`
+5. **Persistência (Update):** O `TurmaRepository` envia o comando SQL de atualização para o `Banco de Dados` (PostgreSQL), alterando permanentemente o status da evidência e atualizando o extrato do aluno
+
+---
+
+## 🎯 US12: Guia Passo a Passo (Onboarding)
+
+<blockquote>
+  <i>"Enquanto estudante, desejo utilizar um guia passo a passo interativo para aprender a usar novas funcionalidades sem esquecer as etapas."</i>
+</blockquote>
+
+### 🔍 Evidência no Modelo C4
+* **Diagrama de Containers:** A renderização da interface dos balões de ajuda ocorre no `Aplicativo Móvel` (Frontend), com a comunicação de estado direcionada ao sistema externo de gestão de contas.
+* **Diagrama de Componentes:** Interação direta com o `Firebase Auth` (BaaS) para persistir as marcações de conclusão ou reinício do tutorial, dispensando o tráfego pela API de Backend.
+
+<br>
+
+<div align="center">
+  <img width="6404" height="3356" alt="US12Componen drawio" src="https://github.com/user-attachments/assets/0efef11a-1e13-487b-a832-f8ac77c4efde" />
+  <br><br>
+  <em><b>Figura 12:</b> Rastreabilidade do fluxo de execução da US12 para persistência do estado do tutorial.</em>
+</div>
+
+<br>
+
+### ⚙️ Passos de Execução (Nível 3)
+
+1. **Atualização de Estado (Onboarding):** O `Aplicativo Móvel` processa a interface do tutorial localmente e, ao ser finalizado ou reiniciado, envia a *flag* de status via SDK nativo diretamente para o `Firebase Auth`, atualizando os metadados da conta do usuário.
+
+---
+
+## 🎯 US13: Cadastro de Usuário
+
+<blockquote>
+  <i>"Enquanto usuário, desejo realizar o cadastro básico no sistema criando um perfil para salvar meu progresso no Jornada Verde."</i>
+</blockquote>
+
+### 🔍 Evidência no Modelo C4
+* **Diagrama de Containers:** Comunicação direta entre o `Aplicativo Móvel` (onde ocorre a validação local do formulário) e o sistema externo de autenticação.
+* **Diagrama de Componentes:** Interação com o `Firebase Auth` para a criação de credenciais seguras, delegação da verificação de e-mails duplicados e armazenamento do tipo de perfil, operando no modelo BaaS (bypass da API Node.js).
+
+<br>
+
+<div align="center">
+  <img width="6404" height="3356" alt="US13Componen drawio" src="https://github.com/user-attachments/assets/df795986-8af6-4aaa-abb6-21d7a0d84326" />
+  <br><br>
+  <em><b>Figura 13:</b> Rastreabilidade do fluxo de execução da US13 para registro de nova conta.</em>
+</div>
+
+<br>
+
+### ⚙️ Passos de Execução (Nível 3)
+
+1. **Validação e Criação de Conta:** O `Aplicativo Móvel` valida as regras de formulário localmente (senha forte e tamanho do nome) e envia a requisição de cadastro (E-mail, Senha e Tipo de Perfil) diretamente via SDK para o `Firebase Auth`, que verifica a unicidade do e-mail e provisiona o novo usuário no sistema.
+
+---
+
+## 🎯 US14: Notificações de Novos Desafios
+
+<blockquote>
+  <i>"Enquanto usuário, desejo receber notificações sobre novos desafios semanais lançados para me manter engajado com a causa ambiental."</i>
+</blockquote>
+
+### 🔍 Evidência no Modelo C4
+* **Diagrama de Containers:** O backend atua como emissor ativo, despachando a mensagem para o serviço de mensageria externa (FCM), encerrando o ciclo de responsabilidade da API.
+* **Diagrama de Componentes:** Fluxo de saída (Outbound) acionado de forma assíncrona pelo serviço de Turmas, isolando a comunicação externa no `NotificationService`.
+
+<br>
+
+<div align="center">
+  <img width="6404" height="3356" alt="US14Componen drawio" src="https://github.com/user-attachments/assets/62301e39-ba48-49ef-824a-2a5ef2491342" />
+  <br><br>
+  <em><b>Figura 14:</b> Rastreabilidade do fluxo de execução da US14 para o despacho de notificações push.</em>
+</div>
+
+<br>
+
+### ⚙️ Passos de Execução (Nível 3)
+
+1. **Acionamento Interno (Gatilho):** Após a gravação de uma nova missão no banco, o `TurmaService` envia os dados resumidos do desafio internamente para o `NotificationService`.
+2. **Despacho de Mensageria:** O `NotificationService` formata o payload (Título e Corpo exatos da notificação) e o transmite via protocolo HTTPS para o sistema externo `Firebase Cloud Messaging (FCM)`. *(Nota de Arquitetura: A entrega final ao Aplicativo Móvel é gerenciada autonomamente pelo serviço do FCM, não gerando novas rotas de retorno na API).*
+
+---
+
+## 🎯 US15: Reconhecimento e Selos de Destaque
+
+<blockquote>
+  <i>"Enquanto estudante, desejo receber selos de "Destaque" enviados pelo meu professor para ter meu esforço reconhecido perante a turma."</i>
+</blockquote>
+
+### 🔍 Evidência no Modelo C4
+* **Diagrama de Containers:** Comunicação entre o `Aplicativo Móvel`, a `API de Backend` e o `Banco de Dados` (PostgreSQL) para a validação de regras de concessão e persistência definitiva das conquistas.
+* **Diagrama de Componentes:** Fluxo de criação de registro passando pela autenticação e pelo módulo de Turmas (responsável por validar os limites semanais e o vínculo acadêmico entre professor e aluno).
+
+<br>
+
+<div align="center">
+  <img width="6404" height="3356" alt="US15Componen drawio" src="https://github.com/user-attachments/assets/19b6728c-5774-45e9-9e57-3e370b0704a1" />
+  <br><br>
+  <em><b>Figura 15:</b> Rastreabilidade do fluxo de execução da US15 para concessão de selos.</em>
+</div>
+
+<br>
+
+### ⚙️ Passos de Execução (Nível 3)
+
+1. **Requisição de Concessão:** O `Aplicativo Móvel` envia a requisição de atribuição do selo de destaque (contendo o ID do aluno alvo) para o `AuthMiddleware`.
+2. **Autorização:** O `AuthMiddleware` valida o token de permissão do Professor e repassa a requisição para o `TurmaController`.
+3. **Acionamento:** O `TurmaController` encaminha os dados do selo e as credenciais para o `TurmaService`.
+4. **Validação e Comando:** O `TurmaService` valida as regras de negócio (limite de 5 selos semanais e vínculo de turma na RN1 e RN2) e envia a entidade estruturada da conquista para o `TurmaRepository`.
+5. **Persistência Permanente:** O `TurmaRepository` envia o comando SQL de inserção (INSERT) para o `Banco de Dados` (PostgreSQL), salvando o selo definitivamente no perfil do aluno para exibição no próximo login.
