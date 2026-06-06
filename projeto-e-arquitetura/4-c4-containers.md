@@ -17,7 +17,7 @@ Este diagrama é utilizado para:
 ---
 
 <div align="center">
-  <img width="8192" height="5546" alt="containerJV drawio" src="https://github.com/user-attachments/assets/1ad622aa-f9a4-474e-9b9a-d28cb46e03b4" />
+  <img width="5688" height="3848" alt="containerJVBRANCO drawio" src="https://github.com/user-attachments/assets/15adf40a-b72a-4362-b630-1ca7fe99ccd2" />
   <br>
   <em>*Figura 1: Diagrama de Containers (Nível 2) para o ecossistema Jornada Verde*</em>
 </div>
