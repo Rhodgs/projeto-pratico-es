@@ -5,8 +5,13 @@ Para o sistema Jornada Verde, a solução ideal é combinar o padrão de Arquite
 
 * **Arquitetura em Camadas**: Organiza o sistema em níveis independentes (Apresentação, Negócio e Persistência), onde cada camada tem uma responsabilidade específica e se comunica apenas com a camada imediatamente inferior. 
 
-
 * **Publisher/Subscriber (Pub/Sub)**: É um padrão de mensagens assíncronas onde os "publicadores" de mensagens não as enviam diretamente para "assinantes" específicos. Em vez disso, as mensagens são publicadas em tópicos, e os interessados as recebem conforme a necessidade.
+
+<div align="center">
+  <img width="1536" height="815" alt="imagem 1" src="https://github.com/user-attachments/assets/2a530e93-b274-41c6-8a55-121faa2461b7" />
+  <br>
+  <em><b>Figura 1:</b> Representação visual da Arquitetura em Camadas integrada ao barramento de eventos assíncronos (Pub/Sub) do Jornada Verde.</em>
+</div>
 
 ---
 
