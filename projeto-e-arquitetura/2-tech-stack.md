@@ -6,6 +6,12 @@
 
 ---
 
+<div align="center">
+  <img width="1600" height="764" alt="imagem 2" src="https://github.com/user-attachments/assets/94fc63a7-62ff-45a8-b54d-cb654effbe62" />
+  <br>
+  <em><b>Figura 1:</b> Mapeamento da Stack Tecnológica, ilustrando como as linguagens, os bancos de dados e as ferramentas de apoio se integram nas camadas do sistema Jornada Verde</em>
+</div>
+
 ### 1. Frontend: Flutter
 
 * **O que é:** Um framework de interface de usuário (UI) criado pelo Google para o desenvolvimento de aplicativos nativos multiplataforma
