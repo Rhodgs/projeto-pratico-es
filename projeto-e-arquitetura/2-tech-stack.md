@@ -109,7 +109,7 @@ Para otimizar o tempo de resposta e evitar sobrecarga no banco de dados relacion
 
 A tabela a seguir detalha os padrões de arquitetura de software adotados no ecossistema do sistema, mapeando as tecnologias envolvidas e a justificativa prática para sua utilização
 
-| Padrão / Componente Arquitetural | Tecnologias Envolvidas | Onde e como é utilizado no sistema |
+| Camada | Tecnologia | Justificativa |
 | :--- | :--- | :--- |
 | **Cliente-Servidor** | Flutter e Node.js | É o modelo base do projeto, onde o aplicativo móvel (**Flutter**) atua como Cliente realizando requisições e renderizando dashboards reativos, enquanto a API em **Node.js** atua como Servidor centralizando as regras de negócio. |
 | **Publicar/Assinar (Pub/Sub)** | Node.js, Firebase Cloud Messaging (FCM) e Flutter | Comunicação assíncrona do sistema. O backend gera eventos (*Publisher*) e o **FCM** atua como o intermediário distribuindo alertas de prazos críticos e lembretes de engajamento para os dispositivos (*Subscribers*). |
