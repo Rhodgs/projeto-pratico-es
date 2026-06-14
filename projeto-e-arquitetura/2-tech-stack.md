@@ -12,6 +12,13 @@
   <em><b>Figura 1:</b> Mapeamento da Stack Tecnológica, ilustrando como as linguagens, os bancos de dados e as ferramentas de apoio se integram nas camadas do sistema Jornada Verde</em>
 </div>
 
+### 🔄 Fluxo de Integração da Stack
+
+O ecossistema do sistema foi projetado para garantir performance e comunicação eficiente entre as camadas. A **Camada de Apresentação (Frontend)**, desenvolvida em Flutter, interage diretamente com a **Camada de Negócio (Backend)** por meio de requisições HTTP síncronas destinadas à API REST construída em Node.js com TypeScript. 
+
+Para otimizar o tempo de resposta e evitar sobrecarga no banco de dados relacional **PostgreSQL**, o backend utiliza o **Redis** como camada de cache para dados de acesso frequente. Além disso, a comunicação assíncrona baseada em eventos (Pub/Sub) e o disparo de alertas em tempo real são gerenciados de forma integrada com o **Firebase Cloud Messaging (FCM)** e serviços complementares como a **API do Google Maps** para renderização de mapas e o **Nodemailer** para notificações via e-mail.
+
+
 ### 1. Frontend: Flutter
 
 * **O que é:** Um framework de interface de usuário (UI) criado pelo Google para o desenvolvimento de aplicativos nativos multiplataforma
