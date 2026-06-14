@@ -102,10 +102,17 @@
 
 A tabela a seguir detalha os padrões de arquitetura de software adotados no ecossistema do sistema, mapeando as tecnologias envolvidas e a justificativa prática para sua utilização
 
-| Padrão Arquitetural | Tecnologias Envolvidas | Onde e Como é Utilizado no Sistema |
+| Padrão / Componente Arquitetural | Tecnologias Envolvidas | Onde e como é utilizado no sistema |
 | :--- | :--- | :--- |
-| **Cliente-Servidor** | Flutter e Node.js | É o modelo base do projeto, onde o aplicativo móvel atua como **Cliente** solicitando ações e dados remotos à API de Backend, que atua como **Servidor** centralizando o processamento |
-| **Publish/Subscribe** | Node.js, FCM e Flutter | Comunicação assíncrona onde o backend gera eventos (*Publisher*) e o Firebase Cloud Messaging distribui os alertas (*Message Broker*) para os aplicativos (*Subscribers*) |
-| **Arquitetura em Camadas** | Node.js (TypeScript) | Organização interna da API com responsabilidades restritas: Camada de Borda (Controllers), Negócio (Services) e Persistência (Repositories) |
-| **API RESTful / REST** | Node.js (Express) | Estilo de comunicação entre Cliente e Servidor trafegando dados via protocolo HTTP seguro com verbos padronizados e formato JSON |
-| **Repository Pattern** | TypeScript, PostgreSQL e Redis | Isola a lógica de conexão e consultas na camada de persistência, permitindo que a camada de negócio interaja com os dados de forma abstrata |
+| **Cliente-Servidor** | Flutter e Node.js | É o modelo base do projeto, onde o aplicativo móvel (**Flutter**) atua como Cliente realizando requisições e renderizando dashboards reativos, enquanto a API em **Node.js** atua como Servidor centralizando as regras de negócio. |
+| **Publicar/Assinar (Pub/Sub)** | Node.js, Firebase Cloud Messaging (FCM) e Flutter | Comunicação assíncrona do sistema. O backend gera eventos (*Publisher*) e o **FCM** atua como o intermediário distribuindo alertas de prazos críticos e lembretes de engajamento para os dispositivos (*Subscribers*). |
+| **Arquitetura em Camadas** | Node.js (TypeScript) | Organização interna da API com divisões claras de responsabilidades (Borda, Serviços e Persistência). O **TypeScript** adiciona tipagem estática para reduzir erros de execução e proteger as regras pedagógicas. |
+| **API RESTful / REST** | Node.js (Express) | Estilo arquitetural adotado para a comunicação e tráfego de dados estruturados em formato JSON entre o cliente mobile e o servidor via protocolo HTTP seguro. |
+| **Padrão de Repositório (Repository Pattern)** | TypeScript, PostgreSQL e Redis | Isola a lógica de persistência de dados. O **PostgreSQL** protege dados de alta integridade (perfis e troféus). O **Redis** trata dados em memória para atualização instantânea do Top 50 e ofensivas sem sobrecarregar o banco principal. |
+| **Serviço de Localização Externo** | API do Google Maps | Gateway de integração para geolocalização, permitindo filtrar e mapear unidades de preservação da água e postos de coleta seletiva na ação prática do estudante. |
+| **Autenticação e Segurança** | Firebase Auth | Componente de infraestrutura em nuvem acoplado à arquitetura para garantir o controle de acesso seguro e proteção total às credenciais de alunos e professores. |
+| **Design, Prototipagem e UX** | Figma | Ferramenta de design em nuvem utilizada para projetar a identidade visual e validar os fluxos das telas de gamificação antes de servirem como guia para a codificação reativa. |
+| **Ambiente de Desenvolvimento (IDE)** | VS Code | Ambiente central integrado onde a engenharia de software é consolidada, usando extensões para depuração ágil tanto do frontend quanto do backend. |
+| **Controle de Versão e Colaboração** | GitHub (Online) e GitHub Desktop | O **GitHub** centraliza o repositório oficial em nuvem, controle de versões e revisões de código (Pull Requests). O **GitHub Desktop** serve como a interface gráfica local para agilizar commits e pushes. |
+| **Gestão de Conhecimento e Documentação** | Notion | Workspace em nuvem que centraliza a documentação técnica do sistema, incluindo o levantamento de requisitos, dicionário de dados e regras do motor de gamificação. |
+
