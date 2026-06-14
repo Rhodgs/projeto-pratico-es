@@ -42,7 +42,7 @@ A camada de apresentação do sistema **Jornada Verde** é construída utilizand
   
 *   **Visão do Docente:** Oferece um painel de controle administrativo onde é possível gerenciar turmas e monitorar métricas de desempenho coletivo através de indicadores visuais. 
 
-> **Destaque:** Um ponto crucial desta camada é a gestão do **perfil privado** (vitrine de troféus). Todo o feedback visual ocorre de forma imediata por meio de componentes que **reagem aos eventos processados pelo backend**, mantendo o engajamento sem a necessidade de recarregar o aplicativo.
+* **Destaque:** Um ponto crucial desta camada é a gestão do **perfil privado** (vitrine de troféus). Todo o feedback visual ocorre de forma imediata por meio de componentes que **reagem aos eventos processados pelo backend**, mantendo o engajamento sem a necessidade de recarregar o aplicativo.
 
 ---
 
@@ -54,7 +54,7 @@ Esta camada funciona como o **"cérebro" do sistema**, processando as regras de 
 *   **Validação:** Além de validar quizzes e atividades, a camada de negócio é a **origem dos eventos** que alimentam o sistema.
 *   **Comunicação:** Publica atualizações no **barramento de mensagens** sempre que um objetivo é atingido. 
 
-> **Benefício Arquitetural:** Essa organização permite que as regras pedagógicas evoluam de forma isolada, **sem afetar a interface ou o armazenamento de dados**, garantindo o desacoplamento do sistema.
+* **Benefício Arquitetural:** Essa organização permite que as regras pedagógicas evoluam de forma isolada, **sem afetar a interface ou o armazenamento de dados**, garantindo o desacoplamento do sistema.
 
 ---
 
