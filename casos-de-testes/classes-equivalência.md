@@ -193,5 +193,55 @@ US08: Interface Minimalista
 | **Caso 7 (Animação - Falha)** | 1, 3, 5, 7, 10 | Interface renderiza a Dashboard inicial do aplicativo. | O sistema dispara um banner carrossel que fica rodando sozinho ou abre um pop-up na tela. |
 
 
+US09: Feedback Visual Imediato e Recompensas
+
+1. Tabela de Classes de Equivalência
+
+| Condição de Entrada | Classes Válidas | Classes Inválidas |
+| :--- | :--- | :--- |
+| **Confirmação do sistema** | Sistema confirma o envio com sucesso **(1)** | Falha ou demora na resposta do sistema **(2)** |
+| **Tempo de exibição da tela** | Tela de aviso aparece em até 1 segundo **(3)** | Tela demora mais de 1 segundo para aparecer **(4)** |
+| **Tipo de missão entregue** | Missão de correção automática (ex: quiz). Libera recompensa na hora. **(5)** | Missão que exige avaliação do professor. Dá apenas aviso de envio. **(6)** |
+| **Situação da internet (RN2)** | Conectado (salva no servidor na mesma hora) **(7)** | Sem internet (sistema não trava, não perde os dados e salva no celular) **(8)** |
+| **Visibilidade do broche ganho** | Visível apenas para o dono do perfil **(9)** | Visível publicamente para outras pessoas **(10)** |
+
+2. Tabela de Casos de Teste
+
+| Casos de Teste | Classes de Equivalência | Entradas (Cenário do Teste) | Resultado Esperado |
+| :--- | :--- | :--- | :--- |
+| **Caso 1 (Sucesso)** | 1, 3, 5, 7, 9 | Usuário conectado à internet finaliza uma missão de correção automática (quiz) com sucesso. | O sistema confirma o envio, exibe a tela de comemoração em menos de 1 segundo e o broche ganho fica visível apenas para ele. |
+| **Caso 2 (Sucesso)** | 1, 3, 6, 7, 9 | Usuário conectado à internet envia a foto de um desafio prático (exige professor) com sucesso. | O sistema confirma o envio e exibe apenas a mensagem "Desafio enviado com sucesso" em menos de 1 segundo (não libera recompensas na hora). |
+| **Caso 3 (Falha)** | 2, 3, 5, 8, 9 | Usuário tenta enviar a missão automática, mas a internet cai bem na hora do envio. | O aplicativo não trava e não perde os dados. Ele salva o progresso no celular, avisa o usuário e exibe "Sincronização Pendente" no perfil. |
+| **Caso 4 (Falha)** | 1, 4, 5, 7, 9 | Usuário finaliza a missão automática online, mas o aplicativo sofre uma lentidão. | A tela de comemoração demora mais de 1 segundo para aparecer, deixando a experiência do aplicativo lenta. |
+| **Caso 5 (Falha)** | 1, 3, 5, 7, 10 | Usuário ganha um novo broche, mas o sistema falha em aplicar a regra de privacidade no perfil dele. | O aplicativo exibe o broche publicamente para outros alunos verem, quebrando a regra de que só o dono pode ver. |
+
+---
+
+ US10: Consumo de Conteúdos Educativos em Vídeo
+
+1. Tabela de Classes de Equivalência
+
+| Condição de Entrada | Classes Válidas | Classes Inválidas |
+| :--- | :--- | :--- |
+| **Botões do vídeo** | Botões de pausar, pular e volume funcionam **(1)** | Botões ficam travados ou não funcionam **(2)** |
+| **Rolagem da tela (Feed)** | Deslizar a tela carrega novos vídeos **(3)** | Deslizar a tela não funciona ou trava **(4)** |
+| **Pesquisa por categorias** | Pesquisa mostra os vídeos do tema correto **(5)** | Pesquisa não funciona ou mostra vídeos errados **(6)** |
+| **Recursos de acessibilidade** | Legendas e audiodescrição ligam corretamente **(7)** | Legendas ou audiodescrição falham ao ligar **(8)** |
+| **Permissão para postar vídeos** | Usuário logado é um Administrador **(9)** | Usuário logado é um Estudante ou Professor **(10)** |
+| **Tempo de duração do vídeo** | Duração livre até o limite de 3 minutos **(11)** | Vídeo com mais de 3 minutos ou cortado nos 15s **(12)** |
+
+2. Tabela de Casos de Teste
+
+| Casos de Teste | Classes de Equivalência | Entradas (Cenário do Teste) | Resultado Esperado |
+| :--- | :--- | :--- | :--- |
+| **Caso 1 (Sucesso)** | 1, 3, 5, 7, 10, 11 | Estudante pesquisa um tema, assiste a um vídeo de 2 minutos e liga as legendas com sucesso. | O vídeo roda normalmente, a rolagem funciona, as legendas aparecem e os botões de postar vídeos ficam escondidos para ele. |
+| **Caso 2 (Sucesso)** | 1, 3, 5, 7, 9, 11 | Administrador acessa o aplicativo e posta um vídeo de 2 minutos e 45 segundos com sucesso. | O sistema permite a postagem, o vídeo vai para a tela principal e os botões de controle funcionam normalmente. |
+| **Caso 3 (Falha)** | 1, 3, 5, 7, 9, 12 | Administrador tenta postar um vídeo novo, mas seleciona um arquivo que tem 5 minutos de duração. | O aplicativo bloqueia a postagem avisando que o limite máximo permitido é de 3 minutos. |
+| **Caso 4 (Falha)** | 1, 3, 5, 8, 10, 11 | Estudante com deficiência visual tenta ligar a audiodescrição, mas o botão apresenta falha ao ser clicado. | O botão não responde e o áudio não muda, atrapalhando a acessibilidade. |
+| **Caso 5 (Falha)** | 1, 4, 5, 7, 10, 11 | Estudante assiste a um vídeo válido e tenta deslizar a tela para baixo, mas o feed de vídeos trava. | A tela congela e o aplicativo não carrega os novos vídeos. |
+| **Caso 6 (Falha)** | 2, 3, 5, 7, 10, 11 | Estudante assiste a um vídeo e tenta pular 10 segundos para frente, mas o botão do player trava. | Os botões do player não respondem ao toque e o vídeo não avança. |
+| **Caso 7 (Falha)** | 1, 3, 5, 7, 10, 12 | Estudante dá play em um vídeo de 2 minutos, mas o aplicativo faz um corte forçado de tempo. | O aplicativo corta o vídeo sozinho aos 15 segundos, seguindo uma regra antiga do sistema que já deveria ter sido removida. |
+
+
 
 
