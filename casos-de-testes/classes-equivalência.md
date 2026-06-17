@@ -228,7 +228,7 @@ US09: Feedback Visual Imediato e Recompensas
 | **Pesquisa por categorias** | Pesquisa mostra os vídeos do tema correto **(5)** | Pesquisa não funciona ou mostra vídeos errados **(6)** |
 | **Recursos de acessibilidade** | Legendas e audiodescrição ligam corretamente **(7)** | Legendas ou audiodescrição falham ao ligar **(8)** |
 | **Permissão para postar vídeos** | Usuário logado é um Administrador **(9)** | Usuário logado é um Estudante ou Professor **(10)** |
-| **Tempo de duração do vídeo** | Duração livre até o limite de 3 minutos **(11)** | Vídeo com mais de 3 minutos ou cortado nos 15s **(12)** |
+| **Tempo de duração do vídeo** | Duração livre até o limite de 3 minutos **(11)** | Vídeo com mais de 3 minutos **(12)** |
 
 2. Tabela de Casos de Teste
 
