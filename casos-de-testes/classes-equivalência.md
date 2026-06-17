@@ -123,6 +123,74 @@ US5: Acessar Relatórios Analíticos de Desempenho
 | **Caso 6** | 1, 3, 5, 8, 9 | Banco de dados falha ou retorna métricas nulas/zeradas. | Tela exibe aviso amigável de erro em vez de quebrar os gráficos. |
 | **Caso 7** | 1, 3, 5, 7, 10 | Usuário força requisição web pedindo planilha `.xlsx`. | O backend rejeita e bloqueia por formato não permitido. |
 
+US6: Recursos de Acessibilidade Visual
+1. Tabela de Classes de Equivalência
+
+| Condição de Entrada | Classes Válidas | Classes Inválidas |
+| :--- | :--- | :--- |
+| **Seleção de paleta de contraste** | Selecionar Modo Escuro, Daltonismo ou Suave **(1)** | Tentar aplicar paleta inexistente ou cor inválida **(2)** |
+| **Limite do tamanho da fonte** | Ajuste de escala de até 200% **(3)** | Ajuste de escala maior que 200% **(4)** |
+| **Tempo de resposta da interface** | Alteração aplicada em até 1 segundo **(5)** | Aplicação demora mais de 1 segundo **(6)** |
+| **Atualização da página** | Aplicação do estilo sem recarregar a página **(7)** | Interface força o recarregamento total da página **(8)** |
+| **Persistência pós-login** | Estilos salvos carregam sozinhos após o login **(9)** | Sistema volta para o tema padrão após o login **(10)** |
+
+2. Tabela de Casos de Teste
+
+| Casos de Teste | Classes de Equivalência | Entradas (Cenário do Teste) | Resultado Esperado |
+| :--- | :--- | :--- | :--- |
+| **Caso 1 (Configurar - Sucesso)** | 1, 3, 5, 7 | Usuário seleciona o Modo Daltonismo e aumenta a fonte para 150%. | Paleta e tamanho mudam em menos de 1s, sem sobreposição e sem atualizar a página. |
+| **Caso 2 (Configurar - Falha)** | 2, 3, 5, 7 | Sistema tenta injetar um código de paleta de cores não mapeado. | O sistema ignora a paleta inválida e mantém o visual atual íntegro. |
+| **Caso 3 (Configurar - Falha)** | 1, 4, 5, 7 | Usuário tenta arrastar ou forçar a escala da fonte para 250%. | O sistema trava o limite máximo em 200% para evitar quebra de layout. |
+| **Caso 4 (Configurar - Falha)** | 1, 3, 6, 7 | Usuário escolhe a paleta de Modo Suave na tela. | A interface demora 3 segundos para aplicar as cores de contraste na tela. |
+| **Caso 5 (Configurar - Falha)** | 1, 3, 5, 8 | Usuário altera o tamanho da fonte para 120%. | O sistema altera a fonte, mas pisca e recarrega a página inteira do navegador. |
+| **Caso 6 (Salvar e Logar - Sucesso)** | 1, 3, 5, 7, 9 | Usuário configura o Modo Escuro, desloga do app e faz login novamente. | O perfil carrega automaticamente as opções de acessibilidade salvas logo após o login. |
+| **Caso 7 (Salvar e Logar - Falha)** | 1, 3, 5, 7, 10 | Usuário configura o Modo Escuro, desloga do app e faz login novamente. | O aplicativo esquece as alterações e carrega a interface com o tema padrão branco. |
+
+US7: Rótulos Descritivos e Anúncios Dinâmicos
+
+1. Tabela de Classes de Equivalência
+
+| Condição de Entrada | Classes Válidas | Classes Inválidas |
+| :--- | :--- | :--- |
+| **Presença de rótulos acessíveis** | Componente possui tag descritiva da sua função **(1)** | Componente possui tag vazia ou sem descrição **(2)** |
+| **Anúncio de mudança de estado** | Leitor anuncia estados (Desabilitado, Selecionado, Carregando) **(3)** | Interface muda de estado mas o leitor permanece em silêncio **(4)** |
+| **Tratamento de elementos decorativos** | Linhas, bordas e ícones repetitivos ocultados do leitor **(5)** | Leitor de tela lê elementos puramente visuais/decorativos **(6)** |
+| **Tratamento de imagens com significado** | Medalhas e imagens de progresso recebem rótulo textual **(7)** | Imagens com significado pedagógico ocultadas do leitor **(8)** |
+
+2. Tabela de Casos de Teste
+
+| Casos de Teste | Classes de Equivalência | Entradas (Cenário do Teste) | Resultado Esperado |
+| :--- | :--- | :--- | :--- |
+| **Caso 1 (Navegação - Sucesso)** | 1, 3, 5, 7 | Usuário navega pelos botões principais e por uma medalha de conquista em uma tela com divisórias visuais. | O leitor anuncia claramente a função dos botões e o texto da medalha, ignorando as divisórias visuais. |
+| **Caso 2 (Navegação - Falha)** | 2, 3, 5, 7 | Usuário foca o cursor em um elemento interativo que está sem a tag de acessibilidade configurada. | O leitor de tela não consegue descrever a função do componente (fala apenas "botão" ou fica em silêncio). |
+| **Caso 3 (Anúncio - Sucesso)** | 1, 3, 5, 7 | Usuário clica em enviar um arquivo e o sistema entra em estado de carregamento assíncrono. | O leitor interrompe e anuncia dinamicamente: "Carregando evidência, por favor aguarde", evitando a sensação de app travado. |
+| **Caso 4 (Anúncio - Falha)** | 1, 4, 5, 7 | Um botão de avançar na tela se torna indisponível (desabilitado) após uma ação. | A interface muda visualmente, mas o leitor de tela não anuncia a mudança de estado para o usuário. |
+| **Caso 5 (Filtro Visual - Falha)** | 1, 3, 6, 7 | Usuário passa o leitor por uma lista que possui várias linhas divisórias e ícones decorativos de enfeite. | O leitor de tela perde tempo lendo os códigos de layout ou descrevendo elementos de design inúteis. |
+| **Caso 6 (Filtro Conteúdo - Falha)** | 1, 3, 5, 8 | Usuário navega pela área de conquistas para verificar suas medalhas e progresso pedagógico. | O sistema trata os gráficos de evolução como elementos decorativos e oculta as informações do leitor de tela. |
+
+US08: Interface Minimalista
+
+1. Tabela de Classes de Equivalência
+
+| Condição de Entrada | Classes Válidas | Classes Inválidas |
+| :--- | :--- | :--- |
+| **Quantidade de itens no menu inferior** | Menu com até 5 itens essenciais **(1)** | Menu com mais de 5 itens cadastrados **(2)** |
+| **Visibilidade do menu nas telas** | Menu fixo e visível em todas as telas principais **(3)** | Menu desaparece ou fica oculto em alguma tela principal **(4)** |
+| **Área de respiro do layout** | Proporção de espaço em branco igual ou maior que 30% **(5)** | Espaço em branco menor que 30% (tela poluída) **(6)** |
+| **Duração de transições e microinterações**| Animação concluída em até 300ms **(7)** | Animação demora mais de 300ms para concluir **(8)** |
+| **Comportamento de elementos dinâmicos** | Animações automáticas em loop e pop-ups desativados **(9)** | Presença de banners carrossel automáticos ou pop-ups intrusivos **(10)** |
+
+2. Tabela de Casos de Teste
+
+| Casos de Teste | Classes de Equivalência | Entradas (Cenário do Teste) | Resultado Esperado |
+| :--- | :--- | :--- | :--- |
+| **Caso 1 (Layout - Sucesso)** | 1, 3, 5, 7, 9 | Usuário navega pelas telas principais do aplicativo com layout minimalista. | O menu exibe os 5 itens corretos, as telas mantêm mais de 30% de área livre e nenhuma animação automática é disparada. |
+| **Caso 2 (Layout - Falha)** | 2, 3, 5, 7, 9 | Sistema tenta renderizar um 6º item na barra de navegação inferior. | O sistema bloqueia o item excedente para manter o limite fixo de 5 abas. |
+| **Caso 3 (Layout - Falha)** | 1, 4, 5, 7, 9 | Usuário navega da Dashboard principal para a tela de Perfil. | A barra de navegação inferior desaparece ou fica oculta erroneamente. |
+| **Caso 4 (Layout - Falha)** | 1, 3, 6, 7, 9 | Interface carrega elementos, textos e botões excessivos, deixando o layout compactado. | O sistema falha em manter os 30% de área de respiro, gerando sobrecarga visual. |
+| **Caso 5 (Animação - Sucesso)** | 1, 3, 5, 7, 9 | Usuário clica em um botão para abrir uma nova tela ou interagir com um elemento. | A transição ocorre de forma discreta e a microinteração termina em menos de 300ms. |
+| **Caso 6 (Animação - Falha)** | 1, 3, 5, 8, 9 | Usuário clica em um botão com microinteração configurada. | A animação do botão é lenta e demora 500ms para terminar. |
+| **Caso 7 (Animação - Falha)** | 1, 3, 5, 7, 10 | Interface renderiza a Dashboard inicial do aplicativo. | O sistema dispara um banner carrossel que fica rodando sozinho ou abre um pop-up na tela. |
 
 
 
