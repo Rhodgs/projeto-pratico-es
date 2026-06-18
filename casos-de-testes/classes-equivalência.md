@@ -337,6 +337,28 @@ US14: Receber Notificações sobre Novos Desafios
 | **Caso 4 (Falha)** | 1, 3, 6 | Aluno clica na notificação do novo desafio para ver os detalhes, mas o sistema falha no direcionamento e abre a tela Home do app. (Erro: Redirecionamento incorreto). | O aluno é jogado na tela inicial e é obrigado a procurar a missão manualmente. |
 
 
+ US15: Receber selos de "Destaque" enviados pelo professor
+
+1. Tabela de Classes de Equivalência
+
+| Condição de Entrada | Classes Válidas | Classes Inválidas |
+| :--- | :--- | :--- |
+| **Vínculo de Turma (RN1)** | Professor e aluno na mesma turma **(1)** | Professor de outra turma **(2)** |
+| **Limite de Envio (RN2)** | Até 5 selos enviados na semana **(3)** | Tentativa de enviar o 6º selo na semana **(4)** |
+| **Exibição do Selo (CA1)** | Pop-up no ecrã inicial no próximo login **(5)** | Pop-up não é exibido no login **(6)** |
+| **Armazenamento (CA2)** | Fica salvo na "Galeria de Conquistas" **(7)** | Selo desaparece após fechar o pop-up **(8)** |
+| **Acúmulo de Selos (RN3)** | Aluno recebe o 2º selo ou mais **(9)** | Sistema bloqueia recebimento do 2º selo **(10)** |
+
+2. Tabela de Casos de Teste
+
+| Casos de Teste | Classes de Equivalência | Entradas (Cenário do Teste) | Resultado Esperado |
+| :--- | :--- | :--- | :--- |
+| **Caso 1 (Sucesso)** | 1, 3, 5, 7, 9 | Professor da mesma turma, com limite disponível, envia um segundo selo ao aluno. O aluno faz login com sucesso e fecha o aviso. | O pop-up surge no ecrã inicial e o selo é guardado permanentemente na Galeria de Conquistas. |
+| **Caso 2 (Falha)** | 2, 3, 5, 7, 9 | Professor tenta enviar um selo para um aluno, mas o sistema falha ao permitir a ação. (Erro: Professor e aluno pertencem a turmas diferentes). | O sistema quebra a regra de vínculo e permite o envio do selo a um aluno de outra turma. |
+| **Caso 3 (Falha)** | 1, 4, 5, 7, 9 | Professor já enviou 5 selos nesta semana e tenta enviar mais um, mas o botão não o impede. (Erro: Sistema ignora o limite máximo de 5 selos). | O professor ultrapassa o limite semanal, desvalorizando a exclusividade do reconhecimento. |
+| **Caso 4 (Falha)** | 1, 3, 6, 7, 9 | O selo é enviado corretamente, o aluno faz o seu próximo login, mas o sistema falha e não mostra nenhum aviso. (Erro: O pop-up não foi acionado no ecrã inicial). | O aluno não é notificado do reconhecimento no momento exato do login. |
+| **Caso 5 (Falha)** | 1, 3, 5, 8, 9 | O aluno vê o pop-up no login e fecha-o, mas o sistema apresenta falha ao gravar os dados. (Erro: O selo não é guardado na base de dados). | O selo desaparece completamente e não fica visível na secção "Galeria de Conquistas". |
+| **Caso 6 (Falha)** | 1, 3, 5, 7, 10 | O aluno já tem um selo e o professor tenta enviar-lhe outro, mas o sistema recusa. (Erro: Bloqueio indevido de múltiplos selos para o mesmo aluno). | O sistema quebra a regra que permite ao aluno acumular mais do que um selo no seu perfil. |
 
 
 
