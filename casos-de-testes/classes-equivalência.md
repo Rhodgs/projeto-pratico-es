@@ -20,6 +20,7 @@ US1: Manter Sequência de Dias Ativos (Ofensiva)
 | **Caso 5 (Falha)** | 1, 4, 6, 8, 9 | Usuário realiza login dentro do dia civil, mas não conclui nenhuma atividade válida. | Ofensiva Zerada ao final do dia |
 | **Caso 6 (Falha)** | 1, 3, 6, 8, 10 | Usuário realiza login, mas conclui a atividade após o término do dia civil. | Ofensiva Zerada |
 
+---
 
 US2: Visualizar Ranking Escolar
 
@@ -49,8 +50,7 @@ US2: Visualizar Ranking Escolar
 | **Caso 8 (Falha)** | 1, 3, 5, 7, 9, 12, 13 | Sistema carrega a lista do ranking, mas o banco de dados falha no filtro e mistura escolas diferentes. | Um estudante de outra escola é listado erroneamente no ranking da turma atual (Falha de escopo). |
 | **Caso 9 (Falha)** | 1, 3, 5, 7, 9, 11, 14 | Dois alunos empatam na pontuação, mas o algoritmo de desempate falha e inverte as posições. | O usuário que pontuou depois acaba ficando acima no ranking sem critério válido (Falha de desempate). |
 
-
-
+---
 
 US3: Criar "Turmas" no Aplicativo
 1. Tabela de Classes de Equivalência
@@ -76,6 +76,8 @@ US3: Criar "Turmas" no Aplicativo
 | **Caso 7 (Criar e Excluir - Sucesso)** | 1, 3, 5, 8, 10 | Professor cria a turma corretamente e, em seguida, clica em excluir essa mesma turma. | A turma é criada e, ao clicar em excluir, o sistema exibe o pop-up com o aviso regulamentar de 90 dias. |
 | **Caso 8 (Criar e Excluir - Falha)** | 1, 3, 5, 8, 11 | Professor cria a turma corretamente e, em seguida, clica em excluir essa mesma turma. | A turma é criada, mas ao clicar em excluir, ela é apagada direto sem exibir o alerta obrigatório. |
 
+---
+
 US4: Lançar Desafios Práticos
 1. Tabela de Classes de Equivalência
 
@@ -99,6 +101,7 @@ US4: Lançar Desafios Práticos
 | **Caso 6 (Falha)** | 1, 3, 5, 9, 10 | Usuário renomeia um programa malicioso para "foto.png". | Sistema analisa conteúdo interno e bloqueia arquivo disfarçado. |
 | **Caso 7 (Falha)** | 1, 3, 5, 8, 11 | Aluno envia arquivo idêntico a um que já foi enviado antes. | Sistema rejeita o envio por detecção de duplicidade. |
 
+---
 
 US5: Acessar Relatórios Analíticos de Desempenho
 
@@ -124,6 +127,7 @@ US5: Acessar Relatórios Analíticos de Desempenho
 | **Caso 6 (Falha)** | 1, 3, 5, 8, 9 | Banco de dados com falha ou retornos nulos/zerados. | Tela exibe aviso amigável de erro em vez de quebrar os gráficos. |
 | **Caso 7 (Falha)** | 1, 3, 5, 7, 10 | Usuário força requisição web solicitando planilha `.xlsx`. | O backend rejeita e bloqueia por formato não permitido. |
 
+---
 
 US6: Recursos de Acessibilidade Visual
 1. Tabela de Classes de Equivalência
@@ -148,6 +152,8 @@ US6: Recursos de Acessibilidade Visual
 | **Caso 6 (Salvar e Logar - Sucesso)** | 1, 3, 5, 7, 9 | Usuário configura o Modo Escuro, desloga do app e faz login novamente. | O perfil carrega automaticamente as opções de acessibilidade salvas logo após o login. |
 | **Caso 7 (Salvar e Logar - Falha)** | 1, 3, 5, 7, 10 | Usuário configura o Modo Escuro, desloga do app e faz login novamente. | O aplicativo esquece as alterações e carrega a interface com o tema padrão branco. |
 
+---
+
 US7: Rótulos Descritivos e Anúncios Dinâmicos
 
 1. Tabela de Classes de Equivalência
@@ -169,6 +175,8 @@ US7: Rótulos Descritivos e Anúncios Dinâmicos
 | **Caso 4 (Anúncio - Falha)** | 1, 4, 5, 7 | Um botão de avançar na tela se torna indisponível (desabilitado) após uma ação. | A interface muda visualmente, mas o leitor de tela não anuncia a mudança de estado para o usuário. |
 | **Caso 5 (Filtro Visual - Falha)** | 1, 3, 6, 7 | Usuário passa o leitor por uma lista que possui várias linhas divisórias e ícones decorativos de enfeite. | O leitor de tela perde tempo lendo os códigos de layout ou descrevendo elementos de design inúteis. |
 | **Caso 6 (Filtro Conteúdo - Falha)** | 1, 3, 5, 8 | Usuário navega pela área de conquistas para verificar suas medalhas e progresso pedagógico. | O sistema trata os gráficos de evolução como elementos decorativos e oculta as informações do leitor de tela. |
+
+---
 
 US08: Interface Minimalista
 
@@ -194,6 +202,7 @@ US08: Interface Minimalista
 | **Caso 6 (Animação - Falha)** | 1, 3, 5, 8, 9 | Usuário clica em um botão com microinteração configurada. | A animação do botão é lenta e demora 500ms para terminar. |
 | **Caso 7 (Animação - Falha)** | 1, 3, 5, 7, 10 | Interface renderiza a Dashboard inicial do aplicativo. | O sistema dispara um banner carrossel que fica rodando sozinho ou abre um pop-up na tela. |
 
+---
 
 US09: Feedback Visual Imediato e Recompensas
 
@@ -244,7 +253,7 @@ US09: Feedback Visual Imediato e Recompensas
 | **Caso 6 (Falha)** | 2, 3, 5, 7, 10, 11 | Estudante assiste a um vídeo e tenta pular 10 segundos para frente, mas o botão do player trava. | Os botões do player não respondem ao toque e o vídeo não avança. |
 | **Caso 7 (Falha)** | 1, 3, 5, 7, 10, 12 | Estudante dá play em um vídeo de 2 minutos, mas o aplicativo faz um corte forçado de tempo. | O aplicativo corta o vídeo sozinho aos 15 segundos, seguindo uma regra antiga do sistema que já deveria ter sido removida. |
 
-
+---
 
 US11: Validação de Evidências pelo Professor
 
@@ -336,8 +345,9 @@ US14: Receber Notificações sobre Novos Desafios
 | **Caso 3 (Falha)** | 1, 4, 5 | O professor lança o desafio, mas o sistema falha na hora de montar a mensagem e exibe "null lançou a missão: null". (Erro: Falha no carregamento do texto). | O aluno recebe um push com os campos de texto vazios e sem sentido. |
 | **Caso 4 (Falha)** | 1, 3, 6 | Aluno clica na notificação do novo desafio para ver os detalhes, mas o sistema falha no direcionamento e abre a tela Home do app. (Erro: Redirecionamento incorreto). | O aluno é jogado na tela inicial e é obrigado a procurar a missão manualmente. |
 
+---
 
- US15: Receber selos de "Destaque" enviados pelo professor
+US15: Receber selos de "Destaque" enviados pelo professor
 
 1. Tabela de Classes de Equivalência
 
