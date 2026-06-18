@@ -292,3 +292,59 @@ US12: Guia Passo a Passo Interativo (Tutorial)
 | **Caso 6 (Falha)** | 1, 4, 7, 11 | Estudante entra no menu de Configurações do seu perfil para tentar rever as dicas, mas o sistema falha e a opção de "Reiniciar Tutorial" sumiu do menu. | O estudante perde a capacidade de acionar o guia interativo manualmente quando precisa tirar alguma dúvida sobre o app. |
 
 
+US13: Realizar Cadastro Básico no Sistema
+
+1. Tabela de Classes de Equivalência
+
+| Condição de Entrada | Classes Válidas | Classe Inválida 1 | Classe Inválida 2 |
+| :--- | :--- | :--- | :--- |
+| **Nome do usuário** | Mínimo de 3 caracteres **(1)** | Menos de 3 caracteres **(2)** | - |
+| **E-mail do usuário** | Formato válido e inédito **(3)** | Formato inválido (ex: sem `@`) **(4)** | E-mail já cadastrado (RN1) **(5)** |
+| **Validação da Senha** | Mínimo de 8 caracteres com maiúscula e número **(6)** | Menos de 8 caracteres **(7)** | Sem letra maiúscula ou número **(8)** |
+| **Tipo de Perfil** | Selecionado (Aluno ou Professor) **(9)** | Não selecionado (em branco) **(10)** | - |
+
+2. Tabela de Casos de Teste
+
+| Casos de Teste | Classes de Equivalência | Entradas (Cenário do Teste) | Resultado Esperado |
+| :--- | :--- | :--- | :--- |
+| **Caso 1 (Sucesso)** | 1, 3, 6, 9 | Usuário preenche nome com 5 letras, e-mail correto, senha forte e seleciona o perfil de "Aluno" com sucesso. | O cadastro é concluído e o perfil é criado na Jornada Verde. |
+| **Caso 2 (Falha)** | 2, 3, 6, 9 | Usuário tenta se cadastrar digitando o nome apenas com "Zé", mas o sistema falha ao aceitar o nome curto. (Erro: Aceitou nome menor que 3 caracteres). | O aplicativo aceita o cadastro com nome curto, quebrando a regra de limite mínimo. |
+| **Caso 3 (Falha)** | 1, 4, 6, 9 | Usuário preenche os dados, mas digita o e-mail sem o símbolo `@`, e o formulário falha ao não validar o formato. (Erro: E-mail em formato incorreto). | O sistema aceita o e-mail no formato incorreto e cria a conta mesmo assim. |
+| **Caso 4 (Falha)** | 1, 5, 6, 9 | Usuário preenche tudo certo, mas usa um e-mail que já está cadastrado, e o sistema falha ao permitir o registro. (Erro: Duplicidade de e-mail). | O banco de dados aceita a duplicidade, quebrando a regra de e-mail único. |
+| **Caso 5 (Falha)** | 1, 3, 7, 9 | Usuário digita uma senha fraca com apenas 5 caracteres, e o sistema apresenta falha ao aceitar o envio. (Erro: Senha com menos de 8 caracteres). | A conta é criada com uma senha insegura, quebrando a regra de tamanho mínimo. |
+| **Caso 6 (Falha)** | 1, 3, 8, 9 | Usuário cria uma senha longa, mas apenas com letras minúsculas, e o sistema falha ao aprovar. (Erro: Faltou letra maiúscula e número). | O sistema aceita a senha fraca, quebrando a regra de complexidade. |
+| **Caso 7 (Falha)** | 1, 3, 6, 10 | Usuário preenche os dados de texto, mas deixa o Tipo de Perfil em branco, e o sistema falha ao prosseguir com o cadastro. (Erro: Perfil não selecionado). | O usuário é cadastrado sem nenhuma permissão definida, gerando erros na conta depois. |
+
+---
+
+US14: Receber Notificações sobre Novos Desafios
+
+1. Tabela de Classes de Equivalência
+
+| Condição de Entrada | Classes Válidas | Classes Inválidas |
+| :--- | :--- | :--- |
+| **Permissão do usuário** | Aceitou receber notificações **(1)** | Recusou receber notificações **(2)** |
+| **Conteúdo do alerta** | Apenas texto com Título e Corpo corretos **(3)** | Texto com campos vazios ou nulos **(4)** |
+| **Ação ao clicar** | Abre na tela de detalhes da missão certa **(5)** | Abre na tela errada (ex: Home) **(6)** |
+
+2. Tabela de Casos de Teste
+
+| Casos de Teste | Classes de Equivalência | Entradas (Cenário do Teste) | Resultado Esperado |
+| :--- | :--- | :--- | :--- |
+| **Caso 1 (Sucesso)** | 1, 3, 5 | Aluno aceita notificações, recebe o push com o título e corpo corretos quando o professor lança um desafio e clica nele com sucesso. | O aplicativo abre diretamente na tela de detalhes daquela missão específica. |
+| **Caso 2 (Falha)** | 2, 3, 5 | Aluno marcou que NÃO quer notificações, mas o sistema falha e envia o push mesmo assim quando o professor lança um desafio. (Erro: Sistema ignorou a permissão). | O usuário é incomodado por uma notificação que ele havia desativado nas permissões. |
+| **Caso 3 (Falha)** | 1, 4, 5 | O professor lança o desafio, mas o sistema falha na hora de montar a mensagem e exibe "null lançou a missão: null". (Erro: Falha no carregamento do texto). | O aluno recebe um push com os campos de texto vazios e sem sentido. |
+| **Caso 4 (Falha)** | 1, 3, 6 | Aluno clica na notificação do novo desafio para ver os detalhes, mas o sistema falha no direcionamento e abre a tela Home do app. (Erro: Redirecionamento incorreto). | O aluno é jogado na tela inicial e é obrigado a procurar a missão manualmente. |
+
+
+
+
+
+
+
+
+
+
+
+
+
