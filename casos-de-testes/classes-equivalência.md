@@ -13,12 +13,12 @@ US1: Manter Sequência de Dias Ativos (Ofensiva)
 
 | Casos de Teste | Classes de Equivalência | Entradas (Cenário do Teste) | Resultado Esperado |
 | :--- | :--- | :--- | :--- |
-| **Caso 1** | 1, 3, 6, 8, 9 | Usuário realiza login e finaliza um quiz dentro do dia civil. | Ofensiva Mantida/Incrementada |
-| **Caso 2** | 1, 4, 5, 8, 9 | Usuário realiza login e responde a um desafio prático dentro do dia civil. | Ofensiva Mantida/Incrementada |
-| **Caso 3** | 1, 4, 6, 7, 9 | Usuário realiza login e faz uma postagem no fórum dentro do dia civil. | Ofensiva Mantida/Incrementada |
-| **Caso 4** | 2, 4, 6, 8, 10 | Usuário não realiza login e não faz nenhuma atividade no dia civil. | Ofensiva Zerada ao final do dia |
-| **Caso 5** | 1, 4, 6, 8, 9 | Usuário realiza login dentro do dia civil, mas não conclui nenhuma atividade válida. | Ofensiva Zerada ao final do dia |
-| **Caso 6** | 1, 3, 6, 8, 10 | Usuário realiza login, mas conclui a atividade após o término do dia civil. | Ofensiva Zerada |
+| **Caso 1 (Sucesso)** | 1, 3, 6, 8, 9 | Usuário realiza login e finaliza um quiz dentro do dia civil. | Ofensiva Mantida/Incrementada |
+| **Caso 2 (Sucesso)** | 1, 4, 5, 8, 9 | Usuário realiza login e responde a um desafio prático dentro do dia civil. | Ofensiva Mantida/Incrementada |
+| **Caso 3 (Sucesso)** | 1, 4, 6, 7, 9 | Usuário realiza login e faz uma postagem no fórum dentro do dia civil. | Ofensiva Mantida/Incrementada |
+| **Caso 4 (Falha)** | 2, 4, 6, 8, 10 | Usuário não realiza login e não faz nenhuma atividade no dia civil. | Ofensiva Zerada ao final do dia |
+| **Caso 5 (Falha)** | 1, 4, 6, 8, 9 | Usuário realiza login dentro do dia civil, mas não conclui nenhuma atividade válida. | Ofensiva Zerada ao final do dia |
+| **Caso 6 (Falha)** | 1, 3, 6, 8, 10 | Usuário realiza login, mas conclui a atividade após o término do dia civil. | Ofensiva Zerada |
 
 
 US2: Visualizar Ranking Escolar
@@ -38,7 +38,7 @@ US2: Visualizar Ranking Escolar
 
 | Casos de Teste | Classes de Equivalência | Entradas (Cenário do Teste) | Resultado Esperado |
 | :--- | :--- | :--- | :--- |
-| **Caso 1** | 1, 3, 5, 7, 9, 11, 13 | Alteração de pontos de um aluno do Top 50 da mesma escola. | Interface atualiza em < 3s, limita a 50 alunos e destaca usuário logado. |
+| **Caso 1 (Sucesso)** | 1, 3, 5, 7, 9, 11, 13 | Alteração de pontos de um aluno do Top 50 da mesma escola. | Interface atualiza em < 3s, limita a 50 alunos e destaca usuário logado. |
 | **Caso 2** | 1, 3, 5, 7, 9, 11, 13 | Usuário logado está na posição 75 do ranking da escola. | Lista principal exibe o Top 50 e o usuário logado fica fixado no rodapé com estilo. |
 | **Caso 3** | 1, 3, 5, 7, 9, 11, 13 | Aluno A pontua às 10:00 e Aluno B atinge mesma pontuação às 11:00. | Aluno A aparece listado acima do Aluno B no ranking por ordem cronológica. |
 | **Caso 4** | 2, 3, 5, 7, 9, 11, 13 | Nova pontuação é salva no banco de dados. | Interface demora mais de 3 segundos para atualizar a tabela do ranking (Falha de performance). |
