@@ -91,13 +91,14 @@ US4: Lançar Desafios Práticos
 
 | Casos de Teste | Classes de Equivalência | Entradas (Cenário do Teste) | Resultado Esperado |
 | :--- | :--- | :--- | :--- |
-| **Caso 1** | 1, 3, 5, 8, 10 | Aluno envia imagem `.png` de 2 MB no prazo, correta e inédita. | Upload concluído; status muda para "Aguardando Validação". |
-| **Caso 2** | 2, 3, 5, 8, 10 | Aluno tenta fazer upload de imagem válida, mas prazo expirou. | Sistema bloqueia envio e exibe o status como "Expirado". |
-| **Caso 3** | 1, 4, 5, 8, 10 | Aluno tenta anexar um arquivo `.pdf` dentro do prazo. | Sistema rejeita o arquivo por formato inválido. |
-| **Caso 4** | 1, 3, 6, 8, 10 | Aluno envia arquivo corrompido que ficou com 0 MB (vazio). | Sistema recusa o upload por arquivo inválido/vazio. |
-| **Caso 5** | 1, 3, 7, 8, 10 | Aluno tenta enviar uma foto pesada com 6.2 MB. | Sistema bloqueia o upload (excede o limite de 5 MB). |
-| **Caso 6** | 1, 3, 5, 9, 10 | Usuário renomeia um programa malicioso para "foto.png". | Sistema analisa conteúdo interno e bloqueia arquivo disfarçado. |
-| **Caso 7** | 1, 3, 5, 8, 11 | Aluno envia arquivo idêntico a um que já foi enviado antes. | Sistema rejeita o envio por detecção de duplicidade. |
+| **Caso 1 (Sucesso)** | 1, 3, 5, 8, 10 | Aluno envia imagem `.png` de 2 MB no prazo, correta e inédita. | Upload concluído; status muda para "Aguardando Validação". |
+| **Caso 2 (Falha)** | 2, 3, 5, 8, 10 | Aluno tenta fazer upload de imagem válida, mas prazo expirou. | Sistema bloqueia envio e exibe o status como "Expirado". |
+| **Caso 3 (Falha)** | 1, 4, 5, 8, 10 | Aluno tenta anexar um arquivo `.pdf` dentro do prazo. | Sistema rejeita o arquivo por formato inválido. |
+| **Caso 4 (Falha)** | 1, 3, 6, 8, 10 | Aluno envia arquivo corrompido que ficou com 0 MB (vazio). | Sistema recusa o upload por arquivo inválido/vazio. |
+| **Caso 5 (Falha)** | 1, 3, 7, 8, 10 | Aluno tenta enviar uma foto pesada com 6.2 MB. | Sistema bloqueia o upload (excede o limite de 5 MB). |
+| **Caso 6 (Falha)** | 1, 3, 5, 9, 10 | Usuário renomeia um programa malicioso para "foto.png". | Sistema analisa conteúdo interno e bloqueia arquivo disfarçado. |
+| **Caso 7 (Falha)** | 1, 3, 5, 8, 11 | Aluno envia arquivo idêntico a um que já foi enviado antes. | Sistema rejeita o envio por detecção de duplicidade. |
+
 
 
 US5: Acessar Relatórios Analíticos de Desempenho
