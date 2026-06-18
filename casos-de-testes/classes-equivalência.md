@@ -100,31 +100,30 @@ US4: Lançar Desafios Práticos
 | **Caso 7 (Falha)** | 1, 3, 5, 8, 11 | Aluno envia arquivo idêntico a um que já foi enviado antes. | Sistema rejeita o envio por detecção de duplicidade. |
 
 
-
 US5: Acessar Relatórios Analíticos de Desempenho
+
 1. Tabela de Classes de Equivalência
 
 | Condição de Entrada | Classes Válidas | Classes Inválidas |
 | :--- | :--- | :--- |
-| **Filtro de escopo** | Turma completa ou aluno individual válido **(1)** | Aluno selecionado não pertence àquela turma **(2)** |
+| **Filtro de escopo** | Turma completa ou aluno individual válido **(1)** | Aluno selecionado não pertence à turma **(2)** |
 | **Filtro de período** | Período Semanal, Mensal ou Personalizado **(3)** | Tipo de período inexistente ou não selecionado **(4)** |
 | **Intervalo de datas** | Data de início menor ou igual à data de fim **(5)** | Data de início maior do que a data de fim **(6)** |
 | **Cálculo das métricas** | Indicadores calculados e atualizados na tela **(7)** | Tela renderiza erro de processamento ou dados zerados **(8)** |
-| **Formato de exportação** | Exportação solicitada em formato PDF **(9)** | Tentativa de forçar exportação em outro formato (ex: `.xlsx`) **(10)** |
-
+| **Formato de exportação** | Exportação solicitada em formato PDF **(9)** | Tentativa de forçar a exportação em outro formato (ex: `.xlsx`) **(10)** |
 
 2. Tabela de Casos de Teste
 
-
 | Casos de Teste | Classes de Equivalência | Entradas (Cenário do Teste) | Resultado Esperado |
 | :--- | :--- | :--- | :--- |
-| **Caso 1** | 1, 3, 5, 7, 9 | Professor filtra turma por um período semanal válido. | Gráficos e indicadores gerados dinamicamente com dados na tela. |
-| **Caso 2** | 1, 3, 5, 7, 9 | Professor clica no botão de exportar o relatório atual. | O arquivo é gerado e baixado com sucesso em formato PDF. |
-| **Caso 3** | 2, 3, 5, 7, 9 | Sistema busca dados de um aluno de outra turma no relatório. | O sistema bloqueia a consulta (Erro: Aluno não encontrado). |
-| **Caso 4** | 1, 4, 5, 7, 9 | O componente de filtro envia uma opção nula para o servidor. | Sistema mantém o último estado válido ou pede seleção de período. |
-| **Caso 5** | 1, 3, 6, 7, 9 | No filtro personalizado, define Início: 15/06 e Fim: 10/06. | Sistema bloqueia filtro (Aviso: Início maior que data fim). |
-| **Caso 6** | 1, 3, 5, 8, 9 | Banco de dados falha ou retorna métricas nulas/zeradas. | Tela exibe aviso amigável de erro em vez de quebrar os gráficos. |
-| **Caso 7** | 1, 3, 5, 7, 10 | Usuário força requisição web pedindo planilha `.xlsx`. | O backend rejeita e bloqueia por formato não permitido. |
+| **Caso 1 (Sucesso)** | 1, 3, 5, 7, 9 | Professor filtra turma por um período semanal válido. | Gráficos e indicadores gerados dinamicamente com dados na tela. |
+| **Caso 2 (Sucesso)** | 1, 3, 5, 7, 9 | Professor clicou no botão de exportar o relatório atual. | O arquivo é gerado e baixado com sucesso em formato PDF. |
+| **Caso 3 (Falha)** | 2, 3, 5, 7, 9 | Sistema de busca de dados de um aluno de outra turma no relatório. | O sistema bloqueia a consulta (Erro: Aluno não encontrado). |
+| **Caso 4 (Falha)** | 1, 4, 5, 7, 9 | O componente de filtro envia uma opção nula para o servidor. | O sistema mantém o último estado válido ou pede seleção de período. |
+| **Caso 5 (Falha)** | 1, 3, 6, 7, 9 | Sem filtro personalizado, defina Início: 15/06 e Fim: 10/06. | Sistema de bloqueio de filtro (Aviso: Início maior que data fim). |
+| **Caso 6 (Falha)** | 1, 3, 5, 8, 9 | Banco de dados com falha ou retornos nulos/zerados. | Tela exibe aviso amigável de erro em vez de quebrar os gráficos. |
+| **Caso 7 (Falha)** | 1, 3, 5, 7, 10 | Usuário força requisição web solicitando planilha `.xlsx`. | O backend rejeita e bloqueia por formato não permitido. |
+
 
 US6: Recursos de Acessibilidade Visual
 1. Tabela de Classes de Equivalência
