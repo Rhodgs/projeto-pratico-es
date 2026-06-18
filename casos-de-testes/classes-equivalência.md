@@ -22,6 +22,7 @@ US1: Manter Sequência de Dias Ativos (Ofensiva)
 
 
 US2: Visualizar Ranking Escolar
+
 1. Tabela de Classes de Equivalência
 
 | Condição de Entrada | Classes Válidas | Classes Inválidas |
@@ -38,15 +39,16 @@ US2: Visualizar Ranking Escolar
 
 | Casos de Teste | Classes de Equivalência | Entradas (Cenário do Teste) | Resultado Esperado |
 | :--- | :--- | :--- | :--- |
-| **Caso 1 (Sucesso)** | 1, 3, 5, 7, 9, 11, 13 | Alteração de pontos de um aluno do Top 50 da mesma escola. | Interface atualiza em < 3s, limita a 50 alunos e destaca usuário logado. |
-| **Caso 2** | 1, 3, 5, 7, 9, 11, 13 | Usuário logado está na posição 75 do ranking da escola. | Lista principal exibe o Top 50 e o usuário logado fica fixado no rodapé com estilo. |
-| **Caso 3** | 1, 3, 5, 7, 9, 11, 13 | Aluno A pontua às 10:00 e Aluno B atinge mesma pontuação às 11:00. | Aluno A aparece listado acima do Aluno B no ranking por ordem cronológica. |
-| **Caso 4** | 2, 3, 5, 7, 9, 11, 13 | Nova pontuação é salva no banco de dados. | Interface demora mais de 3 segundos para atualizar a tabela do ranking (Falha de performance). |
-| **Caso 5** | 1, 4, 6, 7, 9, 11, 13 | Usuário logado visualiza a tela do ranking. | O item do usuário não recebe o fundo `#F0F0F0` ou a borda verde de `5px` (Falha de estilo). |
-| **Caso 6** | 1, 3, 5, 8, 9, 11, 13 | Sistema carrega a tela de ranking geral. | A lista principal renderiza mais de 50 estudantes ao mesmo tempo (Falha de limite). |
-| **Caso 7** | 1, 3, 5, 7, 10, 11, 13 | Usuário na posição 51 entra na tela. | O sistema deixa de exibir o usuário fixado na parte inferior da tela (Falha de ocultação). |
-| **Caso 8** | 1, 3, 5, 7, 9, 12, 13 | Carregamento da lista do ranking da unidade. | Um estudante de outra escola é listado erroneamente no ranking da turma (Falha de escopo). |
-| **Caso 9** | 1, 3, 5, 7, 9, 11, 14 | Dois alunos empatam e o sistema inverte as posições. | O usuário que pontuou depois fica acima sem critério (Falha de desempate). |
+| **Caso 1 (Sucesso)** | 1, 3, 5, 7, 9, 11, 13 | Aluno do Top 50 ganha novos pontos e a interface recebe os dados normalmente da mesma escola. | Interface atualiza em < 3s, limita a 50 alunos e destaca o usuário logado perfeitamente. |
+| **Caso 2 (Sucesso)** | 1, 3, 5, 7, 9, 11, 13 | Usuário logado está na posição 75 e visualiza o ranking da sua escola com sucesso. | Lista principal exibe o Top 50 e o usuário logado fica fixado no rodapé com seu estilo de destaque. |
+| **Caso 3 (Sucesso)** | 1, 3, 5, 7, 9, 11, 13 | Alunos empatam na pontuação, mas o sistema identifica corretamente que o Aluno A pontuou mais cedo. | Aluno A aparece listado acima do Aluno B no ranking por ordem cronológica. |
+| **Caso 4 (Falha)** | 2, 3, 5, 7, 9, 11, 13 | Nova pontuação é salva no banco, mas a interface do aplicativo sofre uma lentidão extrema ao buscar os dados. | Interface demora mais de 3 segundos para atualizar a tabela do ranking (Falha de performance). |
+| **Caso 5 (Falha)** | 1, 4, 6, 7, 9, 11, 13 | Usuário logado visualiza a tela do ranking, mas o aplicativo falha ao carregar os estilos visuais dele. | O item do usuário logado não recebe o fundo `#F0F0F0` e nem a borda verde de `5px` (Falha de estilo). |
+| **Caso 6 (Falha)** | 1, 3, 5, 8, 9, 11, 13 | Sistema carrega a tela de ranking, mas falha no limite de paginação e tenta puxar todos os alunos de uma vez. | A lista principal renderiza mais de 50 estudantes ao mesmo tempo, quebrando o layout (Falha de limite). |
+| **Caso 7 (Falha)** | 1, 3, 5, 7, 10, 11, 13 | Usuário que está fora do Top 50 entra na tela, mas o sistema apresenta erro de interface e não fixa o nome dele. | O sistema deixa de exibir o usuário fixado na parte inferior da tela (Falha de ocultação). |
+| **Caso 8 (Falha)** | 1, 3, 5, 7, 9, 12, 13 | Sistema carrega a lista do ranking, mas o banco de dados falha no filtro e mistura escolas diferentes. | Um estudante de outra escola é listado erroneamente no ranking da turma atual (Falha de escopo). |
+| **Caso 9 (Falha)** | 1, 3, 5, 7, 9, 11, 14 | Dois alunos empatam na pontuação, mas o algoritmo de desempate falha e inverte as posições. | O usuário que pontuou depois acaba ficando acima no ranking sem critério válido (Falha de desempate). |
+
 
 
 
