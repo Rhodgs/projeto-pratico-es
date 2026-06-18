@@ -244,4 +244,49 @@ US09: Feedback Visual Imediato e Recompensas
 
 
 
+US11: Validação de Evidências pelo Professor
+
+1. Tabela de Classes de Equivalência
+
+| Condição de Entrada | Classes Válidas | Classes Inválidas | Classes Inválidas |
+| :--- | :--- | :--- | :--- |
+| **Filtros e ordenação da lista** | Filtros e ordenação funcionam **(1)** | Filtros não funcionam **(2)** | Ordenação fica bagunçada **(3)** |
+| **Aprovar evidência (Verde)** | Aprova e credita os pontos **(4)** | Botão trava e não aprova **(5)** | Aprova mas pontos não caem **(6)** |
+| **Recusar evidência (Vermelho)** | Exige justificativa para recusar **(7)** | Deixa recusar sem texto **(8)** | Tela de justificativa não abre **(9)** |
+| **Status dos pontos ao enviar** | Ficam como "Pendente" **(10)** | Somam no saldo antes de avaliar **(11)** | Não aparecem no extrato **(12)** |
+
+2. Tabela de Casos de Teste
+
+| Casos de Teste | Classes de Equivalência | Entradas (Cenário do Teste) | Resultado Esperado |
+| :--- | :--- | :--- | :--- |
+| **Caso 1 (Sucesso)** | 1, 4, 7, 10 | Professor filtra a lista corretamente, vê a missão que entrou como "Pendente", aprova uma missão com sucesso e recusa outra digitando a justificativa. | Todo o fluxo funciona, a justificativa é cobrada e os pontos da missão aprovada vão para o saldo do aluno. |
+| **Caso 2 (Falha)** | 3, 4, 7, 10 | Professor clica para ordenar as atividades por "Mais recentes", mas a listagem falha e mistura missões antigas com novas na tela. | A ordenação da interface fica bagunçada, dificultando o trabalho de correção do professor. |
+| **Caso 3 (Falha)** | 1, 6, 7, 10 | Professor clica no botão verde de "Aprovar" em uma atividade correta, mas o sistema falha e os pontos não chegam ao saldo do aluno. | A missão muda de status para aprovada, mas o aluno fica sem receber a pontuação correspondente no saldo. |
+| **Caso 4 (Falha)** | 1, 4, 8, 10 | Professor clica no botão de "Recusar" e envia direto com o campo de texto em branco, e o sistema falha ao aceitar o envio sem validação. | O aplicativo burla a regra e deixa o professor recusar a missão sem explicar o motivo para o estudante. |
+| **Caso 5 (Falha)** | 1, 4, 7, 11 | Aluno faz o envio de sua missão prática, mas o sistema apresenta falha ao creditar os pontos direto no saldo dele antes do professor avaliar. | O aluno ganha os pontos automaticamente de forma errada, quebrando a regra de que a aprovação precisa ser estritamente manual. |
+
+---
+
+US12: Guia Passo a Passo Interativo (Tutorial)
+
+1. Tabela de Classes de Equivalência
+
+| Condição de Entrada | Classes Válidas | Classes Inválidas | Classes Inválidas |
+| :--- | :--- | :--- | :--- |
+| **Exibição do guia (1º acesso)** | Balões aparecem no 1º acesso **(1)** | Balões nunca aparecem **(2)** | Aparecem toda vez **(3)** |
+| **Botões de controle do guia** | "Próximo"/"Anterior" funcionam **(4)** | Botões travam/não clicam **(5)** | Pulam para a dica errada **(6)** |
+| **Ação de Pular Tutorial** | Oculta e marca como concluído **(7)** | Botão de pular não responde **(8)** |  Oculta mas volta a aparecer **(9)** |
+| **Reiniciar nas Configurações** | Botão reinicia o guia perfeitamente **(10)** | Opção não existe no menu **(11)** | Botão existe mas dá erro **(12)** |
+
+2. Tabela de Casos de Teste
+
+| Casos de Teste | Classes de Equivalência | Entradas (Cenário do Teste) | Resultado Esperado |
+| :--- | :--- | :--- | :--- |
+| **Caso 1 (Sucesso)** | 1, 4, 7, 10 | Estudante abre a tela pela 1ª vez, usa os botões para avançar com sucesso, termina o guia e depois consegue achar o botão nas configurações para rever. | O tutorial funciona de forma fluida, não aparece repetido depois de fechado e pode ser reiniciado manualmente pelo menu. |
+| **Caso 2 (Falha)** | 2, 4, 7, 10 | Estudante cria uma conta nova e abre a tela pela primeira vez, mas o sistema falha e os balões de ajuda simplesmente não aparecem na interface. | O usuário novo fica sem o tutorial interativo e não aprende a usar as funcionalidades iniciais. |
+| **Caso 3 (Falha)** | 3, 4, 7, 10 | Estudante já utilizou o aplicativo várias vezes e concluiu o guia, mas o sistema apresenta falha ao exibir o tutorial de novo a cada novo acesso. | O aplicativo gera uma experiência ruim, irritando o usuário ao mostrar o tutorial repetidas vezes de forma forçada. |
+| **Caso 4 (Falha)** | 1, 5, 7, 10 | Estudante lê a primeira dica de ajuda e clica no botão "Próximo", mas o botão do balão trava e impede a mudança de tela. | O estudante fica preso no primeiro passo do tutorial por erro de clique na interface do balão de ajuda. |
+| **Caso 5 (Falha)** | 1, 4, 9, 10 | Estudante clica na opção "Pular Tutorial", a tela fecha na hora, mas o sistema falha ao não salvar a preferência e traz o guia de volta na próxima tela. | O botão fecha o tutorial momentaneamente, mas falha ao não marcar o guia como concluído no banco de dados. |
+| **Caso 6 (Falha)** | 1, 4, 7, 11 | Estudante entra no menu de Configurações do seu perfil para tentar rever as dicas, mas o sistema falha e a opção de "Reiniciar Tutorial" sumiu do menu. | O estudante perde a capacidade de acionar o guia interativo manualmente quando precisa tirar alguma dúvida sobre o app. |
+
 
