@@ -1,3 +1,15 @@
+# DOCUMENTAÇÃO DE TESTES: CLASSES DE EQUIVALÊNCIA E CASOS DE TESTE
+
+**Resumo: Modelagem de Testes**
+
+Este documento apresenta a estruturação tática dos testes de software do projeto, construída com base nas Histórias de Usuário (US) mapeadas. Para garantir a rastreabilidade e a qualidade de cada funcionalidade entregue, a documentação de cada US foi desdobrada em duas etapas técnicas:
+
+* **Tabelas de Classes de Equivalência:** Mapeamento das condições de entrada válidas e inválidas, identificando cenários de sucesso e falha para otimizar a cobertura de testes sem redundância.
+* **Tabelas de Casos de Teste:** Definição dos roteiros práticos de execução, descrevendo o cenário, as entradas e o resultado esperado para validar o cumprimento exato dos Critérios de Aceitação e das Regras de Negócio.
+
+---
+---
+
 US1: Enquanto estudante, desejo manter uma sequência de dias ativos  (ofensiva) para me sentir motivada a interagir com o app diariamente.
 
 Prioridade: Alta. 
