@@ -130,7 +130,7 @@ Prioridade: Alta.
 
 ---
 
-### **US4: Enquanto professor, desejo lançar desafios práticos (como coleta de lixo ou economia de energia) para tirar as aulas da teoria e focar em causas reais, permitindo que os alunos interajam com a atividade e enviem suas evidências dentro do prazo para validação. **
+### **US4: Enquanto professor, desejo lançar desafios práticos (como coleta de lixo ou economia de energia) para tirar as aulas da teoria e focar em causas reais, permitindo que os alunos interajam com a atividade e enviem suas evidências dentro do prazo para validação.**
 
 Prioridade: Alta. 
 
