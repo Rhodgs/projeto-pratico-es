@@ -1,4 +1,14 @@
-US1: Manter Sequência de Dias Ativos (Ofensiva) 
+US1: Enquanto estudante, desejo manter uma sequência de dias ativos  (ofensiva) para me sentir motivada a interagir com o app diariamente.
+
+Prioridade: Alta. 
+
+**Critérios de Aceitação (CA):**
+* **CA01** - O sistema deve exibir um ícone de fogo e um contador numérico de dias seguidos no perfil do usuário.
+* **CA02** - Para fins de manutenção da ofensiva, define-se como 'Atividade' as seguintes ações: finalizar um quiz de conteúdo, enviar uma resposta em um desafio prático ou realizar uma postagem no fórum da turma
+
+**Regras de Negócio (RN):**
+* **RN01** - O contador de ofensiva deve ser zerado caso o usuário não realize o login e finalize pelo menos uma Atividade Prática (conforme definido nos CA) dentro de um dia civil (entre 00:00 e 23:59), considerando o fuso horário local do usuário
+
 1. Tabela de Classes de Equivalência
 
 | Condição de Entrada | Classes Válidas | Classes Inválidas |
@@ -22,7 +32,22 @@ US1: Manter Sequência de Dias Ativos (Ofensiva)
 
 ---
 
-US2: Visualizar Ranking Escolar
+US2: Enquanto estudante, desejo visualizar um ranking escolar com atualizações imediatas após a pontuação para competir de forma saudável com meus amigos
+
+Prioridade: Alta. 
+
+### **Critérios de Aceitação (CA):**
+* **CA01** - Desempenho de Atualização: A interface do usuário deve refletir a nova posição/pontuação em no máximo 3 segundos após a persistência no banco de dados
+* **CA02** - Destaque do Usuário Logado: O item da lista correspondente ao usuário atual deve possuir fundo na cor cinza claro `(#F0F0F0)`
+* **CA03** - Sinalização Visual: O item do usuário logado deve apresentar uma borda lateral esquerda de 5px na cor verde `(#28A745)`
+* **CA04** - Posição fora do limite: Caso o usuário logado não esteja classificado dentro do Top 50, o sistema deve exibir a sua posição e pontuação atual fixadas na parte inferior da tela, logo abaixo da lista do Top 50
+
+### **Regras de Negócio (RN)**
+* **RN01** - Atualização Reativa: O ranking deve ser recalculado e enviado para a interface sempre que houver uma alteração de pontuação no banco de dados
+* **RN02** - Abrangência do Ranking: O ranking deve listar todos os estudantes matriculados na mesma unidade escolar do usuário
+* **RN03** - Origem da Pontuação: Os pontos contabilizados no ranking são provenientes exclusivamente da conclusão de desafios práticos, da manutenção da ofensiva diária no aplicativo e de conclusão de tarefas dado pelos professores em sala de aula
+* **RN04** - Critério de Desempate: Em caso de empate na pontuação entre dois ou mais estudantes, o critério de desempate será o fator tempo: o usuário que atingiu a pontuação primeiro (ordem cronológica) ocupará a posição superior
+* **RN05** - Limite de Exibição: O ranking geral deve carregar e exibir inicialmente apenas os 50 estudantes com maior pontuação (Top 50) para otimizar o carregamento dos dados
 
 1. Tabela de Classes de Equivalência
 
@@ -52,7 +77,23 @@ US2: Visualizar Ranking Escolar
 
 ---
 
-US3: Criar "Turmas" no Aplicativo
+
+US3: Enquanto professor , desejo criar "turmas" dentro do aplicativo para gerenciar meus alunos de forma organizada.
+
+Prioridade: Alta.
+
+**Critérios de Aceitação (CA):**
+* **CA01** - Painel de Criação: O sistema deve fornecer um botão "Criar Turma" que  gera automaticamente um código alfanumérico único
+* **CA02** - Padrão do Código: O código alfanumérico deve ter exatamente 6 caracteres em caixa alta (ex: AM42XP) e um botão "Copiar Link" deve estar disponível ao lado do código
+* **CA03** - Painel de Gestão: O sistema deve exibir uma lista com Nome e Avatar de todos os alunos inscritos, com um botão "Remover Aluno" ao lado de cada nome
+* **CA04** - Confirmação de Exclusão: Ao clicar em "Excluir Turma", o sistema deve exibir um aviso: "Esta ação desvinculará todos os alunos. O histórico será arquivado por 90 dias. Confirmar?"
+
+**Regras de Negócio (RN):**
+* **RN01** - Permissão:  Apenas usuários com o perfil "Professor" podem criar e excluir turmas no sistema
+* **RN02** - Limite de Turmas: Cada professor pode manter no máximo 10 turmas ativas simultaneamente
+* **RN03** - Regra de Exclusão: Ao excluir uma turma, os alunos vinculados são apenas "desvinculados" (unlinked), mas o histórico de atividades e notas deve ser movido para um arquivo morto (Logs) por 90 dias antes da exclusão permanente
+* **RN04** - Titularidade: A turma é vinculada ao CPF do professor criador, não sendo permitida a transferência de titularidade nesta versão do sistema
+  
 1. Tabela de Classes de Equivalência
 
 | Condição de Entrada | Classes Válidas | Classes Inválidas | Classes Inválidas |
@@ -78,7 +119,26 @@ US3: Criar "Turmas" no Aplicativo
 
 ---
 
-US4: Lançar Desafios Práticos
+US4: Enquanto professor, desejo lançar desafios práticos (como coleta de lixo ou economia de energia) para tirar as aulas da teoria e focar em causas reais, permitindo que os alunos interajam com a atividade e enviem suas evidências dentro do prazo para validação. 
+
+Prioridade: Alta. 
+
+**Critérios de Aceitação (CA):**
+
+* **CA01** - (Interface de Criação - Professor): O sistema deve fornecer uma tela para o professor cadastrar o desafio, definindo título, descrição, pontuação e o prazo limite (data e hora).
+* **CA02** - (Interface de Execução - Aluno): A tela de detalhes do desafio para o aluno deve exibir a descrição da atividade, um cronômetro com o tempo restante para a conclusão e o botão "Anexar Evidência".
+* **CA03** - (Interface de Monitoramento - Aluno): O aluno deve conseguir visualizar o status atual do seu envio (Aguardando Envio, Aguardando Validação, Concluído ou Expirado).
+* **CA04** - (Interface de Avaliação - Professor): O sistema deve fornecer uma visão de gerenciamento para o professor visualizar, baixar e avaliar (aprovar/rejeitar) as evidências que foram enviadas pelos alunos.
+
+**Regras de Negócio (RN):**
+
+* **RN01** - Fluxo de Encerramento por Prazo: Assim que o cronômetro de tempo restante zerar, o sistema deve bloquear automaticamente novos uploads de evidências para aquele desafio. Caso o aluno não tenha realizado o envio a tempo, seu status para a atividade mudará automaticamente para "Expirado".
+* **RN02** - Processo de Validação e Contabilização: A conclusão do desafio não ocorre de forma automática após o upload. A pontuação só será creditada ao aluno (e o status alterado para "Concluído") mediante a aprovação manual do professor na tela de avaliação.
+* **RN03** - Restrições de Formato: O sistema deve aceitar apenas arquivos de imagem nos formatos JPG ou PNG com tamanho máximo de 5MB.
+* **RN04** - Mecanismos de Segurança de Arquivos:
+  * **Sanitização:** O sistema deve renomear e sanitizar o arquivo no momento do upload para eliminar caracteres especiais ou potenciais scripts maliciosos ocultos no nome.
+  * **Validação de Tipo Real:** O backend deve validar a integridade do arquivo através do tipo MIME (MIME-type), garantindo que a extensão (JPG/PNG) corresponde ao conteúdo real do arquivo, bloqueando executáveis mascarados.
+  * **Controle de Duplicidade:** O sistema deve gerar e registrar um hash único para cada imagem enviada, impedindo que um mesmo arquivo seja reaproveitado de forma fraudulenta em múltiplos envios.
 
 1. Tabela de Classes de Equivalência
 
@@ -106,7 +166,25 @@ US4: Lançar Desafios Práticos
 
 ---
 
-US5: Acessar Relatórios Analíticos de Desempenho
+US5: Enquanto professor, desejo acessar relatórios analíticos de desempenho da turma para monitorar o impacto real das atividades práticas, o engajamento dos estudantes e a evolução pedagógica deles, aplicando filtros por período e por escopo (individual ou geral)
+
+Prioridade: Média.
+
+**Critérios de Aceitação (CA):**
+
+* **CA01** (Filtros de Escopo - #36): A interface do relatório deve permitir ao professor selecionar se deseja visualizar os dados consolidados da Turma Completa ou os dados específicos de um Aluno Individual.
+* **CA02** (Filtros de Período - #36): O sistema deve disponibilizar um componente de filtro temporal para que os dados sejam agrupados ou limitados por: Semanal, Mensal ou Intervalo Customizado (seleção de data início e fim).
+* **CA03** (Visualização Gráfica/Tabela): O relatório gerado na tela deve exibir de forma clara e legível os indicadores definidos nas Regras de Negócio, atualizando os valores dinamicamente conforme os filtros aplicados.
+* **CA04** (Ação de Exportar): A tela do relatório deve possuir um botão visível para realizar o download do documento gerado.
+
+** Regras de Negócio (RN):**
+
+* **RN01** - Definição de Métricas do Relatório (#35): Para eliminar ambiguidades conceituais, o sistema deve extrair do banco de dados e calcular exatamente as seguintes métricas:
+  * **Impacto Real:** Volume total de desafios práticos enviados que foram validados/aprovados pelo professor (ex: quantidade total de atividades concluídas com sucesso).
+  * **Engajamento:** Taxa de participação (proporção de desafios aceitos versus desafios lançados) e frequência de acessos (número de logins realizados na plataforma no período selecionado).
+  * **Evolução Pedagógica:** Curva de crescimento e progresso da média de pontos acumulados ao longo do tempo, permitindo comparar o rendimento atual com períodos anteriores.
+* **RN02** - Restrição de Formato de Exportação: O relatório gerado deve permitir a exportação estritamente no formato PDF, bloqueando qualquer outro tipo de extensão.
+
 
 1. Tabela de Classes de Equivalência
 
@@ -132,7 +210,22 @@ US5: Acessar Relatórios Analíticos de Desempenho
 
 ---
 
-US6: Recursos de Acessibilidade Visual
+US6 : Enquanto usuário com baixa visão, desejo configurar recursos de acessibilidade visual para facilitar a navegação e o consumo de conteúdo na plataforma
+
+Prioridade: Alta.
+
+**Critérios de Aceitação (CA):**
+* **CA01** - Seletor de Paletas: O sistema deve oferecer pelo menos três opções de alto contraste:
+    - 1. **Modo Escuro**: Fundo #000000 (Preto) com texto #FFFFFF (Branco)
+    - 2. **Modo Daltonismo**: Fundo #000000 (Preto) com texto #FFFF00 (Amarelo)
+    - 3. **Modo Suave: Fundo** #FDF6E3 (Creme) com texto #002B36 (Azul Escuro)
+ * **CA02** - Ajuste de Escala: O usuário deve poder aumentar o tamanho da fonte em até 200% sem perda de funcionalidade ou sobreposição de elementos na interface
+ * **CA03** - Feedback Imediato: Qualquer alteração nas configurações de contraste ou fonte deve ser aplicada na interface em no máximo 1 segundo, sem necessidade de recarregar a página
+
+**Regras de Negócio (RN):**
+* **RN01** - Persistência de Perfil: As configurações de acessibilidade devem ser vinculadas à conta do usuário e carregadas automaticamente após o login em qualquer dispositivo
+ * **RN02** - Conformidade WCAG: O sistema deve oferecer combinações de cores que garantam uma razão de contraste de, no mínimo, 7:1 para textos normais
+
 1. Tabela de Classes de Equivalência
 
 | Condição de Entrada | Classes Válidas | Classes Inválidas |
@@ -157,7 +250,25 @@ US6: Recursos de Acessibilidade Visual
 
 ---
 
-US7: Rótulos Descritivos e Anúncios Dinâmicos
+US7 : Enquanto estudante com deficiência visual que utiliza leitores de tela, desejo que todos os componentes interativos da interface possuam rótulos descritivos e anunciem suas mudanças de estado de forma clara, para que eu possa navegar pela plataforma de maneira autônoma e sem barreiras visuais.
+
+Prioridade: Alta.
+
+**Critérios de Aceitação (CA):**
+
+* **CA01** (Rótulos Descritivos): Todos os botões e elementos interativos devem possuir rótulos acessíveis (tags de acessibilidade/semântica) que descrevam sua função exata de forma concisa quando focados pelo leitor de tela (ex: "Botão Voltar", "Botão Enviar Evidência").
+* **CA02** (Anúncio Dinâmico de Estados): O leitor de tela deve anunciar imediatamente qualquer mudança no estado dos componentes interativos. O sistema deve emitir feedbacks de voz específicos para os seguintes cenários:
+  * **Desabilitado:** Informar explicitamente se o componente está indisponível para clique (ex: "Botão Avançar, desabilitado").
+  * **Selecionado:** Informar o estado de seleção de elementos de alternância, abas ou filtros (ex: "Aba Desafios, selecionado").
+  * **Carregamento (Loading):** Quando uma ação disparar um processo assíncrono, o leitor de tela deve anunciar que a página ou o elemento está carregando (ex: "Carregando evidência, por favor aguarde"), evitando que o usuário pense que o aplicativo travou.
+
+**Regras de Negócio (RN):**
+
+* **RN01** - Definição de Elementos Decorativos (Fim da Ambiguidade - #41): Para evitar a ocultação acidental de dados relevantes, o atributo de ocultação para leitores de tela (ex: ocultar semântica) deve ser aplicado estritamente aos seguintes elementos visuais:
+  * Ícones puramente decorativos que estejam posicionados ao lado de um texto que já descreve a ação.
+  * Linhas divisórias, bordas e espaçadores gráficos utilizados apenas para diagramação do layout.
+  * Imagens e ilustrações de fundo (background) que não tragam nenhum contexto pedagógico ou informativo sobre o aplicativo.
+* **RN02** - Preservação de Conteúdo Contextual: Fica estritamente proibido ocultar imagens, ícones ou ilustrações que transmitam informações sobre o progresso do aluno, medalhas (que são restritas apenas ao dono do perfil privado), infográficos ambientais ou qualquer elemento que ajude na compreensão do fluxo da tela. Se o elemento possui significado na experiência, ele deve receber um rótulo textual descritivo.
 
 1. Tabela de Classes de Equivalência
 
@@ -181,7 +292,27 @@ US7: Rótulos Descritivos e Anúncios Dinâmicos
 
 ---
 
-US08: Interface Minimalista
+US08 : Enquanrto usuário do aplicativo, desejo uma interface minimalista e focada em ações ambientais, para que eu possa navegar de forma rápida, intuitiva e sem distrações ou sobrecarga visual.
+
+Prioridade: Média.
+
+**Critérios de Aceitação (CA):**
+
+* **CA01** (Composição Fixa do Menu Principal): O menu de navegação principal do sistema deve ser limitado a, no máximo, 5 itens, mapeados estritamente para as seguintes funcionalidades essenciais do aplicativo:
+  * **Início (Dashboard):** Tela inicial com resumo de atividades.
+  * **Desafios:** Atalho direto para a listagem e envio de metas ambientais.
+  * **Impacto:** Tela de relatórios e evolução pedagógica.
+  * **Perfil:** Visualização de conquistas (restritas ao dono do perfil privado) e dados do usuário.
+  * **Configurações:** Ajustes gerais de conta e acessibilidade.
+* **CA02** (Diretrizes de Layout Clean): Para eliminar a subjetividade de uma "interface limpa", o design das telas deve seguir os seguintes padrões objetivos:
+  * Utilizar a abordagem de Design Minimalista (Flat Design), proibindo o uso de texturas complexas, gradientes excessivos ou excesso de bordas gráficas.
+  * Garantir uma proporção mínima de 30% de espaço em branco (área de respiro/padding) nas telas para destacar os componentes de ação.
+* **CA03** (Controle de Elementos Dinâmicos): Fica proibido o uso de animações automáticas em loop, banners carrossel com transição automática ou pop-ups intrusivos. Transições de tela ou microinterações em botões devem durar no máximo 300ms e ser discretas.
+
+**Regras de Negócio (RN):**
+
+* **RN01** - Consistência de Navegação: Os 5 itens definidos no menu principal (CA01) devem permanecer fixos e visíveis na barra de navegação inferior (Bottom Navigation Bar) em todas as telas principais do aplicativo, garantindo previsibilidade de navegação ao usuário.
+* **RN02** - Redução de Ruído Visual: Elementos gráficos informativos (como gráficos de impacto ou barras de progresso) devem priorizar o uso de dados textuais claros em vez de gráficos puramente ornamentais ou excessivamente coloridos que possam confundir a leitura.
 
 1. Tabela de Classes de Equivalência
 
@@ -207,7 +338,27 @@ US08: Interface Minimalista
 
 ---
 
-US09: Feedback Visual Imediato e Recompensas
+US9 : Enquanto estudante, desejo receber feedback visual imediato e recompensas estruturadas ao concluir uma ação ou submeter uma missão, para acompanhar meu progresso em tempo real e me manter engajado na plataforma.
+
+Prioridade: Alta.
+
+**Critérios de Aceitação (CA):**
+
+* **CA01** (Definição de Conclusão): O evento de "finalizar uma missão" fica tecnicamente definido como o momento em que o usuário clica no botão de confirmação/envio na interface e o backend retorna um status de sucesso (HTTP 200/201) confirmando o recebimento dos dados.
+* **CA02** (Feedback Instantâneo): Em até 1 segundo após a resposta positiva do servidor (conforme definido no CA01), o sistema deve renderizar uma tela ou componente sobreposto (pop-up/modal) com uma animação fluida de sucesso, exibindo uma mensagem comemorativa e o resumo das recompensas obtidas.
+* **CA03** (Especificação das Recompensas): O feedback visual deve discriminar exatamente o tipo de recompensa concedida, dividida em:
+  * **Pontos de Experiência (XP):** Valor numérico somado ao perfil do usuário.
+  * **Medalhas/Badges (se aplicável):** Ícone e nome do emblema conquistado caso o usuário tenha atingido um marco específico de conquistas, garantindo que a exibição dessas medalhas seja restrita apenas ao dono do perfil privado.
+
+**Regras de Negócio (RN):**
+
+* **RN01** - Regra de Atribuição de Recompensas:
+  * Para missões de computação automatizada (ex: quizzes, leitura de conteúdos), as recompensas (XP/Medalhas) são liberadas e exibidas imediatamente no feedback.
+  * Para desafios práticos que dependem de avaliação (conforme US04), o feedback instantâneo de 1 segundo deve exibir apenas a confirmação do envio com o texto: "Desafio enviado com sucesso! Suas recompensas serão computadas assim que o professor validar sua evidência."
+* **RN02** - Tolerância a Falhas de Rede e Estado de Sincronização: O aplicativo não deve travar ou falhar caso o processamento imediato no servidor falhe por instabilidade de rede.
+  * Se houver timeout ou perda de conexão, a ação do usuário deve ser armazenada localmente na base de dados do dispositivo (offline-first).
+  * O sistema deve exibir um feedback alternativo informando que o progresso foi salvo: "Você está offline. Sua missão foi salva e seus pontos serão atualizados assim que a conexão retornar."
+  * O status do perfil deve exibir um indicador visual de "Sincronização Pendente" e atualizar os pontos em segundo plano (background sync) assim que a rede for restabelecida.
 
 1. Tabela de Classes de Equivalência
 
@@ -231,7 +382,25 @@ US09: Feedback Visual Imediato e Recompensas
 
 ---
 
- US10: Consumo de Conteúdos Educativos em Vídeo
+US10 : Enquanto estudante, desejo consumir conteúdos educativos em vídeo sobre ecologia através de um feed dinâmico e acessível, para aprender sobre temas ambientais de forma rápida e interativa.
+
+Prioridade: Média.
+
+**Critérios de Aceitação (CA):**
+
+* **CA01** (Interface do Player e Controles): O sistema deve possuir um player de vídeo integrado, otimizado para visualização vertical em tela cheia (formato mobile). O player deve fornecer controles intuitivos e acessíveis para:
+  * Pausar e reproduzir (Play/Pause).
+  * Avançar e retroceder o tempo do vídeo (barra de progresso arrastável e botões de pulo de 10 segundos).
+  * Ajuste de volume e botão para silenciar (Mute).
+* **CA02** (Navegação e Descoberta): A navegação entre os vídeos deve ser feita por meio de um feed de rolagem vertical contínuo (gesto de deslizar para cima/baixo). A interface deve disponibilizar um menu ou barra de busca para filtrar os vídeos por categorias temáticas de ecologia (ex: Reciclagem, Mudanças Climáticas, Flora e Fauna).
+* **CA03** (Acessibilidade do Conteúdo): O player de vídeo deve fornecer recursos nativos de acessibilidade, incluindo:
+  * Botão para ativar/desativar legendas descritivas (Closed Captions) sincronizadas.
+  * Opção de alternância para faixa de áudio com audiodescrição, garantindo o consumo por usuários com deficiência visual ou auditiva.
+
+**Regras de Negócio (RN):**
+
+* **RN01** - Exclusividade de Publicação e Origem: A inserção, edição, exclusão e gerenciamento de todos os conteúdos de mídia da plataforma (vídeos, fotos e artigos) são de competência e permissão exclusiva dos Administradores do Sistema. Professores e estudantes atuam estritamente como consumidores dessas mídias, não possuindo ferramentas de upload no feed.
+* **RN02** - Duração Flexível dos Conteúdos: Para garantir a dinamicidade do aprendizado sem engessar a explicação pedagógica, os vídeos disponibilizados devem possuir duração flexível, variando de acordo com a complexidade do tema, limitando-se ao tempo máximo de 3 minutos por vídeo (evitando restrições severas ou durações fixas pré-determinadas).
 
 1. Tabela de Classes de Equivalência
 
@@ -258,7 +427,20 @@ US09: Feedback Visual Imediato e Recompensas
 
 ---
 
-US11: Validação de Evidências pelo Professor
+US11:Enquanto professor, desejo validar as evidências enviadas pelos alunos para garantir que as missões práticas foram cumpridas corretamente
+
+**Prioridade:** Alta.
+
+**Critérios de Aceitação (CA):**
+
+* **CA01** - A interface do professor deve exibir uma lista das evidências, permitindo filtragem por "Turma", ordenação de mais recentes primeiro e filtrar entre pendente, aprovado e recusado.
+* **CA02** - O professor deve visualizar a foto enviada pelo aluno acompanhada de botões com cores semânticas: "Aprovar" (Verde) e "Recusar" (Vermelho).
+* **CA03** - Ao clicar em "Recusar", o sistema deve exibir um modal com um campo de texto obrigatório para a inserção da justificativa antes de concluir a ação.
+
+**Regras de Negócio (RN):**
+
+* **RN01** - A pontuação de missões práticas só será atribuída ao perfil do aluno após a aprovação manual do professor.
+* **RN02** - Os pontos da missão entrarão no extrato do aluno com o status "Pendente" no momento do envio, sendo efetivados no saldo total apenas após a aprovação manual do professor.
 
 1. Tabela de Classes de Equivalência
 
@@ -281,7 +463,18 @@ US11: Validação de Evidências pelo Professor
 
 ---
 
-US12: Guia Passo a Passo Interativo (Tutorial)
+US12:Enquanto estudante, desejo utilizar um guia passo a passo interativo para aprender a usar novas funcionalidades sem esquecer as etapas
+
+**Prioridade:** Média.
+
+**Critérios de Aceitação (CA):**
+* O guia deve utilizar balões de ajuda que apontam para os botões principais da interface no primeiro acesso.
+* O tutorial deve ser acionado apenas no primeiro acesso do usuário a uma tela específica (ex: Tela de Missões, Perfil ou Ranking).
+* O guia deve possuir balões de foco em elementos específicos, contendo sempre os botões de controle: "Próximo", "Anterior" e "Pular Tutorial".
+* Se o usuário clicar em "Pular" ou fechar o aplicativo, o tutorial deve ser marcado como concluído e não aparecer novamente de forma automática.
+
+**Regra de Negócio (RN):**
+* O usuário deve poder reiniciar qualquer tutorial manualmente através da tela de "Configurações" do seu perfil.
 
 1. Tabela de Classes de Equivalência
 
@@ -303,8 +496,21 @@ US12: Guia Passo a Passo Interativo (Tutorial)
 | **Caso 5 (Falha)** | 1, 4, 9, 10 | Estudante clica na opção "Pular Tutorial", a tela fecha na hora, mas o sistema falha ao não salvar a preferência e traz o guia de volta na próxima tela. | O botão fecha o tutorial momentaneamente, mas falha ao não marcar o guia como concluído no banco de dados. |
 | **Caso 6 (Falha)** | 1, 4, 7, 11 | Estudante entra no menu de Configurações do seu perfil para tentar rever as dicas, mas o sistema falha e a opção de "Reiniciar Tutorial" sumiu do menu. | O estudante perde a capacidade de acionar o guia interativo manualmente quando precisa tirar alguma dúvida sobre o app. |
 
+---
 
-US13: Realizar Cadastro Básico no Sistema
+US13: Enquanto usuário, desejo realizar o cadastro básico no sistema criando um perfil para salvar meu progresso no Jornada Verde
+
+**Prioridade:** Alta.
+
+**Critérios de Aceitação (CA):**
+
+* **CA01** - O formulário deve exigir: Nome (mínimo de 3 caracteres), E-mail, Senha e Tipo de Perfil (Aluno ou Professor).
+* **CA02** - O campo de senha deve validar um mínimo de 8 caracteres, exigindo pelo menos uma letra maiúscula e um número.
+* **CA03** - O nome de usuário não deve ser igual a um já existente.
+
+**Regras de Negócio (RN):**
+
+* **RN01** - O sistema deve impedir o registro de dois usuários com o mesmo endereço de e-mail.
 
 1. Tabela de Classes de Equivalência
 
@@ -329,7 +535,16 @@ US13: Realizar Cadastro Básico no Sistema
 
 ---
 
-US14: Receber Notificações sobre Novos Desafios
+US14:Enquanto usuário, desejo receber notificações sobre novos desafios semanais lançados para me manter engajado com a causa ambiental
+
+**Prioridade:** Média.
+
+**Critérios de Aceitação (CA):**
+
+* **CA01** - O sistema deve enviar uma notificação push sempre que o professor da turma publicar uma nova missão. 
+* **CA02** - O conteúdo da notificação deve exibir apenas texto, no formato: Título ("Novo Desafio!") e Corpo ("[Nome do Professor] lançou a missão: [Nome da Missão]").
+* **CA03** - Ao clicar na notificação, o app deve abrir diretamente na tela de detalhes da missão referenciada.
+* **CA04** - O usuário deve aceitar receber notificações.
 
 1. Tabela de Classes de Equivalência
 
@@ -350,7 +565,20 @@ US14: Receber Notificações sobre Novos Desafios
 
 ---
 
-US15: Receber selos de "Destaque" enviados pelo professor
+US15:Enquanto estudante, desejo receber selos de "Destaque" enviados pelo meu professor para ter meu esforço reconhecido perante a turma.
+
+**Prioridade:** Baixa.
+
+**Critérios de Aceitação (CA):**
+
+* **CA01** - O selo deve aparecer em uma janela de destaque (pop-up) na tela inicial do aluno em seu próximo login.
+* **CA02** - Após o fechamento do pop-up, o selo deve ser salvo de forma permanente e visível em uma seção chamada "Galeria de Conquistas" no perfil do aluno (sendo esta restrita apenas ao dono do perfil privado).
+
+**Regras de Negócio (RN):**
+
+* **RN01** - Um aluno só pode receber selos de professores que estejam vinculados à mesma turma que ele.
+* **RN02** - Um professor tem o limite de envio de 5 selos por semana por turma, garantindo a exclusividade e valor do reconhecimento.
+* **RN03** - Um aluno pode ter mais de 1 selo cedido por professores.
 
 1. Tabela de Classes de Equivalência
 
