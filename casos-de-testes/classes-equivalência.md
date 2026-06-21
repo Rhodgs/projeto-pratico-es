@@ -10,7 +10,7 @@ Este documento apresenta a estruturação tática dos testes de software do proj
 ---
 ---
 
-US1: Enquanto estudante, desejo manter uma sequência de dias ativos  (ofensiva) para me sentir motivada a interagir com o app diariamente.
+### **US1: Enquanto estudante, desejo manter uma sequência de dias ativos  (ofensiva) para me sentir motivada a interagir com o app diariamente.**
 
 Prioridade: Alta. 
 
@@ -44,17 +44,17 @@ Prioridade: Alta.
 
 ---
 
-US2: Enquanto estudante, desejo visualizar um ranking escolar com atualizações imediatas após a pontuação para competir de forma saudável com meus amigos
+### **US2: Enquanto estudante, desejo visualizar um ranking escolar com atualizações imediatas após a pontuação para competir de forma saudável com meus amigos**
 
 Prioridade: Alta. 
 
-### **Critérios de Aceitação (CA):**
+**Critérios de Aceitação (CA):**
 * **CA01** - Desempenho de Atualização: A interface do usuário deve refletir a nova posição/pontuação em no máximo 3 segundos após a persistência no banco de dados
 * **CA02** - Destaque do Usuário Logado: O item da lista correspondente ao usuário atual deve possuir fundo na cor cinza claro `(#F0F0F0)`
 * **CA03** - Sinalização Visual: O item do usuário logado deve apresentar uma borda lateral esquerda de 5px na cor verde `(#28A745)`
 * **CA04** - Posição fora do limite: Caso o usuário logado não esteja classificado dentro do Top 50, o sistema deve exibir a sua posição e pontuação atual fixadas na parte inferior da tela, logo abaixo da lista do Top 50
 
-### **Regras de Negócio (RN)**
+**Regras de Negócio (RN)**
 * **RN01** - Atualização Reativa: O ranking deve ser recalculado e enviado para a interface sempre que houver uma alteração de pontuação no banco de dados
 * **RN02** - Abrangência do Ranking: O ranking deve listar todos os estudantes matriculados na mesma unidade escolar do usuário
 * **RN03** - Origem da Pontuação: Os pontos contabilizados no ranking são provenientes exclusivamente da conclusão de desafios práticos, da manutenção da ofensiva diária no aplicativo e de conclusão de tarefas dado pelos professores em sala de aula
@@ -90,8 +90,7 @@ Prioridade: Alta.
 ---
 
 
-US3: Enquanto professor , desejo criar "turmas" dentro do aplicativo para gerenciar meus alunos de forma organizada.
-
+### **US3: Enquanto professor , desejo criar "turmas" dentro do aplicativo para gerenciar meus alunos de forma organizada.**
 Prioridade: Alta.
 
 **Critérios de Aceitação (CA):**
@@ -131,7 +130,7 @@ Prioridade: Alta.
 
 ---
 
-US4: Enquanto professor, desejo lançar desafios práticos (como coleta de lixo ou economia de energia) para tirar as aulas da teoria e focar em causas reais, permitindo que os alunos interajam com a atividade e enviem suas evidências dentro do prazo para validação. 
+### **US4: Enquanto professor, desejo lançar desafios práticos (como coleta de lixo ou economia de energia) para tirar as aulas da teoria e focar em causas reais, permitindo que os alunos interajam com a atividade e enviem suas evidências dentro do prazo para validação. **
 
 Prioridade: Alta. 
 
@@ -178,7 +177,7 @@ Prioridade: Alta.
 
 ---
 
-US5: Enquanto professor, desejo acessar relatórios analíticos de desempenho da turma para monitorar o impacto real das atividades práticas, o engajamento dos estudantes e a evolução pedagógica deles, aplicando filtros por período e por escopo (individual ou geral)
+### **US5: Enquanto professor, desejo acessar relatórios analíticos de desempenho da turma para monitorar o impacto real das atividades práticas, o engajamento dos estudantes e a evolução pedagógica deles, aplicando filtros por período e por escopo (individual ou geral)**
 
 Prioridade: Média.
 
@@ -222,7 +221,7 @@ Prioridade: Média.
 
 ---
 
-US6 : Enquanto usuário com baixa visão, desejo configurar recursos de acessibilidade visual para facilitar a navegação e o consumo de conteúdo na plataforma
+### **US6 : Enquanto usuário com baixa visão, desejo configurar recursos de acessibilidade visual para facilitar a navegação e o consumo de conteúdo na plataforma**
 
 Prioridade: Alta.
 
@@ -262,8 +261,7 @@ Prioridade: Alta.
 
 ---
 
-US7 : Enquanto estudante com deficiência visual que utiliza leitores de tela, desejo que todos os componentes interativos da interface possuam rótulos descritivos e anunciem suas mudanças de estado de forma clara, para que eu possa navegar pela plataforma de maneira autônoma e sem barreiras visuais.
-
+### **US7 : Enquanto estudante com deficiência visual que utiliza leitores de tela, desejo que todos os componentes interativos da interface possuam rótulos descritivos e anunciem suas mudanças de estado de forma clara, para que eu possa navegar pela plataforma de maneira autônoma e sem barreiras visuais.**
 Prioridade: Alta.
 
 **Critérios de Aceitação (CA):**
@@ -304,7 +302,7 @@ Prioridade: Alta.
 
 ---
 
-US08 : Enquanrto usuário do aplicativo, desejo uma interface minimalista e focada em ações ambientais, para que eu possa navegar de forma rápida, intuitiva e sem distrações ou sobrecarga visual.
+### **US08 : Enquanrto usuário do aplicativo, desejo uma interface minimalista e focada em ações ambientais, para que eu possa navegar de forma rápida, intuitiva e sem distrações ou sobrecarga visual.**
 
 Prioridade: Média.
 
@@ -350,7 +348,7 @@ Prioridade: Média.
 
 ---
 
-US9 : Enquanto estudante, desejo receber feedback visual imediato e recompensas estruturadas ao concluir uma ação ou submeter uma missão, para acompanhar meu progresso em tempo real e me manter engajado na plataforma.
+### **US9 : Enquanto estudante, desejo receber feedback visual imediato e recompensas estruturadas ao concluir uma ação ou submeter uma missão, para acompanhar meu progresso em tempo real e me manter engajado na plataforma.**
 
 Prioridade: Alta.
 
@@ -394,7 +392,7 @@ Prioridade: Alta.
 
 ---
 
-US10 : Enquanto estudante, desejo consumir conteúdos educativos em vídeo sobre ecologia através de um feed dinâmico e acessível, para aprender sobre temas ambientais de forma rápida e interativa.
+### **US10 : Enquanto estudante, desejo consumir conteúdos educativos em vídeo sobre ecologia através de um feed dinâmico e acessível, para aprender sobre temas ambientais de forma rápida e interativa.**
 
 Prioridade: Média.
 
@@ -439,7 +437,7 @@ Prioridade: Média.
 
 ---
 
-US11:Enquanto professor, desejo validar as evidências enviadas pelos alunos para garantir que as missões práticas foram cumpridas corretamente
+### **US11:Enquanto professor, desejo validar as evidências enviadas pelos alunos para garantir que as missões práticas foram cumpridas corretamente**
 
 **Prioridade:** Alta.
 
@@ -475,7 +473,7 @@ US11:Enquanto professor, desejo validar as evidências enviadas pelos alunos par
 
 ---
 
-US12:Enquanto estudante, desejo utilizar um guia passo a passo interativo para aprender a usar novas funcionalidades sem esquecer as etapas
+### **US12:Enquanto estudante, desejo utilizar um guia passo a passo interativo para aprender a usar novas funcionalidades sem esquecer as etapas**
 
 **Prioridade:** Média.
 
@@ -510,7 +508,7 @@ US12:Enquanto estudante, desejo utilizar um guia passo a passo interativo para a
 
 ---
 
-US13: Enquanto usuário, desejo realizar o cadastro básico no sistema criando um perfil para salvar meu progresso no Jornada Verde
+### **US13: Enquanto usuário, desejo realizar o cadastro básico no sistema criando um perfil para salvar meu progresso no Jornada Verde**
 
 **Prioridade:** Alta.
 
@@ -547,7 +545,7 @@ US13: Enquanto usuário, desejo realizar o cadastro básico no sistema criando u
 
 ---
 
-US14:Enquanto usuário, desejo receber notificações sobre novos desafios semanais lançados para me manter engajado com a causa ambiental
+### **US14:Enquanto usuário, desejo receber notificações sobre novos desafios semanais lançados para me manter engajado com a causa ambiental**
 
 **Prioridade:** Média.
 
@@ -577,7 +575,7 @@ US14:Enquanto usuário, desejo receber notificações sobre novos desafios seman
 
 ---
 
-US15:Enquanto estudante, desejo receber selos de "Destaque" enviados pelo meu professor para ter meu esforço reconhecido perante a turma.
+### **US15:Enquanto estudante, desejo receber selos de "Destaque" enviados pelo meu professor para ter meu esforço reconhecido perante a turma.**
 
 **Prioridade:** Baixa.
 
