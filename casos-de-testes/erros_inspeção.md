@@ -111,3 +111,17 @@ Abaixo, apresentamos um resumo detalhado sobre os maiores erros e problemas enco
   2. Omissão de armazenamento histórico dos itens após fechar a notificação.
 * **Correção Realizada:** Estabeleceu-se uma escassez de 5 envios semanais por turma para cada professor. O sistema criou a "Galeria de Conquistas" para gerenciar e abrigar a permanência de todos os itens. As regras estipulam que o acesso a esses broches e selos é restrito apenas ao dono do perfil privado.
 
+
+## **Conclusão: Análise das Categorias de Defeitos**
+
+Graças a essa inspeção minuciosa, foi possível verificar que o nosso backlog sofria principalmente com dois grandes gargalos: **Omissão** e **Ambiguidade** *(além de algumas inconsistências e fatos incorretos isolados)*. 
+
+A grande maioria dos erros se concentrou nestas duas áreas:
+
+* **Omissão:** Falta de regras de negócio cruciais, como a ausência de limites numéricos, restrições de segurança e definição de comportamentos do sistema em caso de falhas (ex: queda de rede).
+* **Ambiguidade:** Uso de descrições com termos muito vagos e interpretativos para a programação (como *"tempo real"*, *"interface limpa"* e *"botões principais"*).
+
+Identificar e mapear essas categorias exatas de defeitos foi essencial para transformarmos ideias subjetivas em requisitos técnicos e testáveis, garantindo que a equipe de desenvolvimento não tenha dúvidas ou retrabalho na hora de programar.
+
+
+
