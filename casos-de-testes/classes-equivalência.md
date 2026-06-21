@@ -586,7 +586,7 @@ US15:Enquanto estudante, desejo receber selos de "Destaque" enviados pelo meu pr
 | :--- | :--- | :--- |
 | **Vínculo de Turma (RN1)** | Professor e aluno na mesma turma **(1)** | Professor de outra turma **(2)** |
 | **Limite de Envio (RN2)** | Até 5 selos enviados na semana **(3)** | Tentativa de enviar o 6º selo na semana **(4)** |
-| **Exibição do Selo (CA1)** | Pop-up no ecrã inicial no próximo login **(5)** | Pop-up não é exibido no login **(6)** |
+| **Exibição do Selo (CA1)** | Pop-up no tela inicial no próximo login **(5)** | Pop-up não é exibido no login **(6)** |
 | **Armazenamento (CA2)** | Fica salvo na "Galeria de Conquistas" **(7)** | Selo desaparece após fechar o pop-up **(8)** |
 | **Acúmulo de Selos (RN3)** | Aluno recebe o 2º selo ou mais **(9)** | Sistema bloqueia recebimento do 2º selo **(10)** |
 
@@ -594,7 +594,7 @@ US15:Enquanto estudante, desejo receber selos de "Destaque" enviados pelo meu pr
 
 | Casos de Teste | Classes de Equivalência | Entradas (Cenário do Teste) | Resultado Esperado |
 | :--- | :--- | :--- | :--- |
-| **Caso 1 (Sucesso)** | 1, 3, 5, 7, 9 | Professor da mesma turma, com limite disponível, envia um segundo selo ao aluno. O aluno faz login com sucesso e fecha o aviso. | O pop-up surge no ecrã inicial e o selo é guardado permanentemente na Galeria de Conquistas. |
+| **Caso 1 (Sucesso)** | 1, 3, 5, 7, 9 | Professor da mesma turma, com limite disponível, envia um segundo selo ao aluno. O aluno faz login com sucesso e fecha o aviso. | O pop-up surge no tela inicial e o selo é guardado permanentemente na Galeria de Conquistas. |
 | **Caso 2 (Falha)** | 2, 3, 5, 7, 9 | Professor tenta enviar um selo para um aluno, mas o sistema falha ao permitir a ação. (Erro: Professor e aluno pertencem a turmas diferentes). | O sistema quebra a regra de vínculo e permite o envio do selo a um aluno de outra turma. |
 | **Caso 3 (Falha)** | 1, 4, 5, 7, 9 | Professor já enviou 5 selos nesta semana e tenta enviar mais um, mas o botão não o impede. (Erro: Sistema ignora o limite máximo de 5 selos). | O professor ultrapassa o limite semanal, desvalorizando a exclusividade do reconhecimento. |
 | **Caso 4 (Falha)** | 1, 3, 6, 7, 9 | O selo é enviado corretamente, o aluno faz o seu próximo login, mas o sistema falha e não mostra nenhum aviso. (Erro: O pop-up não foi acionado no ecrã inicial). | O aluno não é notificado do reconhecimento no momento exato do login. |
