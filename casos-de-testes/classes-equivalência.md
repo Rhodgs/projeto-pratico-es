@@ -79,27 +79,30 @@ US3: Criar "Turmas" no Aplicativo
 ---
 
 US4: Lançar Desafios Práticos
+
 1. Tabela de Classes de Equivalência
 
-| Condição de Entrada | Classes Válidas | Classes Inválidas | Classes Inválidas |
+| Condição de Entrada | Classes Válidas | Classe Inválida 1 | Classe Inválida 2 |
 | :--- | :--- | :--- | :--- |
-| **Envio dentro do prazo** | Envio realizado antes do cronômetro zerar **(1)** | Envio tentado após o cronômetro zerar **(2)** |
-| **Extensão do arquivo** | Arquivo com extensão `.jpg` ou `.png` **(3)** | Arquivo com extensão diferente (ex: `.pdf`, `.txt`) **(4)** |
-| **Tamanho da imagem** | Arquivo maior que 0 MB e até 5 MB **(5)** | Arquivo igual a 0 MB (vazio) **(6)** | Arquivo maior que 5 MB **(7)** |
-| **Tipo real do arquivo** | O conteúdo interno é realmente uma imagem **(8)** | O conteúdo interno é um script/programa disfarçado **(9)** |
-| **Verificação de duplicidade** | Hash do arquivo é inédito no sistema **(10)** | Hash do arquivo já existe no sistema (duplicado) **(11)** |
+| **Campos de criação (CA1)** | Título, descrição e classificação preenchidos **(1)** | Um ou mais campos em branco **(2)** | - |
+| **Prazo limite (CA1)** | Data e hora definidas para o futuro **(3)** | Data e hora definidas no passado **(4)** | Data e hora definidas no presente/mesma hora **(5)** |
+| **Envio dentro do prazo** | Envio realizado antes do cronômetro zerar **(6)** | Envio tentado após o cronômetro zerar **(7)** | - |
+| **Extensão do arquivo** | Arquivo com extensão `.jpg` ou `.png` **(8)** | Arquivo com extensão diferente (ex: `.pdf`) **(9)** | - |
+| **Tamanho da imagem** | Arquivo maior que 0 MB e até 5 MB **(10)** | Arquivo igual a 0 MB (vazio) **(11)** | Arquivo maior que 5 MB **(12)** |
+| **Tipo real do arquivo** | O conteúdo interno é realmente uma imagem **(13)** | O conteúdo interno é um script/programa disfarçado **(14)** | - |
+| **Verificação de duplicidade** | Hash do arquivo é inédito no sistema **(15)** | Hash do arquivo já existe no sistema (duplicado) **(16)** | - |
 
-2. Tabela de Casos de Teste
+2. Tabela de Casos de Teste (Padronizada com 7 classes por linha)
 
 | Casos de Teste | Classes de Equivalência | Entradas (Cenário do Teste) | Resultado Esperado |
 | :--- | :--- | :--- | :--- |
-| **Caso 1 (Sucesso)** | 1, 3, 5, 8, 10 | Aluno envia imagem `.png` de 2 MB no prazo, correta e inédita. | Upload concluído; status muda para "Aguardando Validação". |
-| **Caso 2 (Falha)** | 2, 3, 5, 8, 10 | Aluno tenta fazer upload de imagem válida, mas prazo expirou. | Sistema bloqueia envio e exibe o status como "Expirado". |
-| **Caso 3 (Falha)** | 1, 4, 5, 8, 10 | Aluno tenta anexar um arquivo `.pdf` dentro do prazo. | Sistema rejeita o arquivo por formato inválido. |
-| **Caso 4 (Falha)** | 1, 3, 6, 8, 10 | Aluno envia arquivo corrompido que ficou com 0 MB (vazio). | Sistema recusa o upload por arquivo inválido/vazio. |
-| **Caso 5 (Falha)** | 1, 3, 7, 8, 10 | Aluno tenta enviar uma foto pesada com 6.2 MB. | Sistema bloqueia o upload (excede o limite de 5 MB). |
-| **Caso 6 (Falha)** | 1, 3, 5, 9, 10 | Usuário renomeia um programa malicioso para "foto.png". | Sistema analisa conteúdo interno e bloqueia arquivo disfarçado. |
-| **Caso 7 (Falha)** | 1, 3, 5, 8, 11 | Aluno envia arquivo idêntico a um que já foi enviado antes. | Sistema rejeita o envio por detecção de duplicidade. |
+| **Caso 1 (Sucesso - Professor)** | 1, 3, 6, 8, 10, 13, 15 | Professor preenche título, descrição, escolhe a classificação e define um prazo limite para o mês seguinte. | O desafio é cadastrado com sucesso e fica disponível para os alunos da turma. |
+| **Caso 2 (Falha - Professor)** | 2, 3, 6, 8, 10, 13, 15 | Professor tenta criar o desafio, mas esquece de preencher o Título e a Descrição. (Erro: Campos obrigatórios vazios). | O sistema bloqueia a criação e exige o preenchimento dos campos em branco. |
+| **Caso 3 (Falha - Professor)** | 1, 4, 6, 8, 10, 13, 15 | Professor preenche todos os textos, mas define o prazo limite do desafio para o dia anterior. (Erro: Prazo no passado). | O sistema bloqueia a criação e exige que a data e hora sejam no futuro. |
+| **Caso 4 (Falha - Professor)** | 1, 5, 6, 8, 10, 13, 15 | Professor preenche tudo, mas define o prazo para o mesmo minuto atual da criação. (Erro: Prazo no presente/imediato). | O sistema bloqueia a criação e informa que o prazo precisa dar um tempo mínimo útil de duração. |
+| **Caso 5 (Sucesso - Aluno)** | 1, 3, 6, 8, 10, 13, 15 | Aluno envia imagem `.png` de 2 MB no prazo, correta e inédita para o desafio criado. | Upload concluído; status muda para "Aguardando Validação". |
+| **Caso 6 (Falha - Aluno)** | 1, 3, 7, 8, 10, 13, 15 | Aluno tenta fazer upload de imagem válida, mas o cronômetro já zerou. (Erro: Prazo expirado). | Sistema bloqueia envio e exibe o status
+
 
 ---
 
