@@ -1,4 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:jornada_verde/core/theme/app_colors.dart';
+import 'package:jornada_verde/core/utils/api_feedback.dart';
+import 'package:jornada_verde/core/widgets/app_logo.dart';
+import 'package:jornada_verde/core/widgets/jv_text_field.dart';
+import 'package:jornada_verde/screens/login_screen.dart';
+import 'package:jornada_verde/screens/student_dashboard_screen.dart';
+import 'package:jornada_verde/screens/teacher_dashboard_screen.dart';
+import 'package:jornada_verde/services/api_service.dart';
+
+enum UserRole { aluno, professor }
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -8,95 +18,65 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final _formKey = GlobalKey<FormState>();
+  final _api = ApiService.instance;
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
-  final _codigoTurmaController = TextEditingController();
+  final _classCodeController = TextEditingController();
 
-  bool _obscurePassword = true;
-  bool _obscureConfirm = true;
+  UserRole _selectedRole = UserRole.aluno;
   bool _acceptedTerms = false;
-  bool _isLoading = false;
-
-  String _selectedProfile = 'Aluno';
-  final List<String> _perfis = ['Aluno', 'Professor'];
-
-  String? _selectedSerie;
-  String? _selectedTurma;
-
-  final List<String> _series = [
-    '6º ano',
-    '7º ano',
-    '8º ano',
-    '9º ano',
-    '1º ano EM',
-    '2º ano EM',
-    '3º ano EM',
-  ];
-
-  final List<String> _turmas = [
-    'Turma A',
-    'Turma B',
-    'Turma C',
-    'Turma D',
-    'Turma E',
-  ];
+  bool _obscurePassword = true;
 
   @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _confirmPasswordController.dispose();
-    _codigoTurmaController.dispose();
+    _classCodeController.dispose();
     super.dispose();
   }
 
-  void _register() async {
-    if (_formKey.currentState!.validate()) {
-      if (!_acceptedTerms) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Você precisa aceitar os termos de uso para continuar.'),
-            backgroundColor: Colors.red,
+  void _openTerms() {
+    showDialog<void>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Termos de Uso e Política de Privacidade'),
+        content: const Text(
+          'Leia atentamente nossos termos antes de continuar.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Fechar'),
           ),
-        );
-        return;
-      }
-      setState(() => _isLoading = true);
-      await Future.delayed(const Duration(milliseconds: 1400));
-      if (mounted) {
-        setState(() => _isLoading = false);
-        Navigator.pushReplacementNamed(context, '/home');
-      }
-    }
+        ],
+      ),
+    );
   }
 
-  Widget _buildDropdown({
-    required String label,
-    required String? value,
-    required List<String> items,
-    required ValueChanged<String?> onChanged,
-  }) {
-    return DropdownButtonFormField<String>(
-      value: value,
-      decoration: InputDecoration(
-        labelText: label,
+  Future<void> _submit() async {
+    final role = _selectedRole == UserRole.aluno ? 'aluno' : 'professor';
+
+    await ApiFeedback.execute(
+      context: context,
+      request: () => _api.cadastrarUsuario(
+        nome: _nameController.text.trim(),
+        email: _emailController.text.trim(),
+        senha: _passwordController.text,
+        role: role,
+        codigoTurma: _selectedRole == UserRole.aluno
+            ? _classCodeController.text.trim()
+            : null,
       ),
-      icon: const Icon(Icons.keyboard_arrow_down_rounded),
-      dropdownColor: Colors.white,
-      borderRadius: BorderRadius.circular(12),
-      items: items
-          .map((item) => DropdownMenuItem(value: item, child: Text(item)))
-          .toList(),
-      onChanged: onChanged,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Selecione $label';
-        }
-        return null;
+      successMessage: 'Cadastro realizado com sucesso!',
+      onSuccess: (_) {
+        final destination = _selectedRole == UserRole.aluno
+            ? const StudentDashboardScreen()
+            : const TeacherDashboardScreen();
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute<void>(builder: (_) => destination),
+        );
       },
     );
   }
@@ -104,368 +84,210 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F9F5),
-      appBar: AppBar(
-        title: const Text('Criar Conta'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Header
-                Row(
+      backgroundColor: AppColors.primaryGreen,
+      body: Column(
+        children: [
+          SafeArea(
+            bottom: false,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 24, bottom: 20),
+              child: AppLogo(size: 64, showTagline: true),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                color: AppColors.cardBackground,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+              ),
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(24, 28, 24, 32),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Container(
-                      width: 48,
-                      height: 48,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF2D7A3E).withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Icon(Icons.eco_rounded, color: Color(0xFF2D7A3E)),
+                    JvTextField(
+                      label: 'Nome Completo',
+                      controller: _nameController,
+                      hint: 'Alex da Cruz',
+                      icon: Icons.person_outline,
                     ),
-                    const SizedBox(width: 12),
-                    const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    const SizedBox(height: 20),
+                    JvTextField(
+                      label: 'Email',
+                      controller: _emailController,
+                      hint: 'seu@email.com',
+                      icon: Icons.email_outlined,
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    const SizedBox(height: 20),
+                    JvTextField(
+                      label: 'Senha',
+                      controller: _passwordController,
+                      hint: '••••••••',
+                      icon: Icons.lock_outline,
+                      obscureText: _obscurePassword,
+                      suffix: IconButton(
+                        icon: Icon(
+                          _obscurePassword
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
+                          color: AppColors.textLight,
+                        ),
+                        onPressed: () {
+                          setState(() => _obscurePassword = !_obscurePassword);
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    Row(
                       children: [
-                        Text(
-                          'Jornada Verde',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF2D7A3E),
+                        Expanded(
+                          child: _RoleChip(
+                            label: 'ALUNO',
+                            selected: _selectedRole == UserRole.aluno,
+                            onTap: () {
+                              setState(() => _selectedRole = UserRole.aluno);
+                            },
                           ),
                         ),
-                        Text(
-                          'Comece sua missão hoje',
-                          style: TextStyle(fontSize: 12, color: Color(0xFF888888)),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: _RoleChip(
+                            label: 'PROFESSOR',
+                            selected: _selectedRole == UserRole.professor,
+                            onTap: () {
+                              setState(() => _selectedRole = UserRole.professor);
+                            },
+                          ),
                         ),
                       ],
+                    ),
+                    if (_selectedRole == UserRole.aluno) ...[
+                      const SizedBox(height: 20),
+                      JvTextField(
+                        label: 'Código da Turma (6 caracteres)',
+                        controller: _classCodeController,
+                        hint: 'ABC123',
+                        icon: Icons.waves_outlined,
+                        keyboardType: TextInputType.text,
+                      ),
+                    ],
+                    const SizedBox(height: 16),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Checkbox(
+                          value: _acceptedTerms,
+                          activeColor: AppColors.primaryGreen,
+                          onChanged: (v) {
+                            setState(() => _acceptedTerms = v ?? false);
+                          },
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: _openTerms,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: RichText(
+                                text: const TextSpan(
+                                  style: TextStyle(
+                                    color: AppColors.textDark,
+                                    fontSize: 14,
+                                    height: 1.4,
+                                  ),
+                                  children: [
+                                    TextSpan(text: 'Li e aceito os '),
+                                    TextSpan(
+                                      text:
+                                          'Termos de Uso e Política de Privacidade',
+                                      style: TextStyle(
+                                        color: AppColors.linkAccent,
+                                        decoration: TextDecoration.underline,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    SizedBox(
+                      height: 54,
+                      child: ElevatedButton(
+                        onPressed: _acceptedTerms ? _submit : null,
+                        style: ElevatedButton.styleFrom(
+                          disabledBackgroundColor:
+                              AppColors.primaryGreen.withValues(alpha: 0.35),
+                        ),
+                        child: const Text('Cadastrar'),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute<void>(
+                            builder: (_) => const LoginScreen(),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        'Já tenho uma conta',
+                        style: TextStyle(color: AppColors.linkAccent),
+                      ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 24),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
-                // Card principal
-                Container(
-                  padding: const EdgeInsets.all(24),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.06),
-                        blurRadius: 16,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Dados Pessoais',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF2D7A3E),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _nameController,
-                        textCapitalization: TextCapitalization.words,
-                        decoration: const InputDecoration(
-                          labelText: 'Nome completo',
-                          prefixIcon: Icon(Icons.person_outlined),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return 'Informe o nome completo';
-                          }
-                          if (value.trim().split(' ').length < 2) {
-                            return 'Informe nome e sobrenome';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: const InputDecoration(
-                          labelText: 'E-mail',
-                          prefixIcon: Icon(Icons.email_outlined),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Informe o e-mail';
-                          }
-                          if (!value.contains('@') || !value.contains('.')) {
-                            return 'E-mail inválido';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _passwordController,
-                        obscureText: _obscurePassword,
-                        decoration: InputDecoration(
-                          labelText: 'Senha',
-                          prefixIcon: const Icon(Icons.lock_outlined),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscurePassword
-                                  ? Icons.visibility_outlined
-                                  : Icons.visibility_off_outlined,
-                            ),
-                            onPressed: () {
-                              setState(() => _obscurePassword = !_obscurePassword);
-                            },
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Informe a senha';
-                          }
-                          if (value.length < 6) {
-                            return 'Mínimo de 6 caracteres';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _confirmPasswordController,
-                        obscureText: _obscureConfirm,
-                        decoration: InputDecoration(
-                          labelText: 'Confirmar senha',
-                          prefixIcon: const Icon(Icons.lock_outlined),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureConfirm
-                                  ? Icons.visibility_outlined
-                                  : Icons.visibility_off_outlined,
-                            ),
-                            onPressed: () {
-                              setState(() => _obscureConfirm = !_obscureConfirm);
-                            },
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Confirme a senha';
-                          }
-                          if (value != _passwordController.text) {
-                            return 'As senhas não coincidem';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      _buildDropdown(
-                        label: 'Tipo de Perfil',
-                        value: _selectedProfile,
-                        items: _perfis,
-                        onChanged: (value) => setState(() => _selectedProfile = value ?? 'Aluno'),
-                      ),
-                      if (_selectedProfile == 'Aluno') ...[
-                        const SizedBox(height: 16),
-                        TextFormField(
-                          controller: _codigoTurmaController,
-                          maxLength: 6,
-                          textCapitalization: TextCapitalization.characters,
-                          decoration: const InputDecoration(
-                            labelText: 'Código da Turma (Ex: AM42XP)',
-                            prefixIcon: Icon(Icons.group_outlined),
-                            counterText: '',
-                          ),
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'Informe o código da turma';
-                            }
-                            return null;
-                          },
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
+class _RoleChip extends StatelessWidget {
+  const _RoleChip({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
 
-                const SizedBox(height: 16),
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
 
-                // Card Escola
-                Container(
-                  padding: const EdgeInsets.all(24),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.06),
-                        blurRadius: 16,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Dados Escolares',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF2D7A3E),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      _buildDropdown(
-                        label: 'Série',
-                        value: _selectedSerie,
-                        items: _series,
-                        onChanged: (value) => setState(() => _selectedSerie = value),
-                      ),
-                      const SizedBox(height: 16),
-                      _buildDropdown(
-                        label: 'Turma',
-                        value: _selectedTurma,
-                        items: _turmas,
-                        onChanged: (value) => setState(() => _selectedTurma = value),
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 16),
-
-                // Termos de uso
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: _acceptedTerms
-                          ? const Color(0xFF2D7A3E)
-                          : const Color(0xFFE0E0E0),
-                    ),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: Checkbox(
-                          value: _acceptedTerms,
-                          activeColor: const Color(0xFF2D7A3E),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          onChanged: (value) {
-                            setState(() => _acceptedTerms = value ?? false);
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() => _acceptedTerms = !_acceptedTerms);
-                          },
-                          child: RichText(
-                            text: const TextSpan(
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: Color(0xFF444444),
-                                height: 1.5,
-                              ),
-                              children: [
-                                TextSpan(text: 'Li e aceito os '),
-                                TextSpan(
-                                  text: 'Termos de Uso',
-                                  style: TextStyle(
-                                    color: Color(0xFF2D7A3E),
-                                    fontWeight: FontWeight.bold,
-                                    decoration: TextDecoration.underline,
-                                  ),
-                                ),
-                                TextSpan(text: ' e a '),
-                                TextSpan(
-                                  text: 'Política de Privacidade',
-                                  style: TextStyle(
-                                    color: Color(0xFF2D7A3E),
-                                    fontWeight: FontWeight.bold,
-                                    decoration: TextDecoration.underline,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: ' do Jornada Verde. (obrigatório)',
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 24),
-
-                SizedBox(
-                  width: double.infinity,
-                  height: 52,
-                  child: ElevatedButton(
-                    onPressed: _isLoading ? null : _register,
-                    child: _isLoading
-                        ? const SizedBox(
-                            width: 22,
-                            height: 22,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 2.5,
-                            ),
-                          )
-                        : const Text('Criar Conta'),
-                  ),
-                ),
-
-                const SizedBox(height: 16),
-
-                Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Já tem uma conta? ',
-                        style: TextStyle(color: Color(0xFF666666)),
-                      ),
-                      GestureDetector(
-                        onTap: () => Navigator.pop(context),
-                        child: const Text(
-                          'Entrar',
-                          style: TextStyle(
-                            color: Color(0xFF2D7A3E),
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 32),
-              ],
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: selected ? AppColors.mintGreen : AppColors.cardBackground,
+      borderRadius: BorderRadius.circular(24),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(24),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(
+              color: selected ? AppColors.primaryGreen : AppColors.textLight,
+              width: selected ? 2 : 1,
+            ),
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            label,
+            style: TextStyle(
+              fontWeight: FontWeight.w800,
+              fontSize: 13,
+              letterSpacing: 0.5,
+              color: selected ? AppColors.primaryGreen : AppColors.textLight,
             ),
           ),
         ),
