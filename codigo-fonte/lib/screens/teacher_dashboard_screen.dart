@@ -4,17 +4,20 @@ import 'package:jornada_verde/core/utils/api_feedback.dart';
 import 'package:jornada_verde/screens/teacher_launch_challenge_screen.dart';
 import 'package:jornada_verde/screens/teacher_validation_screen.dart';
 import 'package:jornada_verde/services/api_service.dart';
+import 'package:flutter/services.dart';
 
 class _ActiveClass {
   _ActiveClass({
     required this.id,
     required this.name,
     required this.students,
+    required this.codigo,
   });
 
   final String id;
   final String name;
   final int students;
+  final String codigo;
 }
 
 class TeacherDashboardScreen extends StatefulWidget {
@@ -26,70 +29,176 @@ class TeacherDashboardScreen extends StatefulWidget {
 
 class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
   final _api = ApiService.instance;
+  @override
+  void initState() {
+    super.initState();
+    _carregarTurmas();
+  }
 
-  final List<_ActiveClass> _classes = [
-    _ActiveClass(id: '1', name: 'Turma 2º 04', students: 28),
-    _ActiveClass(id: '2', name: 'Turma 3º 02', students: 32),
-    _ActiveClass(id: '3', name: 'Turma 1º 08', students: 25),
-  ];
+  Future<void> _carregarTurmas() async {
+    try {
+      final lista = await _api.listarTurmas();
+      setState(() {
+        _classes.clear();
+        for (final t in lista) {
+          _classes.add(_ActiveClass(
+            id: t['id'].toString(),
+            name: t['nome'] as String,
+            students: (t['alunos'] as List).length,
+            codigo: t['codigo']?.toString() ?? '',
+          ));
+        }
+        _carregando = false;
+      });
+    } catch (_) {
+      setState(() => _carregando = false);
+    }
+  }
+
+  final List<_ActiveClass> _classes = [];
+  bool _carregando = true;
 
   void _showCreateClassDialog() {
-    final nameController = TextEditingController();
+    final screenContext = context; // 👈 linha nova
+    // 1. Nossas opções fixas
+    final List<String> anos = ['1º Ano', '2º Ano', '3º Ano'];
+    final List<String> turmas = ['01', '02', '03', '04', '05'];
+
+    // 2. Variáveis para guardar as seleções
+    String? anoSelecionado;
+    String? turmaSelecionada;
 
     showDialog<void>(
       context: context,
-      builder: (dialogContext) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text('Nova Turma'),
-        content: TextField(
-          controller: nameController,
-          decoration: const InputDecoration(
-            labelText: 'Nome da Turma',
-            hintText: 'Ex: Turma 2º 04',
+      builder: (dialogContext) =>
+          StatefulBuilder(// StatefulBuilder é o segredo pro Modal atualizar!
+              builder: (context, setStateDialog) {
+        return AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: const Text('Nova Turma'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min, // Pro modal não ocupar a tela toda
+            children: [
+              // --- MENU DO ANO ---
+              DropdownButtonFormField<String>(
+                decoration: const InputDecoration(
+                  labelText: 'Ano',
+                  border: OutlineInputBorder(),
+                ),
+                value: anoSelecionado,
+                items: anos.map((String ano) {
+                  return DropdownMenuItem<String>(
+                    value: ano,
+                    child: Text(ano),
+                  );
+                }).toList(),
+                onChanged: (String? novoValor) {
+                  setStateDialog(() {
+                    // Atualiza SÓ o modal
+                    anoSelecionado = novoValor;
+                  });
+                },
+              ),
+              const SizedBox(height: 16), // Espacinho
+              // --- MENU DA TURMA ---
+              DropdownButtonFormField<String>(
+                decoration: const InputDecoration(
+                  labelText: 'Turma',
+                  border: OutlineInputBorder(),
+                ),
+                value: turmaSelecionada,
+                items: turmas.map((String turma) {
+                  return DropdownMenuItem<String>(
+                    value: turma,
+                    child: Text('Turma $turma'),
+                  );
+                }).toList(),
+                onChanged: (String? novoValor) {
+                  setStateDialog(() {
+                    turmaSelecionada = novoValor;
+                  });
+                },
+              ),
+            ],
           ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(dialogContext); // Apenas fecha o modal
+              },
+              child: const Text('Cancelar'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                // Se o cara não selecionou algum dos dois, não deixa criar
+                if (anoSelecionado == null || turmaSelecionada == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text('Por favor, selecione o Ano e a Turma!')),
+                  );
+                  return;
+                }
+
+                // 3. Monta o nome perfeito para o banco de dados
+                final nome = '$anoSelecionado - Turma $turmaSelecionada';
+                Navigator.pop(dialogContext); // Fecha o modal
+
+                // 4. Chama a API usando a estrutura que a sua equipe já montou
+                await ApiFeedback.execute(
+                  context: screenContext,
+                  request: () => _api.criarTurma(nome: nome),
+                  successMessage: 'Turma criada com sucesso!',
+                  onSuccess: (data) {
+                    setState(() {
+                      // Esse setState atualiza a lista de trás (da tela principal)
+                      _classes.add(
+                        _ActiveClass(
+                          id: data['id']?.toString() ??
+                              DateTime.now().millisecondsSinceEpoch.toString(),
+                          name: nome,
+                          students: 0,
+                          codigo: data['codigo']?.toString() ?? '',
+                        ),
+                      );
+                    });
+                  },
+                );
+              },
+              child: const Text('Criar'),
+            ),
+          ],
+        );
+      }),
+    );
+  }
+
+  Future<void> _deleteClass(String id, String nome) async {
+    final confirmado = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Text('Excluir Turma'),
+        content: Text(
+          'Esta ação desvinculará todos os alunos de "$nome". '
+          'O histórico será arquivado por 90 dias. Confirmar?',
         ),
         actions: [
           TextButton(
-            onPressed: () {
-              nameController.dispose();
-              Navigator.pop(dialogContext);
-            },
+            onPressed: () => Navigator.pop(ctx, false),
             child: const Text('Cancelar'),
           ),
           ElevatedButton(
-            onPressed: () async {
-              final nome = nameController.text.trim();
-              nameController.dispose();
-              Navigator.pop(dialogContext);
-
-              if (nome.isEmpty) return;
-
-              await ApiFeedback.execute(
-                context: context,
-                request: () => _api.criarTurma(nome: nome),
-                successMessage: 'Turma criada com sucesso!',
-                onSuccess: (data) {
-                  setState(() {
-                    _classes.add(
-                      _ActiveClass(
-                        id: data['id']?.toString() ??
-                            DateTime.now().millisecondsSinceEpoch.toString(),
-                        name: nome,
-                        students: 0,
-                      ),
-                    );
-                  });
-                },
-              );
-            },
-            child: const Text('Criar'),
+            style: ElevatedButton.styleFrom(backgroundColor: AppColors.red),
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('Excluir', style: TextStyle(color: Colors.white)),
           ),
         ],
       ),
     );
-  }
 
-  Future<void> _deleteClass(String id) async {
+    if (confirmado != true) return;
+
     await ApiFeedback.execute(
       context: context,
       request: () => _api.excluirTurma(turmaId: id),
@@ -121,7 +230,7 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
                       padding: const EdgeInsets.only(bottom: 10),
                       child: _ClassCard(
                         turma: turma,
-                        onDelete: () => _deleteClass(turma.id),
+                        onDelete: () => _deleteClass(turma.id, turma.name),
                       ),
                     ),
                   ),
@@ -349,6 +458,33 @@ class _ClassCard extends StatelessWidget {
                       color: AppColors.textLight,
                       fontSize: 13,
                     ),
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        'Código: ${turma.codigo}',
+                        style: const TextStyle(
+                          color: AppColors.primaryGreen,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.2,
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      GestureDetector(
+                        onTap: () {
+                          Clipboard.setData(ClipboardData(text: turma.codigo));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Código copiado!')),
+                          );
+                        },
+                        child: const Icon(
+                          Icons.copy,
+                          size: 14,
+                          color: AppColors.primaryGreen,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
