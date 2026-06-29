@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:jornada_verde/core/theme/app_colors.dart';
 import 'package:jornada_verde/core/utils/api_feedback.dart';
+import 'package:jornada_verde/core/app_preferences.dart';
 import 'package:jornada_verde/services/api_service.dart';
+import 'package:jornada_verde/main.dart';
 
 class AccessibilityScreen extends StatefulWidget {
   const AccessibilityScreen({super.key});
@@ -15,7 +17,17 @@ class _AccessibilityScreenState extends State<AccessibilityScreen> {
 
   bool _darkMode = false;
   bool _colorBlindMode = false;
-  double _fontSize = 16;
+  double _fontSize = 16; // valor inicial, será sobrescrito no initState
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final prefs = AppPreferences.of(context);
+    if (prefs != null) {
+      _fontSize = prefs.fontSize;
+      _darkMode = prefs.isDarkMode; // LÊ O VALOR GLOBAL
+    }
+  }
 
   Future<void> _salvarPreferencias({bool popOnSuccess = true}) async {
     await ApiFeedback.execute(
@@ -27,6 +39,10 @@ class _AccessibilityScreenState extends State<AccessibilityScreen> {
       ),
       successMessage: 'Preferências salvas com sucesso!',
       onSuccess: (_) {
+        // ATUALIZA OS DOIS VALORES NO APP INTEIRO
+        JornadaVerdeApp.of(context)?.setFontSize(_fontSize);
+        JornadaVerdeApp.of(context)?.setDarkMode(_darkMode);
+
         if (popOnSuccess && mounted) Navigator.of(context).pop();
       },
     );
@@ -141,7 +157,7 @@ class _AccessibilityScreenState extends State<AccessibilityScreen> {
           SizedBox(
             height: 54,
             child: ElevatedButton(
-              onPressed: _salvarPreferencias,
+              onPressed: () => _salvarPreferencias(popOnSuccess: false),
               child: const Text('Salvar Preferências'),
             ),
           ),

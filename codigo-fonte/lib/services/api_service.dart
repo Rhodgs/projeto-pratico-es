@@ -35,7 +35,7 @@ class ApiService {
       }
     }
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       return body ?? {};
     }
 
@@ -115,6 +115,16 @@ class ApiService {
       body: jsonEncode({'arquivoNome': arquivoNome}),
     );
     return _parseResponse(response);
+  }
+
+  Future<List<dynamic>> listarTurmas() async {
+    final response = await _client.get(
+      Uri.parse('$baseUrl/turmas'),
+      headers: _jsonHeaders,
+    );
+    final parsed = jsonDecode(response.body);
+    if (parsed is List) return parsed;
+    return [];
   }
 
   Future<Map<String, dynamic>> criarTurma({required String nome}) async {

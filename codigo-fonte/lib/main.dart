@@ -12,6 +12,7 @@ import 'package:jornada_verde/screens/teacher_dashboard_screen.dart';
 import 'package:jornada_verde/screens/teacher_launch_challenge_screen.dart';
 import 'package:jornada_verde/screens/teacher_validation_screen.dart';
 import 'package:jornada_verde/screens/accessibility_screen.dart';
+import 'package:jornada_verde/core/app_preferences.dart';
 
 // A CHAVE MESTRA: Controla o aplicativo de qualquer lugar
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -20,8 +21,22 @@ void main() {
   runApp(const JornadaVerdeApp());
 }
 
-class JornadaVerdeApp extends StatelessWidget {
+class JornadaVerdeApp extends StatefulWidget {
   const JornadaVerdeApp({super.key});
+
+  static _JornadaVerdeAppState? of(BuildContext context) =>
+      context.findAncestorStateOfType<_JornadaVerdeAppState>();
+
+  @override
+  State<JornadaVerdeApp> createState() => _JornadaVerdeAppState();
+}
+
+class _JornadaVerdeAppState extends State<JornadaVerdeApp> {
+  double fontSize = 16;
+  bool isDarkMode = false;
+
+  void setFontSize(double size) => setState(() => fontSize = size);
+  void setDarkMode(bool isDark) => setState(() => isDarkMode = isDark);
 
   void _mostrarDevMenuGlobal() {
     // Usamos a chave mestra para descobrir onde o app está agora
@@ -80,28 +95,72 @@ class JornadaVerdeApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: navigatorKey, // ENTREGAMOS A CHAVE AQUI PARA O FLUTTER
-      title: 'Jornada Verde',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
-        useMaterial3: true,
-      ),
-      builder: (context, child) {
-        return CallbackShortcuts(
-          bindings: <ShortcutActivator, VoidCallback>{
-            const SingleActivator(LogicalKeyboardKey.f9): () {
-              _mostrarDevMenuGlobal();
-            },
-          },
-          child: Focus(
-            autofocus: true,
-            child: child ?? const SizedBox(),
+    return AppPreferences(
+      fontSize: fontSize,
+      isDarkMode: isDarkMode,
+      child: MaterialApp(
+        navigatorKey: navigatorKey,
+        title: 'Jornada Verde',
+        debugShowCheckedModeBanner: false,
+        themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+          useMaterial3: true,
+        ),
+        darkTheme: ThemeData(
+          brightness: Brightness.dark,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.green,
+            brightness:
+                Brightness.dark, // Garante que a paleta verde adapte pro escuro
           ),
-        );
-      },
-      home: const WelcomeScreen(),
+          useMaterial3: true,
+        ),
+        builder: (context, child) {
+          return CallbackShortcuts(
+            bindings: <ShortcutActivator, VoidCallback>{
+              const SingleActivator(LogicalKeyboardKey.f9): () {
+                _mostrarDevMenuGlobal();
+              },
+            },
+            child: Focus(
+              autofocus: true,
+              child: MediaQuery(
+                data: MediaQuery.of(context).copyWith(
+                  textScaler: TextScaler.linear(fontSize / 16),
+                ),
+                child: Stack(
+                  children: [
+                    child ?? const SizedBox(),
+                    // Botão flutuante para o DevMenu no celular
+                    Positioned(
+                      top: 50,
+                      right: 20,
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: _mostrarDevMenuGlobal,
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(
+                                  0.3), // Fundo semitransparente discreto
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(Icons.bug_report,
+                                color: Colors.white, size: 24),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+        home: const WelcomeScreen(),
+      ),
     );
   }
 }
