@@ -1,87 +1,83 @@
-// Arquivo: src/CadastroService.ts
+
+export interface Usuario {
+  id: string;
+  nome: string;
+  email: string;
+  senha: string;
+  perfil: 'Aluno' | 'Professor';
+  criadoEm: Date;
+}
+
+// Array global para gerenciar e persistir os usuários em memória de forma segura
+export const usuarios: Usuario[] = [];
 
 export class CadastroService {
-  /**
-   * Cobre as Classes: 1 (Válida) e 2 (Inválida)
-   * O que faz: Remove espaços em branco nas pontas e checa se sobraram pelo menos 3 letras
-   * Retorna: true (se >= 3) ou false (se < 3)
-   */
+  
   static validarNome(nome: string): boolean {
-    const nomeLimpo = nome.trim(); // Remove espaços enganosos como "   "
-
-    if (nomeLimpo.length < 3) {
-      return false; // Classe Inválida 2
-    }
-    return true; // Classe Válida 1
+    return nome.trim().length >= 3;
   }
 
-  /**
-   * Cobre as Classes: 3 (Válida) e 4 (Inválida)
-   * O que faz: Verifica se o texto possui o símbolo '@' e um formato mínimo aceitável
-   * Retorna: booleano
-   */
   static validarFormatoEmail(email: string): boolean {
-    // Uma checagem simples para garantir que tem algo antes do @, o @ em si, e algo depois
     const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!regexEmail.test(email)) {
-      return false; // Classe Inválida 4 (Ex: sem @ ou formato quebrado)
-    }
-    return true; // Classe Válida 3 (Formato ok, mas ainda falta ver se é inédito)
+    return regexEmail.test(email);
   }
 
-  /**
-   * Cobre a Classe: 5 (Inválida - RN1)
-   * O que faz: Simula a busca no banco de dados para ver se o e-mail já foi usado.
-   * Retorna: booleano (true se for inédito, false se for duplicado).
-   */
-  static validarEmailInedito(email: string, bancoDeEmails: string[]): boolean {
-    if (bancoDeEmails.includes(email)) {
-      return false; // Classe Inválida 5 (E-mail já cadastrado)
-    }
-    return true; // E-mail liberado para uso
+  static validarEmailInedito(email: string): boolean {
+    return !usuarios.some(u => u.email.toLowerCase() === email.toLowerCase().trim());
   }
 
-  /**
-   * Cobre as Classes: 6 (Válida), 7 (Inválida) e 8 (Inválida)
-   * O que faz: Checa o tamanho mínimo e procura ativamente por letras maiúsculas e números.
-   * Retorna: booleano.
-   */
   static validarSenha(senha: string): boolean {
-    // Checa a Classe Inválida 7 (Tamanho menor que 8)
-    if (senha.length < 8) {
-      return false;
-    }
-
-    const temMaiuscula = /[A-Z]/.test(senha);
-    const temNumero = /[0-9]/.test(senha);
-
-    // Checa a Classe Inválida 8 (Falta maiúscula ou número)
-    if (!temMaiuscula || !temNumero) {
-      return false;
-    }
-
-    return true; // Classe Válida 6 (Tem 8+ chars, maiúscula e número)
+    // Mínimo de 8 caracteres, pelo menos uma letra maiúscula e um número
+    const regexSenha = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+    return regexSenha.test(senha);
   }
 
-  /**
-   * Cobre as Classes: 9 (Válida) e 10 (Inválida)
-   * O que faz: Garante que o usuário selecionou exatamente uma das opções disponíveis.
-   * Retorna: booleano.
-   */
-  static validarPerfil(perfilSelecionado: string): boolean {
-    // Se o perfil for uma string vazia ou espaço em branco, recusa.
-    const perfilLimpo = perfilSelecionado.trim();
+  static validarPerfil(perfil: string): boolean {
+    return perfil === 'Aluno' || perfil === 'Professor';
+  }
 
-    if (perfilLimpo === "") {
-      return false; // Classe Inválida 10 (Não selecionado/Em branco)
+  // Método para processar o cadastro completo atendendo a tabela de testes (Casos 1 a 7)
+  static cadastrar(dados: Omit<Usuario, 'id' | 'criadoEm'>): Usuario {
+    if (!this.validarNome(dados.nome)) {
+      throw new Error('Erro: Aceitou nome menor que 3 caracteres.');
+    }
+    if (!this.validarFormatoEmail(dados.email)) {
+      throw new Error('Erro: E-mail em formato incorreto.');
+    }
+    if (!this.validarEmailInedito(dados.email)) {
+      throw new Error('Erro: Duplicidade de e-mail.');
+    }
+    if (!this.validarSenha(dados.senha)) {
+      if (dados.senha.length < 8) {
+        throw new Error('Erro: Senha com menos de 8 caracteres.');
+      }
+      throw new Error('Erro: Faltou letra maiúscula e número.');
+    }
+    if (!dados.perfil || !this.validarPerfil(dados.perfil)) {
+      throw new Error('Erro: Perfil não selecionado.');
     }
 
-    // Garante que não injetaram um perfil que não existe
-    if (perfilLimpo !== "Aluno" && perfilLimpo !== "Professor") {
-      return false;
-    }
+    const novoUsuario: Usuario = {
+      id: Math.random().toString(36).substring(2, 9),
+      nome: dados.nome.trim(),
+      email: dados.email.trim().toLowerCase(),
+      senha: dados.senha, // Em ambiente real, aplicar hash com bcrypt aqui!
+      perfil: dados.perfil as 'Aluno' | 'Professor',
+      criadoEm: new Date()
+    };
 
-    return true; // Classe Válida 9
+    usuarios.push(novoUsuario);
+    return novoUsuario;
+  }
+
+  // Rota de infraestrutura para validação e login
+  static login(email: string, senha: string): Usuario {
+    const emailFormatado = email.trim().toLowerCase();
+    const usuario = usuarios.find(u => u.email === emailFormatado && u.senha === senha);
+    
+    if (!usuario) {
+      throw new Error('E-mail ou senha incorretos.');
+    }
+    return usuario;
   }
 }

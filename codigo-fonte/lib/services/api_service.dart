@@ -45,37 +45,38 @@ class ApiService {
     throw ApiException(statusCode: response.statusCode, message: message);
   }
 
-  Future<Map<String, dynamic>> login({
-    required String email,
-    required String password,
-  }) async {
+  Future<Map<String, dynamic>> login(String email, String password) async {
     final response = await _client.post(
       Uri.parse('$baseUrl/auth/login'),
       headers: _jsonHeaders,
-      body: jsonEncode({'email': email, 'password': password}),
+      body: jsonEncode({
+        'email': email,
+        'senha': password,
+      }),
     );
+
     return _parseResponse(response);
   }
 
   Future<Map<String, dynamic>> cadastrarUsuario({
-    required String nome,
+    required String name,
     required String email,
-    required String senha,
+    required String password,
     required String role,
-    String? codigoTurma,
+    String?
+        classCode, // Recebe 'Aluno' ou 'Professor' vindo do formulário das telas do Figma
   }) async {
     final response = await _client.post(
       Uri.parse('$baseUrl/auth/register'),
       headers: _jsonHeaders,
       body: jsonEncode({
-        'nome': nome,
+        'nome': name,
         'email': email,
-        'senha': senha,
-        'role': role,
-        if (codigoTurma != null && codigoTurma.isNotEmpty)
-          'codigoTurma': codigoTurma,
+        'senha': password,
+        'perfil': role, // Chave correta esperada pelo CadastroService.ts
       }),
     );
+
     return _parseResponse(response);
   }
 

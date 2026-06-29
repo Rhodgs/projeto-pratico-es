@@ -61,11 +61,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     await ApiFeedback.execute(
       context: context,
       request: () => _api.cadastrarUsuario(
-        nome: _nameController.text.trim(),
+        name: _nameController.text.trim(),
         email: _emailController.text.trim(),
-        senha: _passwordController.text,
+        password: _passwordController.text,
         role: role,
-        codigoTurma: _selectedRole == UserRole.aluno
+        classCode: _selectedRole == UserRole.aluno
             ? _classCodeController.text.trim()
             : null,
       ),
@@ -122,7 +122,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 20),
                     JvTextField(
-                      label: 'Senha',
+                      label: 'Senha (8 caracteres, incluindo letras e números)',
                       controller: _passwordController,
                       hint: '••••••••',
                       icon: Icons.lock_outline,
@@ -157,7 +157,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             label: 'PROFESSOR',
                             selected: _selectedRole == UserRole.professor,
                             onTap: () {
-                              setState(() => _selectedRole = UserRole.professor);
+                              setState(
+                                  () => _selectedRole = UserRole.professor);
                             },
                           ),
                         ),
