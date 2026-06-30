@@ -308,7 +308,7 @@ class _TeacherHeader extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  _HeaderIconButton(icon: Icons.settings_rounded),
+                  const _HeaderIconButton(icon: Icons.settings_rounded),
                   const SizedBox(width: 10),
                   Container(
                     width: 40,

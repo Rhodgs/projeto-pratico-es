@@ -56,7 +56,7 @@ class _TeacherValidationScreenState extends State<TeacherValidationScreen> {
   Future<void> _aprovar(String id) async {
     await ApiFeedback.execute(
       context: context,
-      request: () => _api.aprovarEvidencia(evidenciaId: id),
+      request: () => _api.aprovarEvidencia(id),
       successMessage: 'Evidência aprovada!',
       onSuccess: (_) => _remove(id),
     );
@@ -65,7 +65,7 @@ class _TeacherValidationScreenState extends State<TeacherValidationScreen> {
   Future<void> _recusar(String id) async {
     await ApiFeedback.execute(
       context: context,
-      request: () => _api.recusarEvidencia(evidenciaId: id),
+      request: () => _api.recusarEvidencia(id, ''),
       successMessage: 'Evidência recusada.',
       onSuccess: (_) => _remove(id),
     );
@@ -176,7 +176,8 @@ class _EvidenceCard extends StatelessWidget {
             child: const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.image_outlined, size: 48, color: AppColors.textLight),
+                Icon(Icons.image_outlined,
+                    size: 48, color: AppColors.textLight),
                 SizedBox(height: 8),
                 Text(
                   'Foto de evidência',
