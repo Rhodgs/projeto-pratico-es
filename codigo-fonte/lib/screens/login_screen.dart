@@ -32,8 +32,8 @@ class _LoginScreenState extends State<LoginScreen> {
     await ApiFeedback.execute(
       context: context,
       request: () => _api.login(
-        email: _emailController.text.trim(),
-        password: _passwordController.text,
+        _emailController.text.trim(),
+        _passwordController.text,
       ),
       successMessage: 'Login realizado com sucesso!',
       onSuccess: (data) {
@@ -126,7 +126,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 20),
                       JvTextField(
-                        label: 'Senha',
+                        label:
+                            'Senha (8 caracteres, incluindo letras maiusculas e números)',
                         controller: _passwordController,
                         hint: '••••••••',
                         icon: Icons.lock_outline,
@@ -139,7 +140,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: AppColors.textLight,
                           ),
                           onPressed: () {
-                            setState(() => _obscurePassword = !_obscurePassword);
+                            setState(
+                                () => _obscurePassword = !_obscurePassword);
                           },
                         ),
                       ),
