@@ -40,14 +40,17 @@ app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
   console.log(`Acesse: http://localhost:${PORT}`);
 // Caminho exato do seu ADB
-  const adbPath = '"C:\\Users\\Rhuan\\AppData\\Local\\Android\\Sdk\\platform-tools\\adb"';
+  const possiveisCaminhos = [
+    '"C:\\Users\\Rhuan\\AppData\\Local\\Android\\Sdk\\platform-tools\\adb"',
+    'adb', // se o adb estiver no PATH do sistema
+  ];
   
   // Executa o comando silenciosamente assim que o servidor liga
-  exec(`${adbPath} reverse tcp:3000 tcp:3000`, (error, stdout, stderr) => {
+  exec(`${possiveisCaminhos[1]} reverse tcp:3000 tcp:3000`, (error) => {
     if (error) {
-      console.log('Aviso: Celular não conectado via USB. O túnel não foi ativado, mas o PC funciona normal.');
+      console.log('Aviso: Túnel USB não ativado (celular não conectado ou adb não encontrado).');
     } else {
-      console.log('Túnel USB (ADB reverse) ativado com sucesso! O celular já tem acesso ao backend.');
+      console.log('Túnel USB ativado! Celular tem acesso ao backend.');
     }
   });
 });
