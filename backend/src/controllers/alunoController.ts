@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 // Importamos o serviço do seu amigo (subimos um nível da pasta controllers para a services)
-import { TurmaService } from '../TurmaService'; 
+import { TurmaService } from '../services/TurmaService'; 
 
 export class AlunoController {
     

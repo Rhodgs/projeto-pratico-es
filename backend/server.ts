@@ -47,7 +47,6 @@ app.put('/api/usuario/preferencias', PreferenciasController.salvarPreferencias);
 app.get('/api/usuario/preferencias', PreferenciasController.buscarPreferencias);
 
 // AQUI ABAIXO CADA PESSOA VAI COLAR AS SUAS ROTAS!
-<<<<<<< HEAD
 // ==========================================
 // ROTAS DE DESAFIOS / EVIDÊNCIAS (US4) — aluno anexa/lista evidências
 // ==========================================
@@ -62,42 +61,42 @@ app.post('/api/desafios', (req, res) => desafioController.criar(req, res));
 app.post('/api/evidencias/:id/aprovar', (req, res) => desafioController.aprovar(req, res));
 app.post('/api/evidencias/:id/recusar', (req, res) => desafioController.recusar(req, res));
 
-=======
-
-
- // ==========================================
+// ==========================================
 // ROTAS DE AUTENTICAÇÃO E CADASTRO (US13)
 // ==========================================
 app.post('/api/auth/register', (req, res) => authController.register(req, res));
 app.post('/api/auth/login', (req, res) => authController.login(req, res));
->>>>>>> origin/feat/autenticacao-base
+
 // ==========================================
 // LIGANDO O SERVIDOR
 // ==========================================
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
   console.log(`Acesse: http://localhost:${PORT}`);
-<<<<<<< HEAD
 
-  // Caminho exato do seu ADB
+  // Caminhos possíveis do ADB (cada dev tem o seu usuário/máquina).
+  // Tenta cada um em ordem até um funcionar; se nenhum existir, cai no
+  // 'adb' do PATH do sistema.
   const possiveisCaminhos = [
     '"C:\\Users\\Rhuan\\AppData\\Local\\Android\\Sdk\\platform-tools\\adb"',
+    '"C:\\Users\\asmin\\AppData\\Local\\Android\\Sdk\\platform-tools\\adb"',
     'adb', // se o adb estiver no PATH do sistema
   ];
 
-  // Executa o comando silenciosamente assim que o servidor liga
-  exec(`${possiveisCaminhos[1]} reverse tcp:3000 tcp:3000`, (error) => {
-=======
-  // Caminho exato do seu ADB
-  const adbPath = '"C:\\Users\\asmin\\AppData\\Local\\Android\\Sdk\\platform-tools\\adb"';
-  
-  // Executa o comando silenciosamente assim que o servidor liga
-  exec(`${adbPath} reverse tcp:3000 tcp:3000`, (error: Error | null, _stdout: string, _stderr: string) => {
->>>>>>> origin/feat/autenticacao-base
-    if (error) {
+  const tentarAdb = (index: number) => {
+    if (index >= possiveisCaminhos.length) {
       console.log('Aviso: Túnel USB não ativado (celular não conectado ou adb não encontrado).');
-    } else {
-      console.log('Túnel USB ativado! Celular tem acesso ao backend.');
+      return;
     }
-  });
+
+    exec(`${possiveisCaminhos[index]} reverse tcp:3000 tcp:3000`, (error: Error | null) => {
+      if (error) {
+        tentarAdb(index + 1);
+      } else {
+        console.log('Túnel USB ativado! Celular tem acesso ao backend.');
+      }
+    });
+  };
+
+  tentarAdb(0);
 });
