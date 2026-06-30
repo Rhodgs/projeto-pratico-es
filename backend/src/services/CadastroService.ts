@@ -33,7 +33,9 @@ export class CadastroService {
   }
 
   static validarPerfil(perfil: string): boolean {
-    return perfil === 'Aluno' || perfil === 'Professor';
+    if (!perfil) return false;
+    const formatoPadrao = perfil.trim().charAt(0).toUpperCase() + perfil.trim().slice(1).toLowerCase();
+    return formatoPadrao === 'Aluno' || formatoPadrao === 'Professor';
   }
 
   // Método para processar o cadastro completo atendendo a tabela de testes (Casos 1 a 7)
@@ -53,16 +55,19 @@ export class CadastroService {
       }
       throw new Error('Erro: Faltou letra maiúscula e número.');
     }
+
+    // Tratamento e normalização do perfil recebido do frontend
     if (!dados.perfil || !this.validarPerfil(dados.perfil)) {
       throw new Error('Erro: Perfil não selecionado.');
     }
+    const perfilFormatado = dados.perfil.trim().charAt(0).toUpperCase() + dados.perfil.trim().slice(1).toLowerCase() as 'Aluno' | 'Professor';
 
     const novoUsuario: Usuario = {
       id: Math.random().toString(36).substring(2, 9),
       nome: dados.nome.trim(),
       email: dados.email.trim().toLowerCase(),
-      senha: dados.senha, // Em ambiente real, aplicar hash com bcrypt aqui!
-      perfil: dados.perfil as 'Aluno' | 'Professor',
+      senha: dados.senha,
+      perfil: perfilFormatado,
       criadoEm: new Date()
     };
 

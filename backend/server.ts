@@ -51,9 +51,8 @@ app.get('/api/usuario/preferencias', PreferenciasController.buscarPreferencias);
  // ==========================================
 // ROTAS DE AUTENTICAÇÃO E CADASTRO (US13)
 // ==========================================
-app.post('/auth/register', (req: Request, res: Response) => authController.register(req, res));
-app.post('/auth/login', (req: Request, res: Response) => authController.login(req, res));
-
+app.post('/api/auth/register', (req, res) => authController.register(req, res));
+app.post('/api/auth/login', (req, res) => authController.login(req, res));
 // ==========================================
 // LIGANDO O SERVIDOR
 // ==========================================
