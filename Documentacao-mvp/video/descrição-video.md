@@ -1,7 +1,5 @@
 ## 📺 Demonstração Audiovisual e Operacional do MVP
 
-O arquivo de mídia contendo a gravação da execução de todos os fluxos funcionais do ecossistema encontra-se disponível na raiz do repositório, sob o caminho: 
-
 ### Relatório Detalhado do Fluxo de Validação:
 
 O vídeo comprova de forma prática a integração de ponta a ponta entre a interface construída no Flutter e as regras de negócio distribuídas nos serviços e controllers do backend em Node.js (TypeScript). A apresentação simulada cobre detalhadamente as duas visões do sistema:
