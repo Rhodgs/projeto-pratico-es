@@ -18,6 +18,7 @@ class _TeacherLaunchChallengeScreenState
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _deadlineController = TextEditingController();
+  DateTime? _selectedDeadline;
 
   @override
   void dispose() {
@@ -54,21 +55,34 @@ class _TeacherLaunchChallengeScreenState
     );
     if (time == null) return;
 
-    _deadlineController.text =
-        '${date.day.toString().padLeft(2, '0')}/'
-        '${date.month.toString().padLeft(2, '0')}/'
-        '${date.year} '
-        '${time.hour.toString().padLeft(2, '0')}:'
-        '${time.minute.toString().padLeft(2, '0')}';
+    final selectedDeadline = DateTime(
+      date.year,
+      date.month,
+      date.day,
+      time.hour,
+      time.minute,
+    );
+
+    setState(() {
+      _selectedDeadline = selectedDeadline;
+      _deadlineController.text = '${date.day.toString().padLeft(2, '0')}/'
+          '${date.month.toString().padLeft(2, '0')}/'
+          '${date.year} '
+          '${time.hour.toString().padLeft(2, '0')}:'
+          '${time.minute.toString().padLeft(2, '0')}';
+    });
   }
 
   Future<void> _lancarDesafio() async {
+    if (_selectedDeadline == null) return;
+
     await ApiFeedback.execute(
       context: context,
       request: () => _api.lancarDesafio(
-        titulo: _titleController.text.trim(),
-        descricao: _descriptionController.text.trim(),
-        prazoLimite: _deadlineController.text.trim(),
+        title: _titleController.text.trim(),
+        description: _descriptionController.text.trim(),
+        points: 0,
+        deadline: _selectedDeadline!,
       ),
       successMessage: 'Desafio lançado com sucesso!',
       onSuccess: (_) {
@@ -134,7 +148,8 @@ class _TeacherLaunchChallengeScreenState
                       JvTextField(
                         label: 'Descrição',
                         controller: _descriptionController,
-                        hint: 'Descreva o objetivo e as instruções do desafio...',
+                        hint:
+                            'Descreva o objetivo e as instruções do desafio...',
                         maxLines: 4,
                       ),
                       const SizedBox(height: 20),

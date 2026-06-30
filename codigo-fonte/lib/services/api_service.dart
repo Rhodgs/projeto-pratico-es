@@ -89,19 +89,22 @@ class ApiService {
   }
 
   Future<Map<String, dynamic>> lancarDesafio({
-    required String titulo,
-    required String descricao,
-    required String prazoLimite,
+    required String title,
+    required String description,
+    required int points,
+    required DateTime deadline,
   }) async {
     final response = await _client.post(
-      Uri.parse('$baseUrl/desafios'),
+      Uri.parse('$baseUrl/desafios'), // O baseUrl já completa com /api
       headers: _jsonHeaders,
       body: jsonEncode({
-        'titulo': titulo,
-        'descricao': descricao,
-        'prazoLimite': prazoLimite,
+        'titulo': title,
+        'descricao': description,
+        'pontuacao': points,
+        'prazoLimite': deadline.toIso8601String(),
       }),
     );
+
     return _parseResponse(response);
   }
 
@@ -144,23 +147,25 @@ class ApiService {
     return _parseResponse(response);
   }
 
-  Future<Map<String, dynamic>> aprovarEvidencia({
-    required String evidenciaId,
-  }) async {
+  Future<Map<String, dynamic>> aprovarEvidencia(String evidenciaId) async {
     final response = await _client.post(
       Uri.parse('$baseUrl/evidencias/$evidenciaId/aprovar'),
       headers: _jsonHeaders,
     );
+
     return _parseResponse(response);
   }
 
-  Future<Map<String, dynamic>> recusarEvidencia({
-    required String evidenciaId,
-  }) async {
+  Future<Map<String, dynamic>> recusarEvidencia(
+      String evidenciaId, String justification) async {
     final response = await _client.post(
       Uri.parse('$baseUrl/evidencias/$evidenciaId/recusar'),
       headers: _jsonHeaders,
+      body: jsonEncode({
+        'justificativa': justification,
+      }),
     );
+
     return _parseResponse(response);
   }
 
