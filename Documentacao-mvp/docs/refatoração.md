@@ -28,7 +28,7 @@ O método `_formatXp` foi movido para a classe `_RankingEntry` como o getter `xp
 **Impacto no Sistema:**
 A lógica de formatação ficou centralizada na classe de dados, eliminando duplicação potencial. Qualquer widget que use `_RankingEntry` agora pode acessar o XP formatado sem reescrever a lógica, aumentando a coesão e a reutilização do código.
 
---- ``
+--- 
 
 ## Refatoração 3 — Renomeação de Variável (e Padronização de Tipos)
 
@@ -43,4 +43,31 @@ Os atributos foram renomeados e consolidados em um modelo único. O status foi p
 
 **Impacto no Sistema:**
 Prevenção de quebra de tipagem no frontend e eliminação dos erros de compilação no TypeScript (ts-node). O sistema agora opera com um modelo de domínio padronizado e confiável, facilitando a criação de novas funcionalidades sem risco de incompatibilidade de dados
+
+--- 
+
+## Refatoração 3 – Decompor Método (Extract Method)
+
+* **Problema Identificado:** O método principal `cadastrar` acumulava manualmente a lógica bruta de todas as regras de negócio em condicionais densas e encadeadas. Ele apresentava o code smell de *Método Longo*, misturando funções de validação de dados com a persistência final no array em memória.
+* **Motivação da Refatoração:** Centralizar múltiplas responsabilidades em um único bloco de código reduz drasticamente a manutenibilidade e aumenta a chance de efeitos colaterais. Isolar essas checagens garante maior coesão e simplifica manutenções futuras.
+* **Descrição da Melhoria:** A técnica de *Extract Method* foi aplicada para isolar o bloco de checagens obrigatórias em uma subfunção privada e semântica chamada `executarValidacoesCadastro`. Com essa extração, o fluxo principal de cadastro tornou-se enxuto, delegando a responsabilidade de verificar nome, e-mail único, formato e complexidade de senha para uma rotina dedicada. Essa abordagem eleva o alinhamento do código com o Princípio de Responsabilidade Única (SRP) e simplifica de forma significativa o isolamento de testes unitários automatizados para o comportamento do sistema. O código central passou a descrever o algoritmo de cadastro de forma limpa e linear, facilitando a legibilidade imediata por outros membros da equipe de engenharia.
+* **Impacto no Sistema:** Limpeza do fluxo principal de persistência do usuário e melhoria na reutilização e manutenção do código de validações. O código atende diretamente aos critérios de aceitação e regras de negócio de e-mail e senhas da história de usuário **US13**.
+
+---
+
+## Refatoração 4 – Substituir Condicional por Cláusulas de Guarda (Replace Conditional with Guard Clauses)
+
+* **Problema Identificado:** O método de criação de desafios `criarDesafio` utilizava fluxos alternativos implícitos e estruturas condicionais para gerenciar os caminhos de falha (como prazos expirados ou campos vazios). Isso forçava o fluxo de sucesso ("caminho feliz") a ficar aninhado e dependente.
+* **Motivação da Refatoração:** Estruturas condicionais excessivamente aninhadas aumentam a complexidade ciclomática do algoritmo e geram o anti-padrão conhecido como código em seta (*Arrow Anti-pattern*), tornando a varredura visual lenta e confusa.
+* **Descrição da Melhoria:** Esta refatoração introduziu Cláusulas de Guarda no início do método `criarDesafio` para validar e rejectar os cenários de falha de maneira imediata. Em vez de envolver o algoritmo principal em ramificações complexas de tomadas de decisão, a função avalia as violações de negócio logo na entrada e dispara exceções com comandos `throw` explícitos. Esse modelo assegura que restrições cruciais da história de usuário — tais como campos em branco ou prazos definidos no passado — sejam interrompidas na periferia da função. A organização simplificou a leitura do código, permitindo que a lógica de sucesso seja executada de forma perfeitamente linear ao término das checagens, reduzindo significativamente a carga cognitiva necessária no desenvolvimento.
+* **Impacto no Sistema:** Eliminação completa do aninhamento profundo de blocos `if/else`, garantindo código linear e de fácil leitura. Assegura a integridade estrita do plano de testes e das regras da história de usuário **US4** para prazos e validação.
+
+---
+
+## Refatoração 5 – Renomear Parâmetro (Rename Parameter)
+
+* **Problema Identificado:** Os controladores de gerenciamento do professor utilizavam o identificador genérico e abstrato `id` (via `req.params.id`) para tratar o recebimento de arquivos de evidência. Essa nomenclatura gerava ambiguidade conceitual com os próprios identificadores de desafios do sistema.
+* **Motivação da Refatoração:** Identificadores ambíguos ou excessivamente curtos quebram a clareza e legibilidade do código, agindo como barreiras ocultas que podem induzir os desenvolvedores ao erro de misturar chaves estrangeiras distintas durante a manutenção.
+* **Descrição da Melhoria:** Aplicou-se a refatoração de *Rename Parameter* nas assinaturas de requisição do Express para substituir a variável genérica `id` por `evidenciaId`. Essa renomeação foi estendida tanto para as definições de rotas no arquivo central do servidor quanto para as assinaturas internas e desestruturações de parâmetros feitas no controlador de desafios. Com essa alteração, o código eliminou qualquer ambiguidade de escopo entre entidades de missões e arquivos de envio, agindo como uma documentação viva e implícita da API do backend. A padronização protege a integridade conceitual do modelo de domínio do ecossistema, facilitando o entendimento de onde cada referência deve ser consumida para o lançamento de notas do professor.
+* **Impacto no Sistema:** Prevenção de falhas ocultas por cruzamento incorreto de identificadores e aumento da coesão do código nos controladores. Fornece suporte claro aos endpoints de avaliação manual da história de usuário **US11**.
 
