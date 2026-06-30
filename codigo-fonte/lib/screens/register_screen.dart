@@ -122,7 +122,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 20),
                     JvTextField(
-                      label: 'Senha (8 caracteres, incluindo letras e números)',
+                      label:
+                          'Senha (8 caracteres, incluindo letras maiusculas e números)',
                       controller: _passwordController,
                       hint: '••••••••',
                       icon: Icons.lock_outline,
