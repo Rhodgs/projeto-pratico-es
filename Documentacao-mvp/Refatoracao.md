@@ -27,3 +27,19 @@ O método `_formatXp` foi movido para a classe `_RankingEntry` como o getter `xp
 
 **Impacto no Sistema:**
 A lógica de formatação ficou centralizada na classe de dados, eliminando duplicação potencial. Qualquer widget que use `_RankingEntry` agora pode acessar o XP formatado sem reescrever a lógica, aumentando a coesão e a reutilização do código.
+
+--- ``
+
+## Refatoração 3 — Renomeação de Variável (e Padronização de Tipos)
+
+**Problema Identificado:**
+Durante a integração das branches `feat/gestao-professor` e `feat/autenticacao-base`, os modelos de dados para Desafio e Evidencia estavam incompatíveis. Havia divergências na tipagem de datas (tratadas como string em um local e Date em outro), divergências na capitalização de status (pendente minúsculo vs Pendente maiúsculo) e ambiguidade nos nomes dos atributos de recompensa (xpRecompensa vs pontuacao)
+
+**Motivação da Refatoração:**
+Nomes de variáveis confusos e tipagens inconsistentes quebram o contrato da `API` e geram erros de compilação ou falhas de integração com o frontend. Essa inconsistência é um `code smell`( código-fonte que aponta para um problema estrutura) que impede a escalabilidade do modelo de domínio, sendo necessário renomear e padronizar os dados para garantir uma única fonte da verdade
+
+**Descrição da Melhoria:**
+Os atributos foram renomeados e consolidados em um modelo único. O status foi padronizado estritamente em minúsculo, as datas foram unificadas para o tipo Date nativo, e os atributos redundantes de pontuação foram mesclados
+
+**Impacto no Sistema:**
+Prevenção de quebra de tipagem no frontend e eliminação dos erros de compilação no TypeScript (ts-node). O sistema agora opera com um modelo de domínio padronizado e confiável, facilitando a criação de novas funcionalidades sem risco de incompatibilidade de dados
