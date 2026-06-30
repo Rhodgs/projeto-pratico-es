@@ -155,17 +155,7 @@ class _ChallengeUploadScreenState extends State<ChallengeUploadScreen> {
             const SizedBox(height: 12),
 
             // 3. CARD DE PROGRESSO
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.03),
-                      blurRadius: 10),
-                ],
-              ),
+            _SectionCard(
               child: Column(
                 children: [
                   const Row(
@@ -202,17 +192,7 @@ class _ChallengeUploadScreenState extends State<ChallengeUploadScreen> {
             const SizedBox(height: 20),
 
             // 4. CARD DE INSTRUÇÕES
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.03),
-                      blurRadius: 10),
-                ],
-              ),
+            _SectionCard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -241,17 +221,7 @@ class _ChallengeUploadScreenState extends State<ChallengeUploadScreen> {
             const SizedBox(height: 20),
 
             // 5. CARD DE ENVIAR EVIDÊNCIA
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.03),
-                      blurRadius: 10),
-                ],
-              ),
+            _SectionCard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -360,6 +330,33 @@ class _ChallengeUploadScreenState extends State<ChallengeUploadScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+// ── Widget: card de seção (fundo branco + sombra padrão) ──────
+// Extraído para eliminar a duplicação de decoração que existia
+// nos cards de Progresso, Instruções e Enviar Evidência.
+class _SectionCard extends StatelessWidget {
+  const _SectionCard({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 10,
+          ),
+        ],
+      ),
+      child: child,
     );
   }
 }
