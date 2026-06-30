@@ -8,7 +8,7 @@ Abaixo, apresentamos o mapeamento detalhado das interfaces do sistema. Para cada
 
 ## Tela 1 — Boas-vindas
 
-**US13:** Enquanto usuário, desejo realizar cadastro básico no sistema criando um perfil para salvar meu progresso na Jornada Verde.
+**[US13 (#68)](https://github.com/Rhodgs/projeto-pratico-es/issues/68):** Enquanto usuário, desejo realizar cadastro básico no sistema criando um perfil para salvar meu progresso na Jornada Verde.
 
 <div align="center">
   <img src="../prints/welcome.jpeg" alt="Tela de Boas-vindas" width="300">
@@ -21,7 +21,7 @@ Abaixo, apresentamos o mapeamento detalhado das interfaces do sistema. Para cada
 
 ## Tela 2 — Login
 
-**US13:** Enquanto usuário, desejo realizar cadastro básico no sistema criando um perfil para salvar meu progresso na Jornada Verde.
+**[US13 (#68)](https://github.com/Rhodgs/projeto-pratico-es/issues/68):** Enquanto usuário, desejo realizar cadastro básico no sistema criando um perfil para salvar meu progresso na Jornada Verde.
 
 <div align="center">
   <img src="../prints/login.jpeg" alt="Tela de Login" width="300">
@@ -34,7 +34,7 @@ Abaixo, apresentamos o mapeamento detalhado das interfaces do sistema. Para cada
 
 ## Tela 3 — Cadastro
 
-**US13:** Enquanto usuário, desejo realizar cadastro básico no sistema criando um perfil para salvar meu progresso na Jornada Verde.
+**[US13 (#68)](https://github.com/Rhodgs/projeto-pratico-es/issues/68):** Enquanto usuário, desejo realizar cadastro básico no sistema criando um perfil para salvar meu progresso na Jornada Verde.
 
 <div align="center">
   <img src="../prints/cadastro.jpeg" alt="Tela de Cadastro" width="300">
@@ -47,7 +47,7 @@ Abaixo, apresentamos o mapeamento detalhado das interfaces do sistema. Para cada
 
 ## Tela 4 — Dashboard do Professor
 
-**US3:** Enquanto professor, desejo criar "turmas" dentro do aplicativo para gerenciar meus alunos de forma organizada.
+**[US3 (#59)](https://github.com/Rhodgs/projeto-pratico-es/issues/59):** Enquanto professor, desejo criar "turmas" dentro do aplicativo para gerenciar meus alunos de forma organizada.
 
 <div align="center">
   <img src="../prints/profturma.jpeg" alt="Dashboard do Professor" width="300">
@@ -60,8 +60,8 @@ Abaixo, apresentamos o mapeamento detalhado das interfaces do sistema. Para cada
 
 ## Tela 5 — Dashboard do Aluno
 
-**US1:** Enquanto estudante, desejo manter uma sequência de dias ativos (ofensiva) para que eu me sinta motivado a interagir com o aplicativo diariamente.  
-**US4:** Como professor, desejo lançar desafios práticos para que os alunos interajam com a atividade e enviem suas evidências dentro do prazo.
+**[US1 (#57)](https://github.com/Rhodgs/projeto-pratico-es/issues/57):** Enquanto estudante, desejo manter uma sequência de dias ativos (ofensiva) para que eu me sinta motivado a interagir com o aplicativo diariamente.  
+**[US4 (#60)](https://github.com/Rhodgs/projeto-pratico-es/issues/60):** Como professor, desejo lançar desafios práticos para que os alunos interajam com a atividade e enviem suas evidências dentro do prazo.
 
 <div align="center">
   <img src="../prints/dashboard.jpeg" alt="Dashboard do Aluno" width="300">
@@ -74,7 +74,7 @@ Abaixo, apresentamos o mapeamento detalhado das interfaces do sistema. Para cada
 
 ## Tela 6 — Desafio do Aluno (Upload de Evidência)
 
-**US4:** Como professor, desejo lançar desafios práticos permitindo que os alunos interajam com a atividade e enviem suas evidências dentro do prazo para validação.
+**[US4 (#60)](https://github.com/Rhodgs/projeto-pratico-es/issues/60):** Como professor, desejo lançar desafios práticos permitindo que os alunos interajam com a atividade e enviem suas evidências dentro do prazo para validação.
 
 <div align="center">
   <img src="../prints/de.jpeg" alt="Tela de Desafio do Aluno" width="300">
@@ -87,7 +87,7 @@ Abaixo, apresentamos o mapeamento detalhado das interfaces do sistema. Para cada
 
 ## Tela 7 — Lançar Desafio (Professor)
 
-**US4:** Como professor, desejo lançar desafios práticos para tirar as aulas da teoria e focar em causas reais.
+**[US4 (#60)](https://github.com/Rhodgs/projeto-pratico-es/issues/60):** Como professor, desejo lançar desafios práticos para tirar as aulas da teoria e focar em causas reais.
 
 <div align="center">
   <img src="../prints/desa.jpeg" alt="Lançar Desafio" width="300">
@@ -100,7 +100,7 @@ Abaixo, apresentamos o mapeamento detalhado das interfaces do sistema. Para cada
 
 ## Tela 8 — Validar Evidências (Professor)
 
-**US11:** Enquanto professor, desejo validar as evidências enviadas pelos alunos para garantir que as missões práticas foram cumpridas corretamente.
+**[US11 (#66)](https://github.com/Rhodgs/projeto-pratico-es/issues/66):** Enquanto professor, desejo validar as evidências enviadas pelos alunos para garantir que as missões práticas foram cumpridas corretamente.
 
 <div align="center">
   <img src="../prints/evi.jpeg" alt="Validar Evidências" width="300">
@@ -113,7 +113,7 @@ Abaixo, apresentamos o mapeamento detalhado das interfaces do sistema. Para cada
 
 ## Tela 9 — Progresso e Ranking
 
-**US2:** Enquanto estudante, desejo visualizar um ranking escolar com atualizações imediatas após a classificação para competir de forma saudável com meus amigos.
+**[US2 (#58)](https://github.com/Rhodgs/projeto-pratico-es/issues/58):** Enquanto estudante, desejo visualizar um ranking escolar com atualizações imediatas após a classificação para competir de forma saudável com meus amigos.
 
 <div align="center">
   <img src="../prints/ra.jpeg" alt="Progresso e Ranking" width="300">
@@ -126,7 +126,7 @@ Abaixo, apresentamos o mapeamento detalhado das interfaces do sistema. Para cada
 
 ## Tela 10 — Configurações / Acessibilidade
 
-**US6:** Enquanto usuário com baixa visão, desejo configurar recursos de acessibilidade visual para facilitar a navegação e o consumo de conteúdo na plataforma.
+**[US6 (#62)](https://github.com/Rhodgs/projeto-pratico-es/issues/62):** Enquanto usuário com baixa visão, desejo configurar recursos de acessibilidade visual para facilitar a navegação e o consumo de conteúdo na plataforma.
 
 <div align="center">
   <img src="../prints/config.jpeg" alt="Configurações de Acessibilidade" width="300">
