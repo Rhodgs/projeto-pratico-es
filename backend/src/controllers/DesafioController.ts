@@ -29,9 +29,10 @@ export class DesafioController {
 
   async aprovar(req: Request, res: Response): Promise<Response> {
     try {
-      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
-      const evidenciaAtualizada = DesafioService.aprovarEvidencia(id);
-
+      // Renomeado de const { id } para const { evidenciaId }
+      const evidenciaId = Array.isArray(req.params.evidenciaId) ? req.params.evidenciaId[0] : req.params.evidenciaId;
+      const evidenciaAtualizada = DesafioService.aprovarEvidencia(evidenciaId as string);
+      
       return res.status(200).json({
         message: 'Todo o fluxo funciona, a justificativa é cobrada e os pontos da missão aprovada vão para o saldo do aluno.',
         evidencia: evidenciaAtualizada
@@ -43,10 +44,11 @@ export class DesafioController {
 
   async recusar(req: Request, res: Response): Promise<Response> {
     try {
-      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      // Renomeado de const { id } para const { evidenciaId }
+      const evidenciaId = Array.isArray(req.params.evidenciaId) ? req.params.evidenciaId[0] : req.params.evidenciaId;
       const { justificativa } = req.body;
-      const evidenciaAtualizada = DesafioService.recusarEvidencia(id, justificativa);
-
+      const evidenciaAtualizada = DesafioService.recusarEvidencia(evidenciaId as string, justificativa);
+      
       return res.status(200).json({
         message: 'Missão recusada com sucesso.',
         evidencia: evidenciaAtualizada
