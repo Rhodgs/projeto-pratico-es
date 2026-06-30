@@ -1,3 +1,6 @@
+# Refatoração de Código
+
+Esta seção documenta o processo de refatoração contínua aplicado ao código-fonte do projeto Jornada Verde. O objetivo principal destas intervenções foi melhorar a estrutura interna do sistema sem alterar o seu comportamento externo visível ao usuário. As refatorações detalhadas abaixo foram etapas fundamentais para garantir a escalabilidade, a legibilidade e a facilidade de manutenção do software a longo prazo.
 ## Refatoração 1 — Extração de Classe
 
 **Problema Identificado:**
