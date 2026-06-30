@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import * as TurmaController from './src/controllers/TurmaController';
 import * as PreferenciasController from './src/controllers/PreferenciasController';
+import * as DesafioController from './src/controllers/DesafioController';
 import { exec } from 'child_process';
 // Inicializa o aplicativo Express
 const app = express();
@@ -32,7 +33,12 @@ app.put("/api/usuario/preferencias", PreferenciasController.salvarPreferencias);
 app.get("/api/usuario/preferencias", PreferenciasController.buscarPreferencias);
 
 // AQUI ABAIXO CADA PESSOA VAI COLAR AS SUAS ROTAS!
- 
+ // ==========================================
+// ROTAS DE DESAFIOS / EVIDÊNCIAS (US4)
+// ==========================================
+
+app.post('/api/desafios/:id/evidencias', DesafioController.anexarEvidencia);
+app.get('/api/desafios/:id/evidencias',  DesafioController.listarEvidencias);
 // ==========================================
 // LIGANDO O SERVIDOR
 // ==========================================
