@@ -15,6 +15,14 @@ class _RankingEntry {
   final String name;
   final int xp;
   final bool isCurrentUser;
+
+  // ── Mover Método: _formatXp saiu de _PositionCard e veio para cá ──
+  // Agora qualquer widget que use _RankingEntry pode formatar o XP
+  // sem duplicar a lógica de formatação.
+  String get xpFormatado => xp.toString().replaceAllMapped(
+        RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+        (m) => '${m[1]}.',
+      );
 }
 
 class ProgressRankingScreen extends StatelessWidget {
@@ -257,8 +265,10 @@ class _PositionCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 4),
+          // Antes: _formatXp(user.xp)  — método local do widget
+          // Depois: user.xpFormatado   — método na classe de dados
           Text(
-            _formatXp(user.xp),
+            user.xpFormatado,
             style: const TextStyle(
               color: AppColors.cardBackground,
               fontSize: 32,
@@ -268,13 +278,6 @@ class _PositionCard extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String _formatXp(int xp) {
-    return xp.toString().replaceAllMapped(
-          RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-          (m) => '${m[1]}.',
-        );
   }
 }
 
@@ -340,7 +343,8 @@ class _RankingRow extends StatelessWidget {
             : AppColors.cardDarkGreen,
         borderRadius: BorderRadius.circular(16),
         border: highlighted
-            ? Border.all(color: AppColors.white.withValues(alpha: 0.4), width: 2)
+            ? Border.all(
+                color: AppColors.white.withValues(alpha: 0.4), width: 2)
             : null,
       ),
       child: Row(
@@ -376,8 +380,9 @@ class _RankingRow extends StatelessWidget {
               ),
             ),
           ),
+          // Usando xpFormatado em vez de '${entry.xp} XP' bruto
           Text(
-            '${entry.xp} XP',
+            '${entry.xpFormatado} XP',
             style: const TextStyle(
               color: AppColors.cardBackground,
               fontWeight: FontWeight.w800,

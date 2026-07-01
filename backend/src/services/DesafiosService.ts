@@ -128,28 +128,30 @@ export class DesafiosService {
 export class DesafioService {
   /** Cria desafio aplicando as mesmas validações da DesafiosService */
   static criarDesafio(dados: Omit<Desafio, 'id' | 'criadoEm'>): Desafio {
-    if (!DesafiosService.validarCamposCriacao(dados.titulo, dados.descricao, 'ok')) {
+    // Cláusula de Guarda 1: Validação de campos em branco (Caso 2 do plano)
+    if (!dados.titulo || dados.titulo.trim() === '' || !dados.descricao || dados.descricao.trim() === '') {
       throw new Error('Erro: Campos obrigatórios vazios.');
     }
 
     const agora = new Date();
     const prazo = new Date(dados.prazoLimite);
-    const statusPrazo = DesafiosService.validarPrazoCriacao(prazo, agora);
 
-    if (statusPrazo === 'PASSADO') {
+    // Cláusula de Guarda 2: Prazo retroativo (Caso 3 do plano)
+    if (prazo < agora) {
       throw new Error('Erro: Prazo no passado.');
     }
-    if (statusPrazo === 'PRESENTE') {
+
+    // Cláusula de Guarda 3: Janela de tempo insuficiente (Caso 4 do plano)
+    if (Math.abs(prazo.getTime() - agora.getTime()) < 60000) { 
       throw new Error('Erro: Prazo precisa dar um tempo mínimo útil de duração.');
     }
-
     const novoDesafio: Desafio = {
       id: 'DES-' + Math.random().toString(36).substring(2, 7).toUpperCase(),
       titulo: dados.titulo.trim(),
       descricao: dados.descricao.trim(),
       pontuacao: Number(dados.pontuacao),
       prazoLimite: prazo,
-      criadoEm: agora,
+      criadoEm: agora
     };
 
     desafios.push(novoDesafio);
