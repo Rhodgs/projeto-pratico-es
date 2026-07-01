@@ -1,6 +1,13 @@
 # Refatoração de Código
 
 Esta seção documenta o processo de refatoração contínua aplicado ao código-fonte do projeto Jornada Verde. O objetivo principal destas intervenções foi melhorar a estrutura interna do sistema sem alterar o seu comportamento externo visível ao usuário. As refatorações detalhadas abaixo foram etapas fundamentais para garantir a escalabilidade, a legibilidade e a facilidade de manutenção do software a longo prazo.
+
+Caso queira consultar diretamente a implementação do front-end e do back-end, acesse os links correspondentes:
+* **Código Fonte:** [https://github.com/Rhodgs/projeto-pratico-es/tree/main/codigo-fonte](https://github.com/Rhodgs/projeto-pratico-es/tree/main/codigo-fonte)
+* **Backend:** [https://github.com/Rhodgs/projeto-pratico-es/tree/main/backend](https://github.com/Rhodgs/projeto-pratico-es/tree/main/backend)
+
+---
+
 ## Refatoração 1 — Extração de Classe
 
 **Problema Identificado:**
@@ -39,17 +46,17 @@ A lógica de formatação ficou centralizada na classe de dados, eliminando dupl
 Durante a integração das branches `feat/gestao-professor` e `feat/autenticacao-base`, os modelos de dados para Desafio e Evidencia estavam incompatíveis. Havia divergências na tipagem de datas (tratadas como string em um local e Date em outro), divergências na capitalização de status (pendente minúsculo vs Pendente maiúsculo) e ambiguidade nos nomes dos atributos de recompensa (xpRecompensa vs pontuacao)
 
 **Motivação da Refatoração:**
-Nomes de variáveis confusos e tipagens inconsistentes quebram o contrato da `API` e geram erros de compilação ou falhas de integração com o frontend. Essa inconsistência é um `code smell`( código-fonte que aponta para um problema estrutura) que impede a escalabilidade do modelo de domínio, sendo necessário renomear e padronizar os dados para garantir uma única fonte da verdade
+Nomes de variáveis confusos e tipagens inconsistentes quebram o contrato da API e geram erros de compilação ou falhas de integração com o frontend. Essa inconsistência é um `code smell` (código-fonte que aponta para um problema estrutural) que impede a escalabilidade do modelo de domínio, sendo necessário renomear e padronizar os dados para garantir uma única fonte da verdade.
 
 **Descrição da Melhoria:**
-Os atributos foram renomeados e consolidados em um modelo único. O status foi padronizado estritamente em minúsculo, as datas foram unificadas para o tipo Date nativo, e os atributos redundantes de pontuação foram mesclados
+Os atributos foram renomeados e consolidados em um modelo único. O status foi padronizado estritamente em minúsculo, as datas foram unificadas para o tipo Date nativo, e os atributos redundantes de pontuação foram mesclados.
 
 **Impacto no Sistema:**
-Prevenção de quebra de tipagem no frontend e eliminação dos erros de compilação no TypeScript (ts-node). O sistema agora opera com um modelo de domínio padronizado e confiável, facilitando a criação de novas funcionalidades sem risco de incompatibilidade de dados
+Prevenção de quebra de tipagem no frontend e eliminação dos erros de compilação no TypeScript (ts-node). O sistema agora opera com um modelo de domínio padronizado e confiável, facilitando a criação de novas funcionalidades sem risco de incompatibilidade de dados.
 
 --- 
 
-## Refatoração 3 – Decompor Método (Extract Method)
+## Refatoração 4 – Decompor Método (Extract Method)
 
 * **Problema Identificado:** O método principal `cadastrar` acumulava manualmente a lógica bruta de todas as regras de negócio em condicionais densas e encadeadas. Ele apresentava o code smell de *Método Longo*, misturando funções de validação de dados com a persistência final no array em memória.
 * **Motivação da Refatoração:** Centralizar múltiplas responsabilidades em um único bloco de código reduz drasticamente a manutenibilidade e aumenta a chance de efeitos colaterais. Isolar essas checagens garante maior coesão e simplifica manutenções futuras.
@@ -58,19 +65,18 @@ Prevenção de quebra de tipagem no frontend e eliminação dos erros de compila
 
 ---
 
-## Refatoração 4 – Substituir Condicional por Cláusulas de Guarda (Replace Conditional with Guard Clauses)
+## Refatoração 5 – Substituir Condicional por Cláusulas de Guarda (Replace Conditional with Guard Clauses)
 
 * **Problema Identificado:** O método de criação de desafios `criarDesafio` utilizava fluxos alternativos implícitos e estruturas condicionais para gerenciar os caminhos de falha (como prazos expirados ou campos vazios). Isso forçava o fluxo de sucesso ("caminho feliz") a ficar aninhado e dependente.
 * **Motivação da Refatoração:** Estruturas condicionais excessivamente aninhadas aumentam a complexidade ciclomática do algoritmo e geram o anti-padrão conhecido como código em seta (*Arrow Anti-pattern*), tornando a varredura visual lenta e confusa.
-* **Descrição da Melhoria:** Esta refatoração introduziu Cláusulas de Guarda no início do método `criarDesafio` para validar e rejectar os cenários de falha de maneira imediata. Em vez de envolver o algoritmo principal em ramificações complexas de tomadas de decisão, a função avalia as violações de negócio logo na entrada e dispara exceções com comandos `throw` explícitos. Esse modelo assegura que restrições cruciais da história de usuário — tais como campos em branco ou prazos definidos no passado — sejam interrompidas na periferia da função. A organização simplificou a leitura do código, permitindo que a lógica de sucesso seja executada de forma perfeitamente linear ao término das checagens, reduzindo significativamente a carga cognitiva necessária no desenvolvimento.
+* **Descrição da Melhoria:** Esta refatoração introduziu Cláusulas de Guarda no início do método `criarDesafio` para validar e rejeitar os cenários de falha de maneira imediata. Em vez de envolver o algoritmo principal em ramificações complexas de tomadas de decisão, a função avalia as violações de negócio logo na entrada e dispara exceções com comandos `throw` explícitos. Esse modelo assegura que restrições cruciais da história de usuário — tais como campos em branco ou prazos definidos no passado — sejam interrompidas na periferia da função. A organização simplificou a leitura do código, permitindo que a lógica de sucesso seja executada de forma perfeitamente linear ao término das checagens, reduzindo significativamente a carga cognitiva necessária no desenvolvimento.
 * **Impacto no Sistema:** Eliminação completa do aninhamento profundo de blocos `if/else`, garantindo código linear e de fácil leitura. Assegura a integridade estrita do plano de testes e das regras da história de usuário **US4** para prazos e validação.
 
 ---
 
-## Refatoração 5 – Renomear Parâmetro (Rename Parameter)
+## Refatoração 6 – Renomear Parâmetro (Rename Parameter)
 
 * **Problema Identificado:** Os controladores de gerenciamento do professor utilizavam o identificador genérico e abstrato `id` (via `req.params.id`) para tratar o recebimento de arquivos de evidência. Essa nomenclatura gerava ambiguidade conceitual com os próprios identificadores de desafios do sistema.
-* **Motivação da Refatoração:** Identificadores ambíguos ou excessivamente curtos quebram a clareza e legibilidade do código, agindo como barreiras ocultas que podem induzir os desenvolvedores ao erro de misturar chaves estrangeiras distintas durante a manutenção.
+* **Motivação da Refatoração:** Identificadores ambíguos ou excessivamente curtos quebram a clareza e legibilidade do código, agindo como barreiras ocultas que podem induzir os desenvolvedores ao erro de misturar chaves estrangeiras distinctas durante a manutenção.
 * **Descrição da Melhoria:** Aplicou-se a refatoração de *Rename Parameter* nas assinaturas de requisição do Express para substituir a variável genérica `id` por `evidenciaId`. Essa renomeação foi estendida tanto para as definições de rotas no arquivo central do servidor quanto para as assinaturas internas e desestruturações de parâmetros feitas no controlador de desafios. Com essa alteração, o código eliminou qualquer ambiguidade de escopo entre entidades de missões e arquivos de envio, agindo como uma documentação viva e implícita da API do backend. A padronização protege a integridade conceitual do modelo de domínio do ecossistema, facilitando o entendimento de onde cada referência deve ser consumida para o lançamento de notas do professor.
 * **Impacto no Sistema:** Prevenção de falhas ocultas por cruzamento incorreto de identificadores e aumento da coesão do código nos controladores. Fornece suporte claro aos endpoints de avaliação manual da história de usuário **US11**.
-
