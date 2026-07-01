@@ -4,6 +4,11 @@ Este documento apresenta a rastreabilidade de requisitos do projeto Jornada Verd
 
 Abaixo, apresentamos o mapeamento detalhado das interfaces do sistema. Para cada tela desenvolvida, listamos as **Histórias de Usuário (US)** correspondentes e descrevemos brevemente como os critérios de aceitação e as regras de negócio foram implementados na prática. Isso garante o alinhamento total entre o escopo inicial e o produto final.
 
+Caso queira consultar diretamente a implementação do front-end e do back-end, acesse os links correspondentes:
+* **Código Fonte:** [https://github.com/Rhodgs/projeto-pratico-es/tree/main/codigo-fonte](https://github.com/Rhodgs/projeto-pratico-es/tree/main/codigo-fonte)
+* **Backend:** [https://github.com/Rhodgs/projeto-pratico-es/tree/main/backend](https://github.com/Rhodgs/projeto-pratico-es/tree/main/backend)
+
+
 ---
 
 ## Tela 1 — Boas-vindas
