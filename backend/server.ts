@@ -1,5 +1,6 @@
 /// <reference types="node" />
 
+import cors from 'cors';
 import express, { Request, Response, RequestHandler, NextFunction } from 'express';
 import { AuthController } from './src/controllers/AuthController';
 import * as TurmaController from './src/controllers/TurmaController';
@@ -24,6 +25,8 @@ const corsMiddleware: RequestHandler = (req: Request, res: Response, next: NextF
 };
 
 app.use(corsMiddleware);
+app.use(express.json());
+app.use(cors());
 app.use(express.json());
 
 // ==========================================
@@ -64,6 +67,8 @@ app.post('/api/evidencias/:id/recusar', (req, res) => desafioController.recusar(
 // ==========================================
 // ROTAS DE AUTENTICAÇÃO E CADASTRO (US13)
 // ==========================================
+// Vincula a URL /auth/register ao método register do nosso controller 
+
 app.post('/api/auth/register', (req, res) => authController.register(req, res));
 app.post('/api/auth/login', (req, res) => authController.login(req, res));
 
