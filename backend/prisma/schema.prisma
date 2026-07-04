@@ -13,6 +13,7 @@ model Usuario {
   email     String   @unique
   senha     String
   perfil    String   
+  xp        Int      @default(0)
   criadoEm  DateTime @default(now())
 
   turmasCriadas Turma[]       @relation("ProfessorTurmas")
@@ -49,6 +50,7 @@ model Evidencia {
   alunoId       String
   status        String   @default("pendente") 
   justificativa String?
+  arquivoUrl    String?
   enviadoEm     DateTime @default(now())
 
   desafio Desafio @relation(fields: [desafioId], references: [id])

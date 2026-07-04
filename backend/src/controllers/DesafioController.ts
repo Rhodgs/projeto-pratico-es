@@ -6,6 +6,7 @@ import {
   adicionarEvidencia,
   listarEvidenciasPorDesafio,
 } from '../services/DesafiosService';
+import { prisma } from '../../database/prismaClient';
 
 // 
 // ESTILO 1 — CLASSE (US10/US11: criação de desafio pelo
@@ -29,7 +30,6 @@ export class DesafioController {
 
   async aprovar(req: Request, res: Response): Promise<Response> {
     try {
-      // Renomeado de const { id } para const { evidenciaId }
       const evidenciaId = Array.isArray(req.params.evidenciaId) ? req.params.evidenciaId[0] : req.params.evidenciaId;
       const evidenciaAtualizada = DesafioService.aprovarEvidencia(evidenciaId as string);
       
@@ -44,7 +44,6 @@ export class DesafioController {
 
   async recusar(req: Request, res: Response): Promise<Response> {
     try {
-      // Renomeado de const { id } para const { evidenciaId }
       const evidenciaId = Array.isArray(req.params.evidenciaId) ? req.params.evidenciaId[0] : req.params.evidenciaId;
       const { justificativa } = req.body;
       const evidenciaAtualizada = DesafioService.recusarEvidencia(evidenciaId as string, justificativa);
@@ -64,25 +63,55 @@ export class DesafioController {
 // desafio e consulta as evidências enviadas)
 // 
 
+// -------------------------------------------------------------
+// REESCRITO (Pessoa 2): agora recebe a FOTO de verdade (via multer)
+// e salva no Postgres via Prisma, em vez de só o nome do arquivo
+// num array em memória.
+// -------------------------------------------------------------
 export async function anexarEvidencia(req: Request, res: Response): Promise<Response> {
   try {
-    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
-    const { arquivoNome, alunoId, alunoNome } = req.body;
+    const desafioId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
 
-    const desafio = buscarDesafioPorId(id);
+    // TEMPORÁRIO: substituir por req.usuario.id quando o login
+    // (Pessoa 1) estiver pronto. Por enquanto, o aluno manda o
+    // próprio ID junto no corpo do formulário (multipart/form-data).
+    const alunoId = req.body.alunoId;
+
+    if (!alunoId) {
+      return res.status(400).json({ error: 'alunoId é obrigatório.' });
+    }
+
+    // multer já processou o arquivo antes desta função rodar
+    // (ver server.ts: a rota usa o middleware uploadEvidencia.single('foto'))
+    if (!req.file) {
+      return res.status(400).json({ error: 'É obrigatório enviar uma foto como evidência.' });
+    }
+
+    // Confirma que o desafio existe de verdade no banco
+    const desafio = await prisma.desafio.findUnique({ where: { id: desafioId } });
     if (!desafio) {
       return res.status(404).json({ error: 'Desafio não encontrado.' });
     }
 
-    if (!arquivoNome || !arquivoNome.trim()) {
-      return res.status(400).json({ error: 'Nome do arquivo é obrigatório.' });
+    // Confirma que o aluno existe de verdade no banco
+    const aluno = await prisma.usuario.findUnique({ where: { id: alunoId } });
+    if (!aluno) {
+      return res.status(404).json({ error: 'Aluno não encontrado.' });
     }
 
-    const novaEvidencia = adicionarEvidencia(id, arquivoNome, alunoId, alunoNome);
+    // Salva a evidência no Postgres, com o caminho do arquivo salvo em disco
+    const novaEvidencia = await prisma.evidencia.create({
+      data: {
+        desafioId,
+        alunoId,
+        arquivoUrl: req.file.path,
+        status: 'pendente',
+      },
+    });
 
     return res.status(201).json({
       message: 'Evidência enviada com sucesso e aguardando validação do professor.',
-      evidencia: novaEvidencia
+      evidencia: novaEvidencia,
     });
   } catch (error: any) {
     return res.status(400).json({ error: error.message });
@@ -91,14 +120,14 @@ export async function anexarEvidencia(req: Request, res: Response): Promise<Resp
 
 export async function listarEvidencias(req: Request, res: Response): Promise<Response> {
   try {
-    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const desafioId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
 
-    const desafio = buscarDesafioPorId(id);
+    const desafio = await prisma.desafio.findUnique({ where: { id: desafioId } });
     if (!desafio) {
       return res.status(404).json({ error: 'Desafio não encontrado.' });
     }
 
-    const lista = listarEvidenciasPorDesafio(id);
+    const lista = await prisma.evidencia.findMany({ where: { desafioId } });
     return res.status(200).json(lista);
   } catch (error: any) {
     return res.status(400).json({ error: error.message });
