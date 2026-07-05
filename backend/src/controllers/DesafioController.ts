@@ -17,12 +17,51 @@ export class DesafioController {
   async criar(req: Request, res: Response): Promise<Response> {
     try {
       const { titulo, descricao, pontuacao, prazoLimite } = req.body;
-      const novoDesafio = DesafioService.criarDesafio({ titulo, descricao, pontuacao, prazoLimite });
+
+      // Validações básicas (trazidas do service para o controller)
+      if (!titulo || titulo.trim() === '' || !descricao || descricao.trim() === '') {
+        return res.status(400).json({ error: 'Erro: Campos obrigatórios vazios.' });
+      }
+
+      const agora = new Date();
+      const prazo = new Date(prazoLimite);
+
+      if (prazo < agora) {
+        return res.status(400).json({ error: 'Erro: Prazo no passado.' });
+      }
+
+      if (Math.abs(prazo.getTime() - agora.getTime()) < 60000) {
+        return res.status(400).json({ error: 'Erro: Prazo precisa dar um tempo mínimo útil de duração.' });
+      }
+
+      // Criação direta no banco via Prisma
+      const novoDesafio = await prisma.desafio.create({
+        data: {
+          titulo: titulo.trim(),
+          descricao: descricao.trim(),
+          pontuacao: Number(pontuacao),
+          prazoLimite: prazo,
+        },
+      });
 
       return res.status(201).json({
         message: 'Desafio cadastrado com sucesso e fica disponível para os alunos da turma.',
         desafio: novoDesafio
       });
+    } catch (error: any) {
+      return res.status(400).json({ error: error.message });
+    }
+  }
+
+  // Novo método para listar direto do banco
+  async listar(req: Request, res: Response): Promise<Response> {
+    try {
+      const lista = await prisma.desafio.findMany({
+        orderBy: {
+          criadoEm: 'desc' // Os mais novos primeiro
+        }
+      });
+      return res.status(200).json(lista);
     } catch (error: any) {
       return res.status(400).json({ error: error.message });
     }

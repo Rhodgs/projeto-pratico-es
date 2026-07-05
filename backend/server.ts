@@ -1,4 +1,6 @@
 /// <reference types="node" />
+import dotenv from 'dotenv';
+dotenv.config();
 
 import cors from 'cors';
 import express, { Request, Response, RequestHandler, NextFunction } from 'express';
@@ -6,6 +8,7 @@ import { AuthController } from './src/controllers/AuthController';
 import * as TurmaController from './src/controllers/TurmaController';
 import * as PreferenciasController from './src/controllers/PreferenciasController';
 import { DesafioController, anexarEvidencia, listarEvidencias } from './src/controllers/DesafioController';
+import { usuarioController } from './src/controllers/UsuarioController';
 import { rankingController } from './src/controllers/RankingController';
 import { uploadEvidencia } from './src/config/multerConfig';
 import { exec } from 'child_process';
@@ -53,6 +56,8 @@ app.delete('/api/turmas/:id', TurmaController.excluirTurma);
 app.put('/api/usuario/preferencias', PreferenciasController.salvarPreferencias);
 app.get('/api/usuario/preferencias', PreferenciasController.buscarPreferencias);
 
+app.get('/api/usuario/perfil', (req, res) => usuarioController.buscarPerfil(req, res));
+
 app.post('/api/desafios/:id/evidencias', uploadEvidencia.single('foto'), anexarEvidencia);
 app.get('/api/desafios/:id/evidencias', listarEvidencias);
 
@@ -60,6 +65,7 @@ app.get('/api/turmas/:id/ranking', (req, res) => rankingController.buscarRanking
 
 const desafioController = new DesafioController();
 app.post('/api/desafios', (req, res) => desafioController.criar(req, res));
+app.get('/api/desafios', (req, res) => desafioController.listar(req, res));
 app.post('/api/evidencias/:id/aprovar', (req, res) => desafioController.aprovar(req, res));
 app.post('/api/evidencias/:id/recusar', (req, res) => desafioController.recusar(req, res));
 

@@ -8,53 +8,49 @@ datasource db {
 }
 
 model Usuario {
-  id        String   @id @default(uuid())
-  nome      String
-  email     String   @unique
-  senha     String
-  perfil    String   
-  xp        Int      @default(0)
-  criadoEm  DateTime @default(now())
-
-  turmasCriadas Turma[]       @relation("ProfessorTurmas")
+  id            String        @id @default(uuid())
+  nome          String
+  email         String        @unique
+  senha         String
+  perfil        String
+  criadoEm      DateTime      @default(now())
+  xp            Int           @default(0)
   evidencias    Evidencia[]
-  preferencias  Preferencias? 
-  turmas        Turma[]       @relation("TurmaAlunos") 
+  preferencias  Preferencias?
+  turmasCriadas Turma[]       @relation("ProfessorTurmas")
+  turmas        Turma[]       @relation("TurmaAlunos")
 }
 
 model Turma {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   nome        String
-  codigo      String   @unique
+  codigo      String    @unique
   professorId String
-  criadaEm    DateTime @default(now())
-
-  professor Usuario   @relation("ProfessorTurmas", fields: [professorId], references: [id])
-  alunos    Usuario[] @relation("TurmaAlunos") 
+  criadaEm    DateTime  @default(now())
+  professor   Usuario   @relation("ProfessorTurmas", fields: [professorId], references: [id])
+  alunos      Usuario[] @relation("TurmaAlunos")
 }
 
 model Desafio {
-  id          String   @id @default(uuid())
+  id          String      @id @default(uuid())
   titulo      String
   descricao   String
   pontuacao   Int
   prazoLimite DateTime
-  criadoEm    DateTime @default(now())
-
-  evidencias Evidencia[]
+  criadoEm    DateTime    @default(now())
+  evidencias  Evidencia[]
 }
 
 model Evidencia {
   id            String   @id @default(uuid())
   desafioId     String
   alunoId       String
-  status        String   @default("pendente") 
+  status        String   @default("pendente")
   justificativa String?
-  arquivoUrl    String?
   enviadoEm     DateTime @default(now())
-
-  desafio Desafio @relation(fields: [desafioId], references: [id])
-  aluno   Usuario @relation(fields: [alunoId], references: [id])
+  arquivoUrl    String?
+  aluno         Usuario  @relation(fields: [alunoId], references: [id])
+  desafio       Desafio  @relation(fields: [desafioId], references: [id])
 }
 
 model Preferencias {
@@ -62,6 +58,5 @@ model Preferencias {
   modoEscuro     Boolean @default(false)
   modoDaltonismo Boolean @default(false)
   tamanhoFonte   Int     @default(16)
-
-  usuario Usuario @relation(fields: [usuarioId], references: [id])
+  usuario        Usuario @relation(fields: [usuarioId], references: [id])
 }

@@ -6,7 +6,7 @@ import { Request, Response } from 'express';
 import { turmaService } from '../services/TurmaService';
 
 // POST /api/turmas
-export function criarTurma(req: Request, res: Response): void {
+export async function criarTurma(req: Request, res: Response): Promise<void> {
   const { nome, professorId } = req.body;
 
   if (!nome || typeof nome !== 'string' || nome.trim() === '') {
@@ -18,7 +18,7 @@ export function criarTurma(req: Request, res: Response): void {
   const idProfessor = professorId ?? 'professor-default';
 
   try {
-    const turma = turmaService.criarTurma(nome, idProfessor);
+    const turma = await turmaService.criarTurma(nome, idProfessor);
 
     res.status(201).json({
       id: turma.id,
@@ -36,18 +36,18 @@ export function criarTurma(req: Request, res: Response): void {
 }
 
 // GET /api/turmas
-export function listarTurmas(req: Request, res: Response): void {
+export async function listarTurmas(req: Request, res: Response): Promise<void> {
   const { professorId } = req.query;
   const id = typeof professorId === 'string' ? professorId : 'professor-default';
-  const turmas = turmaService.listarTurmasDoProfessor(id);
+  const turmas = await turmaService.listarTurmasDoProfessor(id);
   res.status(200).json(turmas);
 }
 
 // DELETE /api/turmas/:id
-export function excluirTurma(req: Request, res: Response): void {
+export async function excluirTurma(req: Request, res: Response): Promise<void> {
   const { id } = req.params;
 
-  const removida = turmaService.excluirTurma(id as string);
+  const removida = await turmaService.excluirTurma(id as string);
   if (!removida) {
     res.status(404).json({ error: 'Turma não encontrada.' });
     return;

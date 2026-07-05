@@ -47,11 +47,20 @@ export class CadastroService {
       throw new Error('A senha é obrigatória.');
     }
 
+    if (senha.length < 8) {
+      const erro: any = new Error('A senha deve ter no mínimo 8 caracteres.');
+      erro.statusCode = 422;
+      throw erro;
+    }
+
+    // Normaliza perfil para 'Aluno' ou 'Professor' (aceita entradas em minúsculas)
+    const perfilNormalizado = perfil.charAt(0).toUpperCase() + perfil.slice(1).toLowerCase();
+
     // 1. Criptografar a senha com o bcrypt (10 rounds de salt é o padrão seguro)
     const senhaHash = await bcrypt.hash(senha, 10);
 
     // 2. Se o perfil for Aluno, precisamos validar a turma antes de criar o usuário
-    if (perfil === 'Aluno') {
+    if (perfilNormalizado === 'Aluno') {
       if (!codigoTurma) {
         // Retornamos um erro com um status customizado para o controller tratar como 422
         const erro: any = new Error('O código da turma é obrigatório para alunos.');
@@ -78,7 +87,7 @@ export class CadastroService {
             nome,
             email,
             senha: senhaHash,
-            perfil: 'Aluno',
+            perfil: perfilNormalizado,
             turmas: {
               connect: { id: turmaExistente.id } // Conecta o aluno na tabela de relação N:M
             }
@@ -105,7 +114,7 @@ export class CadastroService {
           nome,
           email,
           senha: senhaHash,
-          perfil: 'Professor'
+          perfil: perfilNormalizado
         },
         // O select evita que a senha volte na resposta por segurança
         select: { id: true, nome: true, email: true, perfil: true, criadoEm: true }
