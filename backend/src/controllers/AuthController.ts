@@ -1,48 +1,58 @@
 
-type Request = { body: any };
-type Response = { status: (code: number) => Response; json: (body: any) => Response };
+import { Request, Response } from 'express';
 import { CadastroService } from '../services/CadastroService';
 
+const cadastroService = new CadastroService();
+
 export class AuthController {
-  
-  async register(req: Request, res: Response): Promise<Response> {
-    try {
-      const { nome, email, senha, perfil } = req.body;
-      
-      const novoUsuario = CadastroService.cadastrar({ nome, email, senha, perfil });
-      
-      return res.status(201).json({
-        message: 'Cadastro realizado com sucesso!',
-        user: {
-          id: novoUsuario.id,
-          nome: novoUsuario.nome,
-          email: novoUsuario.email,
-          perfil: novoUsuario.perfil
-        }
-      });
-    } catch (error: any) {
-      // Retorna o status 400 (Bad Request) com o erro tratado das regras de negócio
-      return res.status(400).json({ error: error.message });
-    }
-  }
+  // ... (mantenha o método register que já fizemos)
 
   async login(req: Request, res: Response): Promise<Response> {
     try {
       const { email, senha } = req.body;
-      
-      const usuario = CadastroService.login(email, senha);
-      
+
+      // Executa a validação chamando o serviço que acabamos de atualizar
+      const dadosUsuario = await cadastroService.login(email, senha);
+
+      // Retorna os dados do usuário com sucesso
       return res.status(200).json({
-        message: 'Login realizado com sucesso!',
-        user: {
-          id: usuario.id,
-          nome: usuario.nome,
-          email: usuario.email,
-          perfil: usuario.perfil
-        }
+        mensagem: 'Login realizado com sucesso!',
+        usuario: dadosUsuario
       });
+
     } catch (error: any) {
-      return res.status(401).json({ error: error.message });
+      const statusCode = error.statusCode || 500;
+      return res.status(statusCode).json({
+        erro: error.message || 'Erro interno no servidor ao realizar login.'
+      });
     }
   }
+  async register(req: Request, res: Response): Promise<Response> {
+    try {
+      // Capturamos 'role' (como enviado pelo Flutter) em vez de 'perfil'
+      const { nome, email, senha, role, codigoTurma } = req.body;
+
+      // Repassamos para o service mapeando 'role' para o campo 'perfil' que o Prisma espera
+      const novoUsuario = await cadastroService.cadastrar({
+        nome,
+        email,
+        senha,
+        perfil: role, // Aqui é feita a ponte!
+        codigoTurma,
+      });
+
+      return res.status(201).json({
+        mensagem: 'Usuário cadastrado com sucesso!',
+        usuario: novoUsuario
+      });
+      
+    } catch (error: any) {
+      const statusCode = error.statusCode || 500;
+      return res.status(statusCode).json({
+        erro: error.message || 'Erro interno no servidor ao realizar cadastro.'
+      });
+    }
+  }
+
+  // O método de Login (POST /auth/login) ficará aqui logo em seguida! 
 }

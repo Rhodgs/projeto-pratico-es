@@ -1,88 +1,124 @@
+import { prisma } from '../../database/prismaClient';
+import bcrypt from 'bcrypt';
 
-export interface Usuario {
-  id: string;
+// Criamos uma interface para definir exatamente quais dados o serviço espera receber
+interface DadosCadastro {
   nome: string;
   email: string;
-  senha: string;
-  perfil: 'Aluno' | 'Professor';
-  criadoEm: Date;
+  senha?: string; // opcional temporariamente para checagem se necessário
+  perfil: 'Professor' | 'Aluno';
+  codigoTurma?: string;
 }
 
-// Array global para gerenciar e persistir os usuários em memória de forma segura
-export const usuarios: Usuario[] = [];
-
 export class CadastroService {
-  
-  static validarNome(nome: string): boolean {
-    return nome.trim().length >= 3;
-  }
+  async login(email: string, senhaDigitada: string) {
+    // 1. Busca o usuário pelo e-mail informado
+    const usuario = await prisma.usuario.findUnique({
+      where: { email }
+    });
 
-  static validarFormatoEmail(email: string): boolean {
-    const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regexEmail.test(email);
-  }
-
-  static validarEmailInedito(email: string): boolean {
-    return !usuarios.some(u => u.email.toLowerCase() === email.toLowerCase().trim());
-  }
-
-  static validarSenha(senha: string): boolean {
-    // Mínimo de 8 caracteres, pelo menos uma letra maiúscula e um número
-    const regexSenha = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
-    return regexSenha.test(senha);
-  }
-
-  static validarPerfil(perfil: string): boolean {
-    if (!perfil) return false;
-    const formatoPadrao = perfil.trim().charAt(0).toUpperCase() + perfil.trim().slice(1).toLowerCase();
-    return formatoPadrao === 'Aluno' || formatoPadrao === 'Professor';
-  }
-
-  // Método para processar o cadastro completo atendendo a tabela de testes (Casos 1 a 7)
-  static cadastrar(dados: Omit<Usuario, 'id' | 'criadoEm'>): Usuario {
-    if (!this.validarNome(dados.nome)) {
-      throw new Error('Erro: Aceitou nome menor que 3 caracteres.');
-    }
-    if (!this.validarFormatoEmail(dados.email)) {
-      throw new Error('Erro: E-mail em formato incorreto.');
-    }
-    if (!this.validarEmailInedito(dados.email)) {
-      throw new Error('Erro: Duplicidade de e-mail.');
-    }
-    if (!this.validarSenha(dados.senha)) {
-      if (dados.senha.length < 8) {
-        throw new Error('Erro: Senha com menos de 8 caracteres.');
-      }
-      throw new Error('Erro: Faltou letra maiúscula e número.');
-    }
-
-    // Tratamento e normalização do perfil recebido do frontend
-    if (!dados.perfil || !this.validarPerfil(dados.perfil)) {
-      throw new Error('Erro: Perfil não selecionado.');
-    }
-    const perfilFormatado = dados.perfil.trim().charAt(0).toUpperCase() + dados.perfil.trim().slice(1).toLowerCase() as 'Aluno' | 'Professor';
-
-    const novoUsuario: Usuario = {
-      id: Math.random().toString(36).substring(2, 9),
-      nome: dados.nome.trim(),
-      email: dados.email.trim().toLowerCase(),
-      senha: dados.senha,
-      perfil: perfilFormatado,
-      criadoEm: new Date()
-    };
-
-    usuarios.push(novoUsuario);
-    return novoUsuario;
-  }
-
-  // Rota de infraestrutura para validação e login
-  static login(email: string, senha: string): Usuario {
-    const emailFormatado = email.trim().toLowerCase();
-    const usuario = usuarios.find(u => u.email === emailFormatado && u.senha === senha);
-    
+    // 2. Se não achar o usuário, lança um erro 401 (Não Autorizado)
+    // Usamos uma mensagem genérica por segurança para evitar que invasores descubram e-mails válidos
     if (!usuario) {
-      throw new Error('E-mail ou senha incorretos.');
+      const erro: any = new Error('E-mail ou senha inválidos.');
+      erro.statusCode = 401;
+      throw erro;
     }
-    return usuario;
+
+    // 3. Compara a senha digitada com o hash criptografado salvo no banco
+    const senhaValida = await bcrypt.compare(senhaDigitada, usuario.senha);
+
+    if (!senhaValida) {
+      const erro: any = new Error('E-mail ou senha inválidos.');
+      erro.statusCode = 401;
+      throw erro;
+    }
+
+    // 4. Se a senha bater, retorna os dados do usuário mascarando a senha
+    return {
+      id: usuario.id,
+      nome: usuario.nome,
+      email: usuario.email,
+      perfil: usuario.perfil
+    };
+  }
+  async cadastrar({ nome, email, senha, perfil, codigoTurma }: DadosCadastro) {
+    if (!senha) {
+      throw new Error('A senha é obrigatória.');
+    }
+
+    // 1. Criptografar a senha com o bcrypt (10 rounds de salt é o padrão seguro)
+    const senhaHash = await bcrypt.hash(senha, 10);
+
+    // 2. Se o perfil for Aluno, precisamos validar a turma antes de criar o usuário
+    if (perfil === 'Aluno') {
+      if (!codigoTurma) {
+        // Retornamos um erro com um status customizado para o controller tratar como 422
+        const erro: any = new Error('O código da turma é obrigatório para alunos.');
+        erro.statusCode = 422;
+        throw erro;
+      }
+
+      // Busca a turma no Postgres usando o Prisma pelo código de 6 caracteres
+      const turmaExistente = await prisma.turma.findUnique({
+        where: { codigo: codigoTurma }
+      });
+
+      // Se a turma não existir, barramos o cadastro aqui
+      if (!turmaExistente) {
+        const erro: any = new Error('Código de turma inválido.');
+        erro.statusCode = 422;
+        throw erro;
+      }
+
+      // Tenta criar o Aluno e já vincula ele na turma na mesma operação
+      try {
+        const novoAluno = await prisma.usuario.create({
+          data: {
+            nome,
+            email,
+            senha: senhaHash,
+            perfil: 'Aluno',
+            turmas: {
+              connect: { id: turmaExistente.id } // Conecta o aluno na tabela de relação N:M
+            }
+          },
+          select: { id: true, nome: true, email: true, perfil: true, criadoEm: true }
+        });
+
+        return novoAluno;
+      } catch (error: any) {
+        // Captura o erro de campo único (@unique) do Prisma para e-mail duplicado
+        if (error.code === 'P2002') {
+          const erro: any = new Error('Este e-mail já está cadastrado.');
+          erro.statusCode = 400;
+          throw erro;
+        }
+        throw error;
+      }
+    }
+
+    // 3. Se o perfil for Professor, cria direto sem precisar de código de turma
+    try {
+      const novoProfessor = await prisma.usuario.create({
+        data: {
+          nome,
+          email,
+          senha: senhaHash,
+          perfil: 'Professor'
+        },
+        // O select evita que a senha volte na resposta por segurança
+        select: { id: true, nome: true, email: true, perfil: true, criadoEm: true }
+      });
+
+      return novoProfessor;
+    } catch (error: any) {
+      if (error.code === 'P2002') {
+        const erro: any = new Error('Este e-mail já está cadastrado.');
+        erro.statusCode = 400;
+        throw erro;
+      }
+      throw error;
+    }
   }
 }
