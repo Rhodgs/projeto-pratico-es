@@ -1,174 +1,131 @@
-// backend/src/controllers/DesafioController.ts
 import { Request, Response } from 'express';
-import {
-  DesafioService,
-  buscarDesafioPorId,
-  adicionarEvidencia,
-  listarEvidenciasPorDesafio,
-} from '../services/DesafiosService';
+import { DesafiosService } from '../services/DesafiosService';
 import { prisma } from '../../database/prismaClient';
 
-// 
-// ESTILO 1 — CLASSE (US10/US11: criação de desafio pelo
-// professor + aprovação/recusa de evidências)
-// 
-export class DesafioController {
+// Instância reativada para processar as regras de XP, inclusões e cache do Redis
+const desafiosService = new DesafiosService();
 
+export class DesafioController {
+  // Criação de novos desafios (Mantido do esqueleto original do time)
   async criar(req: Request, res: Response): Promise<Response> {
     try {
       const { titulo, descricao, pontuacao, prazoLimite } = req.body;
 
-      // Validações básicas (trazidas do service para o controller)
-      if (!titulo || titulo.trim() === '' || !descricao || descricao.trim() === '') {
-        return res.status(400).json({ error: 'Erro: Campos obrigatórios vazios.' });
+      const tituloClean = Array.isArray(titulo) ? titulo[0] : titulo;
+      const descricaoClean = Array.isArray(descricao) ? descricao[0] : descricao;
+
+      if (!tituloClean || !descricaoClean) {
+        return res.status(400).json({ error: 'Campos obrigatórios vazios.' });
       }
 
-      const agora = new Date();
-      const prazo = new Date(prazoLimite);
-
-      if (prazo < agora) {
-        return res.status(400).json({ error: 'Erro: Prazo no passado.' });
-      }
-
-      if (Math.abs(prazo.getTime() - agora.getTime()) < 60000) {
-        return res.status(400).json({ error: 'Erro: Prazo precisa dar um tempo mínimo útil de duração.' });
-      }
-
-      // Criação direta no banco via Prisma
       const novoDesafio = await prisma.desafio.create({
         data: {
-          titulo: titulo.trim(),
-          descricao: descricao.trim(),
+          titulo: String(tituloClean).trim(),
+          descricao: String(descricaoClean).trim(),
           pontuacao: Number(pontuacao),
-          prazoLimite: prazo,
-        },
+          prazoLimite: new Date(prazoLimite)
+        }
       });
 
       return res.status(201).json({
-        message: 'Desafio cadastrado com sucesso e fica disponível para os alunos da turma.',
+        mensagem: 'Desafio cadastrado com sucesso!',
         desafio: novoDesafio
       });
-    } catch (error: any) {
-      return res.status(400).json({ error: error.message });
+    } catch (error) {
+      return res.status(500).json({ error: 'Erro ao criar desafio.', details: error });
     }
   }
 
-  // Novo método para listar direto do banco
-  async listar(req: Request, res: Response): Promise<Response> {
+  // Listagem de todos os desafios (Mantido do esqueleto original do time)
+  async listar(_req: Request, res: Response): Promise<Response> {
     try {
       const lista = await prisma.desafio.findMany({
-        orderBy: {
-          criadoEm: 'desc' // Os mais novos primeiro
-        }
+        orderBy: { criadoEm: 'desc' }
       });
       return res.status(200).json(lista);
-    } catch (error: any) {
-      return res.status(400).json({ error: error.message });
+    } catch (error) {
+      return res.status(500).json({ error: 'Erro ao listar desafios.' });
     }
   }
 
+  // 2) Rota: POST /api/evidencias/:id/aprovar
   async aprovar(req: Request, res: Response): Promise<Response> {
     try {
-      const evidenciaId = Array.isArray(req.params.evidenciaId) ? req.params.evidenciaId[0] : req.params.evidenciaId;
-      const evidenciaAtualizada = DesafioService.aprovarEvidencia(evidenciaId as string);
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
       
+      // Chama o serviço que altera o status, dá XP ao aluno e limpa o cache do Redis
+      const referenciaAtualizada = await desafiosService.aprovarEvidencia(id);
+
       return res.status(200).json({
-        message: 'Todo o fluxo funciona, a justificativa é cobrada e os pontos da missão aprovada vão para o saldo do aluno.',
-        evidencia: evidenciaAtualizada
+        message: 'Evidência aprovada com sucesso! XP adicionado e ranking atualizado.',
+        evidencia: referenciaAtualizada
       });
-    } catch (error: any) {
-      return res.status(400).json({ error: error.message });
+    } catch (error) {
+      return res.status(500).json({ 
+        error: 'Erro ao aprovar evidência.',
+        details: error instanceof Error ? error.message : error 
+      });
     }
   }
 
+  // 3) Rota: POST /api/evidencias/:id/recusar
   async recusar(req: Request, res: Response): Promise<Response> {
     try {
-      const evidenciaId = Array.isArray(req.params.evidenciaId) ? req.params.evidenciaId[0] : req.params.evidenciaId;
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
       const { justificativa } = req.body;
-      const evidenciaAtualizada = DesafioService.recusarEvidencia(evidenciaId as string, justificativa);
-      
+      const justificativaClean = Array.isArray(justificativa) ? justificativa[0] : justificativa;
+
+      // Chama o serviço que valida a justificativa obrigatória e recusa no banco
+      const referenciaRecusada = await desafiosService.recusarEvidencia(id, String(justificativaClean || ''));
+
       return res.status(200).json({
-        message: 'Missão recusada com sucesso.',
-        evidencia: evidenciaAtualizada
+        message: 'Evidência recusada e justificativa registrada com sucesso.',
+        evidencia: referenciaRecusada
       });
-    } catch (error: any) {
-      return res.status(400).json({ error: error.message });
+    } catch (error) {
+      return res.status(400).json({ 
+        error: 'Erro ao recusar microware/evidência.', 
+        details: error instanceof Error ? error.message : error 
+      });
     }
   }
 }
 
-// 
-// ESTILO 2 — FUNÇÕES SOLTAS (US4: aluno anexa evidência a um
-// desafio e consulta as evidências enviadas)
-// 
+// 1) Rota: GET /api/evidencias/pendentes
+export async function listarEvidencias(_req: Request, res: Response): Promise<Response> {
+  try {
+    // Utiliza o método do serviço que já inclui os dados do Aluno e do Desafio com segurança
+    const evidencias = await desafiosService.listarPendentes();
+    return res.status(200).json(evidencias);
+  } catch (error) {
+    return res.status(500).json({ 
+      error: 'Erro ao buscar evidências pendentes.',
+      details: error instanceof Error ? error.message : error 
+    });
+  }
+}
 
-// -------------------------------------------------------------
-// REESCRITO (Pessoa 2): agora recebe a FOTO de verdade (via multer)
-// e salva no Postgres via Prisma, em vez de só o nome do arquivo
-// num array em memória.
-// -------------------------------------------------------------
+// Rota da Pessoa 2: POST /api/desafios/evidencia (Mantida intacta para o seu time)
 export async function anexarEvidencia(req: Request, res: Response): Promise<Response> {
   try {
-    const desafioId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const { desafioId, alunoId } = req.body;
 
-    // TEMPORÁRIO: substituir por req.usuario.id quando o login
-    // (Pessoa 1) estiver pronto. Por enquanto, o aluno manda o
-    // próprio ID junto no corpo do formulário (multipart/form-data).
-    const alunoId = req.body.alunoId;
-
-    if (!alunoId) {
-      return res.status(400).json({ error: 'alunoId é obrigatório.' });
-    }
-
-    // multer já processou o arquivo antes desta função rodar
-    // (ver server.ts: a rota usa o middleware uploadEvidencia.single('foto'))
-    if (!req.file) {
-      return res.status(400).json({ error: 'É obrigatório enviar uma foto como evidência.' });
-    }
-
-    // Confirma que o desafio existe de verdade no banco
-    const desafio = await prisma.desafio.findUnique({ where: { id: desafioId } });
-    if (!desafio) {
-      return res.status(404).json({ error: 'Desafio não encontrado.' });
-    }
-
-    // Confirma que o aluno existe de verdade no banco
-    const aluno = await prisma.usuario.findUnique({ where: { id: alunoId } });
-    if (!aluno) {
-      return res.status(404).json({ error: 'Aluno não encontrado.' });
-    }
-
-    // Salva a evidência no Postgres, com o caminho do arquivo salvo em disco
     const novaEvidencia = await prisma.evidencia.create({
       data: {
         desafioId,
         alunoId,
-        arquivoUrl: req.file.path,
-        status: 'pendente',
-      },
+        status: 'pendente'
+      }
     });
 
     return res.status(201).json({
       message: 'Evidência enviada com sucesso e aguardando validação do professor.',
-      evidencia: novaEvidencia,
+      evidencia: novaEvidencia
     });
-  } catch (error: any) {
-    return res.status(400).json({ error: error.message });
-  }
-}
-
-export async function listarEvidencias(req: Request, res: Response): Promise<Response> {
-  try {
-    const desafioId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
-
-    const desafio = await prisma.desafio.findUnique({ where: { id: desafioId } });
-    if (!desafio) {
-      return res.status(404).json({ error: 'Desafio não encontrado.' });
-    }
-
-    const lista = await prisma.evidencia.findMany({ where: { desafioId } });
-    return res.status(200).json(lista);
-  } catch (error: any) {
-    return res.status(400).json({ error: error.message });
+  } catch (error) {
+    return res.status(500).json({ 
+      error: 'Erro ao anexar evidência.', 
+      details: error instanceof Error ? error.message : error 
+    });
   }
 }

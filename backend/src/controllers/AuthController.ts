@@ -53,6 +53,4 @@ export class AuthController {
       });
     }
   }
-
-  // O método de Login (POST /auth/login) ficará aqui logo em seguida! 
 }
