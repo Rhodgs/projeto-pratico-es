@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:jornada_verde/services/usuario_session.dart';
 
 class ApiException implements Exception {
   ApiException({required this.statusCode, required this.message});
@@ -203,11 +204,32 @@ class ApiService {
     return _parseResponse(response);
   }
 
+  // CORRIGIDO: agora manda o id do usuário logado como query parameter,
+  // que é exatamente o que o backend (UsuarioController.ts) exige.
   Future<Map<String, dynamic>> buscarPerfil() async {
+    final userId = UsuarioSession.id;
+    if (userId == null) {
+      throw ApiException(
+        statusCode: 401,
+        message: 'Nenhum usuário logado. Faça login novamente.',
+      );
+    }
+
     final response = await _client.get(
-      Uri.parse('$baseUrl/usuario/perfil'),
+      Uri.parse('$baseUrl/usuario/perfil?id=$userId'),
       headers: _jsonHeaders,
     );
+    return _parseResponse(response);
+  }
+
+  // NOVO: busca o ranking de uma turma (Top 5 + posição do aluno logado).
+  Future<Map<String, dynamic>> buscarRanking({required String turmaId}) async {
+    final alunoId = UsuarioSession.id;
+    final uri = Uri.parse('$baseUrl/turmas/$turmaId/ranking').replace(
+      queryParameters: alunoId != null ? {'alunoId': alunoId} : null,
+    );
+
+    final response = await _client.get(uri, headers: _jsonHeaders);
     return _parseResponse(response);
   }
 }

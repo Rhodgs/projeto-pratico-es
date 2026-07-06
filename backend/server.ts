@@ -1,14 +1,15 @@
 /// <reference types="node" />
-import dotenv from 'dotenv';
-dotenv.config();
 
-import cors from 'cors';
 import express, { Request, Response, RequestHandler, NextFunction } from 'express';
 import { AuthController } from './src/controllers/AuthController';
 import * as TurmaController from './src/controllers/TurmaController';
 import * as PreferenciasController from './src/controllers/PreferenciasController';
-import { DesafioController, anexarEvidencia, listarEvidencias } from './src/controllers/DesafioController';
-import { usuarioController } from './src/controllers/UsuarioController';
+import {
+  DesafioController,
+  anexarEvidencia,
+  listarEvidencias,
+  listarEvidenciasPendentes,
+} from './src/controllers/DesafioController';
 import { rankingController } from './src/controllers/RankingController';
 import { uploadEvidencia } from './src/config/multerConfig';
 import { exec } from 'child_process';
@@ -42,8 +43,6 @@ const corsMiddleware: RequestHandler = (req: Request, res: Response, next: NextF
 
 app.use(corsMiddleware);
 app.use(express.json());
-app.use(cors());
-app.use(express.json());
 
 app.get('/', (_req: Request, res: Response) => {
   res.json({ mensagem: 'Servidor do Jornada Verde está online!' });
@@ -56,8 +55,6 @@ app.delete('/api/turmas/:id', TurmaController.excluirTurma);
 app.put('/api/usuario/preferencias', PreferenciasController.salvarPreferencias);
 app.get('/api/usuario/preferencias', PreferenciasController.buscarPreferencias);
 
-app.get('/api/usuario/perfil', (req, res) => usuarioController.buscarPerfil(req, res));
-
 app.post('/api/desafios/:id/evidencias', uploadEvidencia.single('foto'), anexarEvidencia);
 app.get('/api/desafios/:id/evidencias', listarEvidencias);
 
@@ -66,13 +63,9 @@ app.get('/api/turmas/:id/ranking', (req, res) => rankingController.buscarRanking
 const desafioController = new DesafioController();
 app.post('/api/desafios', (req, res) => desafioController.criar(req, res));
 app.get('/api/desafios', (req, res) => desafioController.listar(req, res));
+app.get('/api/evidencias/pendentes', listarEvidenciasPendentes);
 app.post('/api/evidencias/:id/aprovar', (req, res) => desafioController.aprovar(req, res));
 app.post('/api/evidencias/:id/recusar', (req, res) => desafioController.recusar(req, res));
-
-// ==========================================
-// ROTAS DE AUTENTICAÇÃO E CADASTRO (US13)
-// ==========================================
-// Vincula a URL /auth/register ao método register do nosso controller 
 
 app.post('/api/auth/register', (req, res) => authController.register(req, res));
 app.post('/api/auth/login', (req, res) => authController.login(req, res));
