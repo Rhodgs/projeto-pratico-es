@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:jornada_verde/services/usuario_session.dart';
 
 class ApiException implements Exception {
   ApiException({required this.statusCode, required this.message});
@@ -39,7 +40,8 @@ class ApiService {
       return body ?? {};
     }
 
-    final message = body?['message'] as String? ??
+    final message = body?['erro'] as String? ??
+        body?['message'] as String? ??
         body?['error'] as String? ??
         'Erro HTTP ${response.statusCode}';
     throw ApiException(statusCode: response.statusCode, message: message);
@@ -73,10 +75,20 @@ class ApiService {
         'nome': name,
         'email': email,
         'senha': password,
-        'perfil': role, // Chave correta esperada pelo CadastroService.ts
+        'role': role,
+        'codigoTurma': classCode,
       }),
     );
 
+    return _parseResponse(response);
+  }
+
+  Future<Map<String, dynamic>> buscarPreferenciasAcessibilidade() async {
+    final uid = UsuarioSession.id;
+    final response = await _client.get(
+      Uri.parse('$baseUrl/usuario/preferencias?id=$uid'),
+      headers: _jsonHeaders,
+    );
     return _parseResponse(response);
   }
 
@@ -122,8 +134,11 @@ class ApiService {
   }
 
   Future<List<dynamic>> listarTurmas() async {
+    final uid = UsuarioSession.id;
+    final uri =
+        Uri.parse('$baseUrl/turmas${uid != null ? '?professorId=$uid' : ''}');
     final response = await _client.get(
-      Uri.parse('$baseUrl/turmas'),
+      uri,
       headers: _jsonHeaders,
     );
     final parsed = jsonDecode(response.body);
@@ -132,10 +147,15 @@ class ApiService {
   }
 
   Future<Map<String, dynamic>> criarTurma({required String nome}) async {
+    // Debug: imprime o id de sessão para verificar se está sendo enviado
+    print(UsuarioSession.id);
     final response = await _client.post(
       Uri.parse('$baseUrl/turmas'),
       headers: _jsonHeaders,
-      body: jsonEncode({'nome': nome}),
+      body: jsonEncode({
+        'nome': nome,
+        'professorId': UsuarioSession.id,
+      }),
     );
     return _parseResponse(response);
   }
@@ -175,8 +195,9 @@ class ApiService {
     required bool modoDaltonismo,
     required double tamanhoFonte,
   }) async {
+    final uid = UsuarioSession.id;
     final response = await _client.put(
-      Uri.parse('$baseUrl/usuario/preferencias'),
+      Uri.parse('$baseUrl/usuario/preferencias?id=$uid'),
       headers: _jsonHeaders,
       body: jsonEncode({
         'modoEscuro': modoEscuro,
@@ -204,8 +225,9 @@ class ApiService {
   }
 
   Future<Map<String, dynamic>> buscarPerfil() async {
+    final uid = UsuarioSession.id;
     final response = await _client.get(
-      Uri.parse('$baseUrl/usuario/perfil'),
+      Uri.parse('$baseUrl/usuario/perfil?id=$uid'),
       headers: _jsonHeaders,
     );
     return _parseResponse(response);

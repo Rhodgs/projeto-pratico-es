@@ -7,6 +7,7 @@ import 'package:jornada_verde/screens/register_screen.dart';
 import 'package:jornada_verde/screens/student_dashboard_screen.dart';
 import 'package:jornada_verde/screens/teacher_dashboard_screen.dart';
 import 'package:jornada_verde/services/api_service.dart';
+import 'package:jornada_verde/services/usuario_session.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -37,10 +38,18 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       successMessage: 'Login realizado com sucesso!',
       onSuccess: (data) {
-        final role = data['role'] as String? ?? 'aluno';
-        final destination = role == 'professor'
+        // Guarda os dados do usuário na sessão em memória
+        final usuario = data['usuario'] as Map<String, dynamic>?;
+        UsuarioSession.definir(usuario);
+        // Debug: imprime o objeto usuario logo após definir a sessão
+        print(usuario);
+
+        // O backend devolve `usuario.perfil` com valor tipo 'Professor' ou 'Aluno'
+        final role = (data['usuario']?['perfil'] as String?) ?? 'Aluno';
+        final destination = role == 'Professor'
             ? const TeacherDashboardScreen()
             : const StudentDashboardScreen();
+
         Navigator.of(context).pushReplacement(
           MaterialPageRoute<void>(builder: (_) => destination),
         );

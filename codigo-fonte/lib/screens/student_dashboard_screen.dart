@@ -7,10 +7,45 @@ import 'package:jornada_verde/screens/challenge_upload_screen.dart';
 import 'package:jornada_verde/screens/progress_ranking_screen.dart';
 import 'package:jornada_verde/services/api_service.dart';
 
-class StudentDashboardScreen extends StatelessWidget {
+class StudentDashboardScreen extends StatefulWidget {
   const StudentDashboardScreen({super.key});
 
-  static final _api = ApiService.instance;
+  @override
+  State<StudentDashboardScreen> createState() => _StudentDashboardScreenState();
+}
+
+class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
+  final _api = ApiService.instance;
+  String _alunoNome = 'Aluno';
+  String _turmaNome = 'Sem turma';
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _carregarPerfil();
+    });
+  }
+
+  Future<void> _carregarPerfil() async {
+    await ApiFeedback.execute(
+      context: context,
+      request: _api.buscarPerfil,
+      successMessage: 'Perfil carregado com sucesso!',
+      onSuccess: (data) {
+        final nome = (data['usuario']?['nome'] as String?) ?? 'Aluno';
+        final turmas = data['usuario']?['turmas'] as List<dynamic>?;
+        final turmaNome = (turmas != null && turmas.isNotEmpty)
+            ? (turmas[0]['nome'] as String? ?? 'Sem turma')
+            : 'Sem turma';
+        setState(() {
+          _alunoNome = nome;
+          _turmaNome = turmaNome;
+        });
+      },
+      showSuccessSnackBar: false,
+    );
+  }
 
   Future<void> _iniciarQuiz(BuildContext context) async {
     await ApiFeedback.execute(
@@ -56,6 +91,7 @@ class StudentDashboardScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _HeaderSection(
+                    alunoNome: _alunoNome,
                     onSettings: () {
                       Navigator.of(context).push(
                         MaterialPageRoute<void>(
@@ -171,7 +207,8 @@ class StudentDashboardScreen extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: _LinkCard(
                             icon: Icons.groups_rounded,
-                            title: 'Turma 2º 04',
+                            title:
+                                _turmaNome, // CORREÇÃO: Variável com "_" para usar o estado atual
                             subtitle: 'Ranking: Você está em 5º',
                             onTap: () {
                               Navigator.of(context).push(
@@ -337,10 +374,12 @@ class _CarouselMissionCard extends StatelessWidget {
 // ================= OUTROS COMPONENTES =================
 class _HeaderSection extends StatelessWidget {
   const _HeaderSection({
+    required this.alunoNome,
     required this.onSettings,
     required this.onProfile,
   });
 
+  final String alunoNome;
   final VoidCallback onSettings;
   final VoidCallback onProfile;
 
@@ -388,8 +427,8 @@ class _HeaderSection extends StatelessWidget {
               const SizedBox(height: 6),
               Row(
                 children: [
-                  const Text(
-                    'Olá, Alex!',
+                  Text(
+                    'Olá, $alunoNome!',
                     style: TextStyle(
                       color: AppColors.white,
                       fontSize: 28,

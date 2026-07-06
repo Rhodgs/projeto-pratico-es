@@ -29,6 +29,24 @@ class _AccessibilityScreenState extends State<AccessibilityScreen> {
     }
   }
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      try {
+        final data = await _api.buscarPreferenciasAcessibilidade();
+        setState(() {
+          _darkMode = data['modoEscuro'] as bool? ?? _darkMode;
+          _colorBlindMode = data['modoDaltonismo'] as bool? ?? _colorBlindMode;
+          final tf = data['tamanhoFonte'];
+          if (tf is num) _fontSize = tf.toDouble();
+        });
+      } catch (_) {
+        // falha silenciosa — mantém valores locais
+      }
+    });
+  }
+
   Future<void> _salvarPreferencias({bool popOnSuccess = true}) async {
     await ApiFeedback.execute(
       context: context,

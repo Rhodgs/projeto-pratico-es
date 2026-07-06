@@ -4,6 +4,8 @@ import 'package:jornada_verde/core/utils/api_feedback.dart';
 import 'package:jornada_verde/screens/teacher_launch_challenge_screen.dart';
 import 'package:jornada_verde/screens/teacher_validation_screen.dart';
 import 'package:jornada_verde/services/api_service.dart';
+import 'package:jornada_verde/screens/accessibility_screen.dart';
+import 'package:jornada_verde/services/usuario_session.dart';
 import 'package:flutter/services.dart';
 
 class _ActiveClass {
@@ -32,7 +34,29 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
   @override
   void initState() {
     super.initState();
-    _carregarTurmas();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _carregarPerfil();
+      _carregarTurmas();
+    });
+  }
+
+  String _professorNome = 'Professor';
+
+  Future<void> _carregarPerfil() async {
+    // Debug: verifica se o id do usuário está definido na sessão
+    print(UsuarioSession.id);
+    await ApiFeedback.execute(
+      context: context,
+      request: _api.buscarPerfil,
+      successMessage: 'Perfil carregado com sucesso!',
+      onSuccess: (data) {
+        final nome = (data['usuario']?['nome'] as String?) ?? 'Professor';
+        setState(() {
+          _professorNome = nome;
+        });
+      },
+      showSuccessSnackBar: false,
+    );
   }
 
   Future<void> _carregarTurmas() async {
@@ -215,7 +239,8 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
       backgroundColor: AppColors.surfaceBackground,
       body: Column(
         children: [
-          _TeacherHeader(activeClasses: _classes.length),
+          _TeacherHeader(
+              activeClasses: _classes.length, professorNome: _professorNome),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 100),
@@ -282,9 +307,11 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
 }
 
 class _TeacherHeader extends StatelessWidget {
-  const _TeacherHeader({required this.activeClasses});
+  const _TeacherHeader(
+      {required this.activeClasses, required this.professorNome});
 
   final int activeClasses;
+  final String professorNome;
 
   @override
   Widget build(BuildContext context) {
@@ -308,7 +335,20 @@ class _TeacherHeader extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  const _HeaderIconButton(icon: Icons.settings_rounded),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => const AccessibilityScreen(),
+                        ),
+                      );
+                    },
+                    borderRadius: BorderRadius.circular(12),
+                    child: const Padding(
+                      padding: EdgeInsets.all(6.0),
+                      child: _HeaderIconButton(icon: Icons.settings_rounded),
+                    ),
+                  ),
                   const SizedBox(width: 10),
                   Container(
                     width: 40,
@@ -329,9 +369,9 @@ class _TeacherHeader extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 4),
-              const Text(
-                'Olá, Prof. Carlos!',
-                style: TextStyle(
+              Text(
+                'Olá, $professorNome!',
+                style: const TextStyle(
                   color: AppColors.white,
                   fontSize: 26,
                   fontWeight: FontWeight.w800,
