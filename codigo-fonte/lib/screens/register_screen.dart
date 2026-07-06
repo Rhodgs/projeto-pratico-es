@@ -7,6 +7,7 @@ import 'package:jornada_verde/screens/login_screen.dart';
 import 'package:jornada_verde/screens/student_dashboard_screen.dart';
 import 'package:jornada_verde/screens/teacher_dashboard_screen.dart';
 import 'package:jornada_verde/services/api_service.dart';
+import 'package:jornada_verde/services/usuario_session.dart';
 
 enum UserRole { aluno, professor }
 
@@ -70,7 +71,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
             : null,
       ),
       successMessage: 'Cadastro realizado com sucesso!',
-      onSuccess: (_) {
+      onSuccess: (data) {
+        // Captura usuario retornado e define sessão
+        final usuario = data['usuario'] as Map<String, dynamic>?;
+        UsuarioSession.definir(usuario);
+
         final destination = _selectedRole == UserRole.aluno
             ? const StudentDashboardScreen()
             : const TeacherDashboardScreen();

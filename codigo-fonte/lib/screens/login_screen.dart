@@ -45,12 +45,14 @@ class _LoginScreenState extends State<LoginScreen> {
         UsuarioSession.definir(usuario);
 
         // O campo se chama "perfil" (não "role"), e vem como
-        // "Aluno"/"Professor" com inicial maiúscula.
+        // "Aluno"/"Professor" com inicial maiúscula — comparamos em
+        // minúsculo pra não depender de a formatação vir sempre igual.
         final perfil = (usuario?['perfil'] as String? ?? 'Aluno').toLowerCase();
 
         final destination = perfil == 'professor'
             ? const TeacherDashboardScreen()
             : const StudentDashboardScreen();
+
         Navigator.of(context).pushReplacement(
           MaterialPageRoute<void>(builder: (_) => destination),
         );

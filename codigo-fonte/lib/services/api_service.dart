@@ -40,7 +40,8 @@ class ApiService {
       return body ?? {};
     }
 
-    final message = body?['message'] as String? ??
+    final message = body?['erro'] as String? ??
+        body?['message'] as String? ??
         body?['error'] as String? ??
         'Erro HTTP ${response.statusCode}';
     throw ApiException(statusCode: response.statusCode, message: message);
@@ -74,10 +75,20 @@ class ApiService {
         'nome': name,
         'email': email,
         'senha': password,
-        'perfil': role, // Chave correta esperada pelo CadastroService.ts
+        'role': role,
+        'codigoTurma': classCode,
       }),
     );
 
+    return _parseResponse(response);
+  }
+
+  Future<Map<String, dynamic>> buscarPreferenciasAcessibilidade() async {
+    final uid = UsuarioSession.id;
+    final response = await _client.get(
+      Uri.parse('$baseUrl/usuario/preferencias?id=$uid'),
+      headers: _jsonHeaders,
+    );
     return _parseResponse(response);
   }
 
@@ -123,8 +134,11 @@ class ApiService {
   }
 
   Future<List<dynamic>> listarTurmas() async {
+    final uid = UsuarioSession.id;
+    final uri =
+        Uri.parse('$baseUrl/turmas${uid != null ? '?professorId=$uid' : ''}');
     final response = await _client.get(
-      Uri.parse('$baseUrl/turmas'),
+      uri,
       headers: _jsonHeaders,
     );
     final parsed = jsonDecode(response.body);
@@ -136,7 +150,10 @@ class ApiService {
     final response = await _client.post(
       Uri.parse('$baseUrl/turmas'),
       headers: _jsonHeaders,
-      body: jsonEncode({'nome': nome}),
+      body: jsonEncode({
+        'nome': nome,
+        'professorId': UsuarioSession.id,
+      }),
     );
     return _parseResponse(response);
   }
@@ -176,8 +193,9 @@ class ApiService {
     required bool modoDaltonismo,
     required double tamanhoFonte,
   }) async {
+    final uid = UsuarioSession.id;
     final response = await _client.put(
-      Uri.parse('$baseUrl/usuario/preferencias'),
+      Uri.parse('$baseUrl/usuario/preferencias?id=$uid'),
       headers: _jsonHeaders,
       body: jsonEncode({
         'modoEscuro': modoEscuro,
@@ -204,8 +222,9 @@ class ApiService {
     return _parseResponse(response);
   }
 
-  // CORRIGIDO: agora manda o id do usuário logado como query parameter,
-  // que é exatamente o que o backend (UsuarioController.ts) exige.
+  // Manda o id do usuário logado como query parameter, que é exatamente
+  // o que o backend (UsuarioController.ts) exige. Se ninguém estiver
+  // logado, avisa com uma mensagem clara em vez de mandar "id=null".
   Future<Map<String, dynamic>> buscarPerfil() async {
     final userId = UsuarioSession.id;
     if (userId == null) {
@@ -222,7 +241,7 @@ class ApiService {
     return _parseResponse(response);
   }
 
-  // NOVO: busca o ranking de uma turma (Top 5 + posição do aluno logado).
+  // Busca o ranking de uma turma (Top 5 + posição do aluno logado).
   Future<Map<String, dynamic>> buscarRanking({required String turmaId}) async {
     final alunoId = UsuarioSession.id;
     final uri = Uri.parse('$baseUrl/turmas/$turmaId/ranking').replace(
