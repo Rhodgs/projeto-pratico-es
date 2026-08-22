@@ -4,6 +4,7 @@ import express, { Request, Response, RequestHandler, NextFunction } from 'expres
 import { AuthController } from './src/controllers/AuthController';
 import * as TurmaController from './src/controllers/TurmaController';
 import * as PreferenciasController from './src/controllers/PreferenciasController';
+import { usuarioController } from './src/controllers/UsuarioController';
 import {
   DesafioController,
   anexarEvidencia,
@@ -52,6 +53,7 @@ app.post('/api/turmas', TurmaController.criarTurma);
 app.get('/api/turmas', TurmaController.listarTurmas);
 app.delete('/api/turmas/:id', TurmaController.excluirTurma);
 
+app.get('/api/usuario/perfil', (req, res) => usuarioController.buscarPerfil(req, res));
 app.put('/api/usuario/preferencias', PreferenciasController.salvarPreferencias);
 app.get('/api/usuario/preferencias', PreferenciasController.buscarPreferencias);
 

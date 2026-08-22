@@ -32,6 +32,54 @@ O projeto segue a organização de diretórios exigida pelas especificações :
 * **`/especificacao`**: IP1: Documentação técnica de design thinking:
 * **`/projeto-e-arquitetura`** IP2: Documentação da Arquitetura do Software: 
 
+## 🛠️ Execução Local do Backend
+
+### Pré-requisitos
+
+Instale o [Docker Desktop](https://www.docker.com/products/docker-desktop/) e o Node.js com npm.
+
+### Configuração e execução
+
+1. Entre na pasta do backend:
+
+  ```bash
+  cd backend
+  ```
+
+2. Crie o arquivo local de ambiente a partir do exemplo:
+
+  ```bash
+  copy .env.example .env
+  ```
+
+  No Linux ou macOS, use `cp .env.example .env`. Ajuste os valores do `.env` conforme necessário.
+
+3. Inicie os serviços do Docker:
+
+  ```bash
+  docker compose up -d
+  ```
+
+4. Instale as dependências do backend:
+
+  ```bash
+  npm install
+  ```
+
+5. Execute as migrações do Prisma:
+
+  ```bash
+  npx prisma migrate dev
+  ```
+
+6. Inicie o servidor em modo de desenvolvimento:
+
+  ```bash
+  npm run dev
+  ```
+
+O backend ficará disponível em `http://localhost:3000`.
+
 ---
 
 ## 📈 Gestão e Relatórios (Notion)
