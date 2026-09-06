@@ -1,34 +1,29 @@
-import { Request, Response } from 'express';
-// Importamos o serviço do seu amigo (subimos um nível da pasta controllers para a services)
-import { TurmaService } from '../services/TurmaService'; 
-
+import type { Request, Response } from 'express';
+// Ranking é fornecido pela composição da aplicação.
+import type { RankingService } from '../services/RankingService';
 export class AlunoController {
-    
-    // Criamos a instância do serviço
-    private turmaService = new TurmaService();
-
+    // Dependência recebida de fora: substituível nos testes.
+    private readonly rankingService: Pick<RankingService, 'buscarTop5'>;
+    constructor(rankingService: Pick<RankingService, 'buscarTop5'>) { this.rankingService = rankingService; }
     async anexarEvidencia(req: Request, res: Response) {
-        // ... (seu código de evidência continua aqui)
+        // Placeholder preexistente, fora do escopo desta refatoração.
         return res.status(201).json({ mensagem: "Evidência enviada!" });
     }
-
-    // AQUI ESTÁ A INTEGRAÇÃO REAL:
+    // Este controller legado não está registrado nas rotas atuais.
     async listarRanking(req: Request, res: Response) {
-        const { id } = req.params;
-        
+        const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
         try {
-            // Chamamos a lógica que já existe no arquivo do seu amigo
-            const ranking = await this.turmaService.buscarRanking(id); 
-
+            // Delega ao serviço que implementa o ranking.
+            const ranking = await this.rankingService.buscarTop5(id);
             // Devolvemos o que o serviço do seu amigo processou
             return res.status(200).json(ranking);
-        } catch (error) {
+        }
+        catch (error) {
             return res.status(500).json({ mensagem: "Erro ao buscar ranking", erro: error });
         }
     }
-
     async obterPerfil(req: Request, res: Response) {
-        // ... (seu código de perfil continua aqui)
+        // Placeholder preexistente, fora do escopo desta refatoração.
         return res.status(200).json({ nome: "Alex", xp: 1250 });
     }
 }

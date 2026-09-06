@@ -46,13 +46,19 @@ const entrada = (prazo = '2099-01-01T00:00:00.000Z') => ({
 
 async function executarController(arquivo, body, falhar = false) {
   const gravacoes = [];
-  const ns = await carregar(controller, async ({ data }) => {
+  const persistir = async ({ data }) => {
     gravacoes.push(data);
     if (falhar) throw new Error('Falha de persistência');
     return { id: 'd1', ...data };
-  }, arquivo === antes ? fs.readFileSync(antes, 'utf8') : undefined);
+  };
+  const ns = await carregar(controller, persistir, arquivo === antes ? fs.readFileSync(antes, 'utf8') : undefined);
   const res = { status(code) { this.code = code; return this; }, json(body) { this.body = body; return this; } };
-  await new ns.DesafioController().criar({ body }, res);
+  const { CriacaoDesafioFacade } = await carregar(facade);
+  const instancia = arquivo === antes ? new ns.DesafioController() : new ns.DesafioController({
+    criacao: new CriacaoDesafioFacade({ criar: data => persistir({ data }) }),
+    desafios: {}, db: {},
+  });
+  await instancia.criar({ body }, res);
   return JSON.parse(JSON.stringify({ code: res.code, body: res.body, gravacoes }));
 }
 

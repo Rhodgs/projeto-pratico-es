@@ -1,16 +1,11 @@
 /// <reference types="node" />
 
 import express, { Request, Response, RequestHandler, NextFunction } from 'express';
-import { AuthController } from './src/controllers/AuthController';
-import * as TurmaController from './src/controllers/TurmaController';
+import { criarControllersProducao } from './src/composition/producao';
+
 import * as PreferenciasController from './src/controllers/PreferenciasController';
 import { usuarioController } from './src/controllers/UsuarioController';
-import {
-  DesafioController,
-  anexarEvidencia,
-  listarEvidencias,
-  listarEvidenciasPendentes,
-} from './src/controllers/DesafioController';
+
 import { rankingController } from './src/controllers/RankingController';
 import { uploadEvidencia } from './src/config/multerConfig';
 import { exec } from 'child_process';
@@ -28,7 +23,7 @@ console.log('>>> Iniciando server.ts...');
 
 // Inicializa o aplicativo Express
 const app = express();
-const authController = new AuthController();
+const { authController, turmaController, desafioController } = criarControllersProducao();
 const PORT = 3000;
 
 // Middlewares
@@ -49,23 +44,23 @@ app.get('/', (_req: Request, res: Response) => {
   res.json({ mensagem: 'Servidor do Jornada Verde está online!' });
 });
 
-app.post('/api/turmas', TurmaController.criarTurma);
-app.get('/api/turmas', TurmaController.listarTurmas);
-app.delete('/api/turmas/:id', TurmaController.excluirTurma);
+app.post('/api/turmas', (req, res) => turmaController.criarTurma(req, res));
+app.get('/api/turmas', (req, res) => turmaController.listarTurmas(req, res));
+app.delete('/api/turmas/:id', (req, res) => turmaController.excluirTurma(req, res));
 
 app.get('/api/usuario/perfil', (req, res) => usuarioController.buscarPerfil(req, res));
 app.put('/api/usuario/preferencias', PreferenciasController.salvarPreferencias);
 app.get('/api/usuario/preferencias', PreferenciasController.buscarPreferencias);
 
-app.post('/api/desafios/:id/evidencias', uploadEvidencia.single('foto'), anexarEvidencia);
-app.get('/api/desafios/:id/evidencias', listarEvidencias);
+app.post('/api/desafios/:id/evidencias', uploadEvidencia.single('foto'), (req, res) => desafioController.anexarEvidencia(req, res));
+app.get('/api/desafios/:id/evidencias', (req, res) => desafioController.listarEvidencias(req, res));
 
 app.get('/api/turmas/:id/ranking', (req, res) => rankingController.buscarRanking(req, res));
 
-const desafioController = new DesafioController();
+
 app.post('/api/desafios', (req, res) => desafioController.criar(req, res));
 app.get('/api/desafios', (req, res) => desafioController.listar(req, res));
-app.get('/api/evidencias/pendentes', listarEvidenciasPendentes);
+app.get('/api/evidencias/pendentes', (req, res) => desafioController.listarEvidenciasPendentes(req, res));
 app.post('/api/evidencias/:id/aprovar', (req, res) => desafioController.aprovar(req, res));
 app.post('/api/evidencias/:id/recusar', (req, res) => desafioController.recusar(req, res));
 
