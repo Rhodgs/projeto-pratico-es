@@ -127,5 +127,4 @@ export class TurmaService {
   }
 }
 
-// Instância singleton para o controller usar
-export const turmaService = new TurmaService();
+// Instâncias são construídas na composição da aplicação.
