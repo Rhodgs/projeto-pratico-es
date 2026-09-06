@@ -147,3 +147,6 @@ backend/.env
 # Backups de banco de dados
 backend/backup_supabase.dump
 *.dump
+
+# SDK e dependências locais da validação isolada da API Dart
+/work/validacao-api/
