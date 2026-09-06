@@ -150,3 +150,4 @@ backend/backup_supabase.dump
 
 # SDK e dependências locais da validação isolada da API Dart
 /work/validacao-api/
+/work/validacao-backend/

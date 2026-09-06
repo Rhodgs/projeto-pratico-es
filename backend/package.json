@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test:dependencias-cadastro": "node --experimental-vm-modules --test tests/criacao-desafio.test.cjs tests/dependencias-cadastro.test.cjs",
     "test:criacao": "node --experimental-vm-modules --test tests/criacao-desafio.test.cjs",
     "test": "echo \"Error: no test specified\" && exit 1",
     "predev": "docker compose up -d",
