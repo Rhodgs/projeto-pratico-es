@@ -4,6 +4,8 @@
 
 # PLANO DE TRABALHO
 
+> Complemento de planejamento (06/09/2026): consulte o [Plano evolutivo e consolidação do escopo](5-plano-evolutivo-e-escopo.md) para propostas e correções futuras, incluindo acesso institucional por convites e aprovações. A definição final do público permanece pendente de alinhamento com a professora; os itens não representam implementação concluída.
+
 ## Informações do Projeto
 | Item | Detalhamento |
 | :--- | :--- |
