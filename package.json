@@ -4,7 +4,10 @@
   "description": "Simulação de testes automatizados para o TP3-2 - US3",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "node --experimental-vm-modules --test backend/tests/*.test.cjs",
+    "test:simulacoes": "jest",
+    "test:flutter": "cd codigo-fonte && flutter test",
+    "test:all": "npm test && npm run test:simulacoes && npm run test:flutter"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",

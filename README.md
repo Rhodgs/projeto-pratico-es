@@ -34,6 +34,8 @@ O projeto segue a organização de diretórios exigida pelas especificações :
 
 ## 🛠️ Execução Local do Backend
 
+Consulte o [guia de testes e execução local](Documentacao-mvp/docs/testes-e-execucao-local.md) para iniciar também o Flutter, executar a bateria de regressão e acompanhar os defeitos conhecidos. Na raiz, `npm test` executa os testes de produção do backend; `npm run test:simulacoes` executa as simulações acadêmicas.
+
 ### Pré-requisitos
 
 Instale o [Docker Desktop](https://www.docker.com/products/docker-desktop/) e o Node.js com npm.

@@ -12,7 +12,10 @@ class ApiService {
   ApiService({http.Client? client})
     : _api = JsonApiClient(baseUrl: baseUrl, client: client ?? http.Client());
   final JsonApiClient _api;
-  static const String baseUrl = 'http://localhost:3000/api';
+  static const String baseUrl = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: 'http://localhost:3000/api',
+  );
   static final ApiService instance = ApiService();
 
   Future<Map<String, dynamic>> login(String email, String password) => _api
